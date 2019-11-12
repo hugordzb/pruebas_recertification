@@ -1,9 +1,11 @@
-import { ACTIONS } from '../../constants/actions'
+export const ACTIONS = {
+  AUTHENTICATE: "AUTHENTICATE",
+  REFRESH: "REFRESH",
+  SIGNOUT: "SIGNOUT"
+}
 
 export const authenticate = userData => {
-  localStorage.setItem("userId", userData.userId);
-  localStorage.setItem("token", userData.token);
-  localStorage.setItem("apps", JSON.stringify(userData.apps));
+  localStorage.setItem('userData', JSON.stringify(userData))
 
   return {
     type: ACTIONS.AUTHENTICATE,
@@ -12,25 +14,28 @@ export const authenticate = userData => {
 };
 
 export const refresh = () => {
-  var userData = {
-    userId: localStorage.getItem("userId"),
-    token: localStorage.getItem("token"),
-    apps: JSON.parse(localStorage.getItem("apps"))
-  }
+  let userData = {};
+  let userJson = localStorage.getItem("userData");
+  if (userJson) {
+    userData = JSON.parse(userJson);
 
+  }
   return {
     type: ACTIONS.REFRESH,
     userData
   }
-
 }
 
 export const signOut = () => {
   localStorage.clear();
-  
+
   var userData = {
     userId: "",
     token: "",
+    department: "",
+    name: "",
+    displayName: "",
+    title: "",
     apps: []
   }
 

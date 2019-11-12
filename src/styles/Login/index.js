@@ -1,4 +1,12 @@
 const style = theme => ({
+  root: {
+    margin: "0",
+    padding: "0",
+    //backgroundImage: `url(${Image})`,
+    width: "100%",
+    height: "100vh",
+    //color: "#ffffff"
+  },
   paper: {
     marginTop: theme.spacing(8),
     display: 'flex',

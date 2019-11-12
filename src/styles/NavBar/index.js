@@ -1,7 +1,7 @@
 export const style = theme => ({
 
   navBar: {
-    background: '#ff1100',
+    background: '#ff0000',
     color: '#ddfeff',
   },
   title: {

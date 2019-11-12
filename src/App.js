@@ -16,26 +16,17 @@ import PublicRoute from './components/PublicRoute';
 class App extends React.Component {
 
   componentDidMount() {
-    if (!this.props.isAuthenticated) {
+    let { isAuthenticated } = this.props;
+
+    if (!isAuthenticated) {
       let sPageURL = window.location.search.substring(1);
-      if (sPageURL.includes("userId") && sPageURL.includes("token")) {
-        let sURLVariables = sPageURL.split('&');
-        let URLUserId = sURLVariables[0].substring(sURLVariables[0].indexOf("=") + 1, sURLVariables[0].length - 1);
-        let URLToken = sURLVariables[1].substring(sURLVariables[1].indexOf("=") + 1, sURLVariables[1].length - 1);
-
-        localStorage.setItem("userId", URLUserId);
-        localStorage.setItem("token", URLToken);
-
-        let token = localStorage.getItem("token");
-        if (token && true) {
-          this.props.refresh();
-        }
-      } else {
-        let token = localStorage.getItem("token");
-        if (token && true) {
-          this.props.refresh();
-        }
+      if (sPageURL.includes("token")) {
+        let token = sPageURL.substring(sPageURL.indexOf("=") + 1, sPageURL.length - 1);
+        localStorage.setItem("token", token);
+      }else{
+        this.props.refresh();
       }
+      
     }
   }
 
@@ -52,7 +43,8 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  isAuthenticated: (state.authenticate.user.userId && state.authenticate.user.token) ? true : false
+  userData: state.authenticate.userData,
+  isAuthenticated: state.authenticate.isAuthenticated,
 });
 
 const mapDispatchToProps = dispatch => ({
