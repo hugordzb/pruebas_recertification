@@ -4,14 +4,11 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import Greeting from './views/Greeting';
-import Login from './views/Login';
+
 import Whoops404 from './views/Whoops404';
-import PrivateRoute from './components/PrivateRoute';
 
 import { connect } from 'react-redux';
 import { refresh } from './redux/actions/';
-import PublicRoute from './components/PublicRoute';
 
 class App extends React.Component {
 
@@ -23,19 +20,23 @@ class App extends React.Component {
       if (sPageURL.includes("token")) {
         let token = sPageURL.substring(sPageURL.indexOf("=") + 1, sPageURL.length - 1);
         localStorage.setItem("token", token);
-      }else{
-        this.props.refresh();
+
+        //consumir servicio para autenticar
+      } else {
+        let userJson = localStorage.getItem("userData");
+        if (userJson) {
+          this.props.refresh();
+        } else {
+          window.location.href = "http://localhost:3000/sso/home";
+        }
       }
-      
     }
   }
 
   render() {
     return (
       <Switch>
-        <PublicRoute exact path="/" restricted={true} component={Greeting}></PublicRoute>
-        <PublicRoute restricted={true} path="/login" component={Login}></PublicRoute>
-        <PrivateRoute path="/home" component={Home}></PrivateRoute>
+        <Route path="/" component={Home}></Route>
         <Route component={Whoops404}></Route>
       </Switch>
     )

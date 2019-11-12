@@ -14,7 +14,7 @@ import UserSessionMenu from './UserSessionMenu';
 class NavBar extends Component {
 
   redirectToLogin = () => {
-    this.props.history.push('/login');
+    window.location.href = "http://localhost:3000/sso/home";
   }
 
   render() {

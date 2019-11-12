@@ -12,7 +12,7 @@ global.config = new Configs();
 
 const rootComponent = (
   <Provider store={store}>
-    <Router basename={"/sso"}>
+    <Router basename={"/recertification"}>
       <App />
     </Router>
   </Provider>
