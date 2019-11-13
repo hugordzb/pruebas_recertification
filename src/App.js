@@ -8,7 +8,7 @@ import {
 import Whoops404 from './views/Whoops404';
 
 import { connect } from 'react-redux';
-import { refresh } from './redux/actions/';
+import { authenticate } from './redux/actions/';
 import { SSOServices } from './services/SSOServices';
 
 class App extends React.Component {
@@ -20,11 +20,17 @@ class App extends React.Component {
       let sPageURL = window.location.search.substring(1);
       if (sPageURL.includes("token")) {
         let token = sPageURL.substring(sPageURL.indexOf("=") + 1, sPageURL.length);
-        localStorage.setItem("token", token);
-        console.log(token)
         new SSOServices(token).signInRecertificaction((response => {
           this.setState({ isLoading: false });
-          console.log(response);
+          let userData = {
+            userId: response.data.userId,
+            name: response.data.name,
+            displayName: response.data.displayName,
+            title: response.data.title,
+            department: response.data.department,
+            token
+          };
+          this.props.authenticate(userData);
         }), (responseError => {
           console.log(responseError);
           this.setState({ isLoading: false });
@@ -33,11 +39,9 @@ class App extends React.Component {
         let userJson = localStorage.getItem("userData");
         if (userJson) {
           this.props.refresh();
-        } else {
-          window.location.href = "http://localhost:3000/sso/home";
         }
       }
-    }
+    }else {window.location.href = "http://localhost:3000/sso/home";}
   }
 
   render() {
@@ -56,7 +60,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  refresh: () => dispatch(refresh())
+  authenticate: userData => dispatch(authenticate(userData))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -6,7 +6,6 @@ export const ACTIONS = {
 
 export const authenticate = userData => {
   localStorage.setItem('userData', JSON.stringify(userData))
-
   return {
     type: ACTIONS.AUTHENTICATE,
     userData
