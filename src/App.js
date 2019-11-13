@@ -15,8 +15,8 @@ class App extends React.Component {
 
   componentDidMount() {
     let { isAuthenticated } = this.props;
-
     if (!isAuthenticated) {
+
       let sPageURL = window.location.search.substring(1);
       if (sPageURL.includes("token")) {
         let token = sPageURL.substring(sPageURL.indexOf("=") + 1, sPageURL.length);
@@ -30,20 +30,16 @@ class App extends React.Component {
             department: response.data.department,
             token
           };
-          if(userData.userId !== null){
+          
+          if (userData.userId !== null) {
             this.props.authenticate(userData);
-          }else {
-            window.location.href = "http://localhost:3000/sso/home";
           }
+
         }), (responseError => {
           console.log(responseError);
           this.setState({ isLoading: false });
+          window.location.href = "http://localhost:3000/sso";
         }));
-      } else {
-        let userJson = localStorage.getItem("userData");
-        if (userJson) {
-          this.props.refresh();
-        }
       }
     }
   }
