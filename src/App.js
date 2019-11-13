@@ -9,6 +9,7 @@ import Whoops404 from './views/Whoops404';
 
 import { connect } from 'react-redux';
 import { refresh } from './redux/actions/';
+import { SSOServices } from './services/SSOServices';
 
 class App extends React.Component {
 
@@ -18,10 +19,16 @@ class App extends React.Component {
     if (!isAuthenticated) {
       let sPageURL = window.location.search.substring(1);
       if (sPageURL.includes("token")) {
-        let token = sPageURL.substring(sPageURL.indexOf("=") + 1, sPageURL.length - 1);
+        let token = sPageURL.substring(sPageURL.indexOf("=") + 1, sPageURL.length);
         localStorage.setItem("token", token);
-
-        //consumir servicio para autenticar
+        console.log(token)
+        new SSOServices(token).signInRecertificaction((response => {
+          this.setState({ isLoading: false });
+          console.log(response);
+        }), (responseError => {
+          console.log(responseError);
+          this.setState({ isLoading: false });
+        }));
       } else {
         let userJson = localStorage.getItem("userData");
         if (userJson) {
