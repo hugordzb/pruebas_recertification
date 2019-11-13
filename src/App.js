@@ -30,7 +30,11 @@ class App extends React.Component {
             department: response.data.department,
             token
           };
-          this.props.authenticate(userData);
+          if(userData.userId !== null){
+            this.props.authenticate(userData);
+          }else {
+            window.location.href = "http://localhost:3000/sso/home";
+          }
         }), (responseError => {
           console.log(responseError);
           this.setState({ isLoading: false });
@@ -41,7 +45,7 @@ class App extends React.Component {
           this.props.refresh();
         }
       }
-    }else {window.location.href = "http://localhost:3000/sso/home";}
+    }
   }
 
   render() {
