@@ -4,9 +4,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import AccountBox from '@material-ui/icons/AccountBox';
-import MenuIcon from '@material-ui/icons/Menu';
 import { style } from '../../../styles/NavBar';
-import { Button, IconButton } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux'
 import UserSessionMenu from './UserSessionMenu';
@@ -23,9 +22,6 @@ class NavBar extends Component {
     return (
       <AppBar className={classes.navBar}>
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton>
           <Typography variant="h6" className={classes.title}>
             {"Recertificacion de usuarios"}
           </Typography>

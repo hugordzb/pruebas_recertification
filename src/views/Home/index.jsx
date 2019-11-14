@@ -30,4 +30,4 @@ const mapStateToProps = state => ({
 
 const HomeConnected = connect(mapStateToProps, null)(Home);
 
-export default withRouter(HomeConnected)
+export default withRouter(HomeConnected);

@@ -29,13 +29,13 @@ export const signOut = () => {
   localStorage.clear();
 
   var userData = {
-    userId: "",
-    token: "",
     department: "",
-    name: "",
     displayName: "",
+    name: "",
     title: "",
-    apps: []
+    token: "",
+    userId: "",
+    userType:""
   }
 
   return {

@@ -11,6 +11,8 @@ import { connect } from 'react-redux';
 import { authenticate } from './redux/actions/';
 import { SSOServices } from './services/SSOServices';
 
+import Recertification from './views/Recertification';
+
 class App extends React.Component {
 
   componentDidMount() {
@@ -47,7 +49,8 @@ class App extends React.Component {
   render() {
     return (
       <Switch>
-        <Route path="/" component={Home}></Route>
+        <Route path="/doRecertification" component={Recertification}></Route>
+        <Route exact path="/" component={Home}></Route>
         <Route component={Whoops404}></Route>
       </Switch>
     )
