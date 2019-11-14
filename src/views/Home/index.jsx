@@ -7,13 +7,18 @@ import TemplatePage from '../../components/TemplatePage';
 import { Typography } from '@material-ui/core';
 
 class Home extends React.Component {
+
+  redirectToRecertification = () => {
+    this.props.history.push("/doRecertification");
+  }
+
   render() {
     const { userData } = this.props;
     return (
       <TemplatePage>
-        {this.props.isAuthenticated ? <Typography variant="h5">
+        {this.props.isAuthenticated ? <div><Typography variant="h5">
           Bienvenido {userData.userId} a la recertificación de usuarios
-        </Typography> : <></>}
+        </Typography> <button onClick={this.redirectToRecertification}>Comenzar</button></div>: <></>}
       </TemplatePage >
     )
   }

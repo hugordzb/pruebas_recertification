@@ -7,7 +7,7 @@ export class SSOServices {
   }
 
   signInRecertificaction = (callback, callbackError = (error => { console.log(error); })) => {
-    API.request(this.token).get('/system', (responseJson => {
+    API.request(this.token).get(`${global.config.current.SERVERS.SSO}/system`, (responseJson => {
       Promise.resolve({
         data: responseJson
       }).then(callback);
@@ -18,8 +18,8 @@ export class SSOServices {
     }));
   }
 
-  signInRecertificaction = (callback, callbackError = (error => { console.log(error); })) => {
-    API.request(this.token).get('/system', (responseJson => {
+  getSystems = (callback, callbackError = (error => { console.log(error); })) => {
+    API.request(this.token).get(`${global.config.current.SERVERS.RECERTIFICATION}/auditableSystems`, (responseJson => {
       Promise.resolve({
         data: responseJson
       }).then(callback);
@@ -29,4 +29,18 @@ export class SSOServices {
       }).then(callbackError);
     }));
   }
+
+  getAuditableUserAccounts = (callback, callbackError = (error => { console.log(error); })) => {
+    API.request(this.token).get(`${global.config.current.SERVERS.RECERTIFICATION}/auditableAcounts`, (responseJson => {
+      Promise.resolve({
+        data: responseJson
+      }).then(callback);
+    }), (responseError => {
+      Promise.resolve({
+        error: responseError
+      }).then(callbackError);
+    }));
+  }
+
+
 }

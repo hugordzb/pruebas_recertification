@@ -12,7 +12,7 @@ const request = {
         console.log(JSON.stringify(error)); alert(error.message); throw error;
       })
   ) => {
-    fetch(global.config.current.SERVERS.SSO + url, config)
+    fetch(url, config)
       .then(
         function (response) {
           if (response.status === 401) {
@@ -43,7 +43,7 @@ const request = {
         throw error;
       })
   ) => {
-    fetch(global.config.current.JBPM_SERVER + url, config)
+    fetch(url, config)
       .then(resp => resp.blob())
       .then(callback)
       .catch(callbackCatch);
@@ -57,7 +57,7 @@ const API = {
         return {
           headers: {
             'Content-Type': contentType,
-            'Authorization': `Bearer ${tokenBasic}`
+            'Authorization': `Bearer ${tokenBasic}`,
           },
           method: method
         };
@@ -65,7 +65,7 @@ const API = {
         return {
           headers: {
             'Content-Type': contentType,
-            'Authorization': `Basic ${tokenBasic}`
+            'Authorization': `Basic ${tokenBasic}`,
           },
           method: method,
           body: (isJson ? JSON.stringify(body) : body)
