@@ -4,11 +4,90 @@ import { Table, TableHead, TableRow, TableCell, TableBody, Paper, withStyles } f
 import { SSOServices } from '../../services/SSOServices';
 import { style } from '../../styles/AuditableUserTable';
 
+const data = {
+  "jefes": [
+    {
+      "idJefe": "jefe",
+      "jefe": "ZARAZUA ORTEGA GONZALO MOISES",
+      "inAD": false,
+      "empleados": [
+        {
+          "idEmpleado": "bcavazos",
+          "empleado": "ELIZONDO CASTRO OSCAR HUGO",
+          "sap": null,
+          "tel": [
+            {
+              "cuenta": "CCAT018",
+              "perfil": "CCAT018"
+            }
+          ],
+          "ciat": [
+            {
+              "cuenta": "rx_bca",
+              "perfil": "Admin"
+            },
+            {
+              "cuenta": "rx_bca_2",
+              "perfil": "Admin_2"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "idJefe": "jefecito",
+      "jefe": "JEFECITO",
+      "inAD": false,
+      "empleados": [
+        {
+          "idEmpleado": "oacarmonac",
+          "empleado": "CARMONA OSCAR",
+          "sap": [
+            {
+              "cuenta": "tester",
+              "perfil": "Admin"
+            }
+          ],
+          "tel": null,
+          "ciat": null
+        },
+        {
+          "idEmpleado": "ysandoval",
+          "empleado": "CAB AMBROCIO JESUS ABRAHAM BALTAZAR",
+          "sap": [
+            {
+              "cuenta": "prueba1",
+              "perfil": "Admin"
+            }
+          ],
+          "tel": [
+            {
+              "cuenta": "prueba2",
+              "perfil": "Admin"
+            }
+          ],
+          "ciat": [
+            {
+              "cuenta": "prueba3",
+              "perfil": "Admin"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "idJefe": "jefa",
+      "jefe": "Elizabeth",
+      "inAD": true,
+      "empleados": null
+    }
+  ]
+}
+
 class AuditableUserTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      system: "",
       auditableAccounts: []
     };
   }
@@ -18,128 +97,29 @@ class AuditableUserTable extends Component {
     new SSOServices(token).getAuditableUserAccounts((response => {
       console.log(response.data.jefes);
       this.setState({ auditableAccounts: response.data.jefes });
+      console.log(data.jefes);
+      this.setState({ auditableAccounts: data.jefes });
     }), (responseError => {
       console.log(responseError);
     }));
   }
 
-  renderEmployees = employees => {
+  renderAccounts = () => {
+    const { auditableAccounts } = this.state;
+    console.log(auditableAccounts);
     return (
       <>
-        <TableCell key={"employees cell"}>
-          {
-            employees.map(
-              employee => {
-                return (
-                  <TableRow key={`${employee.idEmpleado} row`}>
-                    <TableCell key={`${employee.idEmpleado} cell`}>{employee.idEmpleado}</TableCell>
-                  </TableRow>
-                )
-              }
-            )
-          }
-        </TableCell>
-
-        <TableCell >
-          {
-            employees.map(
-              employee => {
-                return (
-                  <TableRow key={`${employee.empleado} row`}>
-                    <TableCell key={`${employee.empleado} cell`}>{employee.empleado}</TableCell>
-                  </TableRow>
-                )
-              }
-            )
-          }
-        </TableCell>
-
-        <TableCell key={"sap"} colSpan={2}>
-          {
-            employees.map(
-              employee => {
-                return (
-                  <TableRow>
-                    {
-                      employee.sap ?
-                        employee.sap.map(
-                          accountInfo => {
-                            return (
-                              <TableRow key={`sap accounts row`}>
-                                <TableCell key={`sap account cell ${accountInfo.cuenta}`}>{accountInfo.cuenta}</TableCell>
-                                <TableCell key={`sap role cell ${accountInfo.perfil}`}>{accountInfo.perfil}</TableCell>
-                              </TableRow>
-                            )
-                          }
-                        ) :
-                        <TableCell colSpan={2}>No se tienen cuentas</TableCell>
-                    }
-                  </TableRow>
-                )
-              }
-            )
-          }
-        </TableCell>
-
-        <TableCell key={"tel"} colSpan={2}>
-          {
-            employees.map(
-              employee => {
-                return (
-                  <TableRow>
-                    {
-                      employee.tel ?
-                        employee.tel.map(
-                          accountInfo => {
-                            return (
-                              <TableRow key={`tel accounts row`}>
-                                <TableCell key={`tel account cell ${accountInfo.cuenta}`}>{accountInfo.cuenta}</TableCell>
-                                <TableCell key={`tel role cell ${accountInfo.perfil}`}>{accountInfo.perfil}</TableCell>
-                              </TableRow>
-                            )
-                          }
-                        ) :
-                        <TableCell colSpan={2} >No se tienen cuentas</TableCell>
-                    }
-                  </TableRow>
-                )
-              }
-            )
-          }
-        </TableCell>
-
-        <TableCell key={"ciat"} colSpan={2}>
-          {
-            employees.map(
-              employee => {
-                return (
-                  <TableRow>
-                    {
-                      employee.ciat ?
-                        employee.ciat.map(
-                          accountInfo => {
-                            return (
-                              <TableRow key={`ciat accounts row`}>
-                                <TableCell key={`ciat account cell ${accountInfo.cuenta}`}>{accountInfo.cuenta}</TableCell>
-                                <TableCell key={`ciat role cell ${accountInfo.perfil}`}>{accountInfo.perfil}</TableCell>
-                              </TableRow>
-                            )
-                          }
-                        ) :
-                        <TableCell colSpan={2}>No se tienen cuentas</TableCell>
-                    }
-                  </TableRow>
-                )
-              }
-            )
-          }
-        </TableCell>
-
+        <TableRow><TableCell>prueba</TableCell></TableRow>
+        <TableRow><TableCell>prueba</TableCell></TableRow>
+        <TableRow>
+          <TableCell>prueba</TableCell>
+          <TableCell>prueba</TableCell>
+          <TableCell>prueba</TableCell>
+        </TableRow>
       </>
     )
   }
-  renderUsers = system => {
-    const { auditableAccounts } = this.state;
+  renderTableBody = system => {
     const { classes } = this.props;
     console.log()
     return (
@@ -170,22 +150,7 @@ class AuditableUserTable extends Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {
-              (auditableAccounts) ? auditableAccounts.map((boss, i) => {
-                return (
-                  <TableRow key={`${boss.idJefe} row`}>
-                    <TableCell key={`${boss.idJefe} cell`} rowSpan={boss.empleados.length}>{boss.idJefe}</TableCell>
-                    <TableCell key={`${boss.jefe} cell`} rowSpan={boss.empleados.length}>{boss.jefe}</TableCell>
-                    {
-                      (boss.empleados || boss.empleados.length > 0) ?
-                        this.renderEmployees(boss.empleados) :
-                        <TableCell colSpan={8} key={"employees cell"}></TableCell>
-                    }
-                  </TableRow>
-                )
-              }) :
-                <p>No se encontraron usuarios</p>
-            }
+            {this.renderAccounts()}
           </TableBody>
         </Table>
       </Paper>
@@ -193,10 +158,14 @@ class AuditableUserTable extends Component {
   }
 
   render() {
-    const { system } = this.props;
+    const { auditableAccounts } = this.state;
     return (
       <div>
-        {this.renderUsers(system)}
+        {
+          auditableAccounts ?
+            this.renderTableBody() :
+            <p>No se encuentran usuarios para auditar</p>
+        }
       </div>
     );
   }

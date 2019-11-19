@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import { authenticate } from './redux/actions/';
 import { SSOServices } from './services/SSOServices';
 
-import Recertification from './views/Recertification';
+import Recertification from './views/Arquitecture';
 
 class App extends React.Component {
 
@@ -36,6 +36,8 @@ class App extends React.Component {
           if (userData.userId !== null) {
             this.props.authenticate(userData);
           }
+
+          window.location.href = `${window.location.href.replace(`${window.location.pathname}`, "")}${window.location.pathname}`;
 
         }), (responseError => {
           console.log(responseError);

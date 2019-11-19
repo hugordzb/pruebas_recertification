@@ -2,6 +2,13 @@ import React, { Component } from 'react';
 import { TextField, Button } from '@material-ui/core';
 
 class AddUserControl extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      idEmpleado: "",
+
+    }
+  }
 
   addUser = () => {
     alert("agregando usuario")
@@ -38,6 +45,11 @@ class AddUserControl extends Component {
         />
 
         <Button onClick={this.addUser}>Agregar</Button>
+
+        <p>{window.location.href.replace(`${window.location.protocol}//${window.location.hostname}:${window.location.port}`, "")}</p>
+        <p>{window.location.pathname}</p>
+        <p>{window.location.href.replace(`${window.location.pathname}`, "")}</p>
+        <p>{window.location.hostname}</p>
       </form>
     );
   }
