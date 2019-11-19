@@ -13,7 +13,8 @@ const initialState = () => {
     let isAuthenticated = (userData.userId && userData.token) ? true : false;
     state = {
       userData,
-      isAuthenticated
+      isAuthenticated,
+      profile: "Arquitectura"
     }
   }
 

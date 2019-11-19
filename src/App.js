@@ -1,5 +1,4 @@
 import React from 'react';
-import Home from './views/Home';
 import {
   Switch,
   Route,
@@ -11,9 +10,38 @@ import { connect } from 'react-redux';
 import { authenticate } from './redux/actions/';
 import { SSOServices } from './services/SSOServices';
 
-import Recertification from './views/Arquitecture';
+import Arquitecture from './views/Arquitecture';
+import Boss from './views/Boss';
+import HelpDesk from './views/HelpDesk';
 
 class App extends React.Component {
+
+  renderForProfile = () => {
+    const { profile } = this.props;
+
+    switch (profile) {
+      case "Arquitectura":
+        return (
+          <>
+            <Route path="/" component={Arquitecture}></Route>
+          </>
+        )
+      case "Mesa de servicio":
+        return (
+          <>
+            <Route path="/" component={HelpDesk}></Route>
+          </>
+        )
+      case "Jefe":
+        return (
+          <>
+            <Route path="/" component={Boss}></Route>
+          </>
+        )
+      default:
+        break;
+    }
+  }
 
   componentDidMount() {
     let { isAuthenticated } = this.props;
@@ -32,7 +60,7 @@ class App extends React.Component {
             department: response.data.department,
             token
           };
-          
+
           if (userData.userId !== null) {
             this.props.authenticate(userData);
           }
@@ -49,10 +77,12 @@ class App extends React.Component {
   }
 
   render() {
+    const { profile } = this.props;
     return (
       <Switch>
-        <Route path="/doRecertification" component={Recertification}></Route>
-        <Route exact path="/" component={Home}></Route>
+        {
+          this.renderForProfile()
+        }
         <Route component={Whoops404}></Route>
       </Switch>
     )
@@ -62,6 +92,7 @@ class App extends React.Component {
 const mapStateToProps = state => ({
   userData: state.authenticate.userData,
   isAuthenticated: state.authenticate.isAuthenticated,
+  profile: state.authenticate.profile
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import TemplatePage from '../../components/TemplatePage';
 
 class HelpDesk extends Component {
   render() {
     return (
-      <div>
-        
-      </div>
+      <TemplatePage>
+        <h1>Meas de servicio</h1>
+      </TemplatePage >
     );
   }
 }
