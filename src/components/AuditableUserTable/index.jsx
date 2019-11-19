@@ -28,23 +28,51 @@ class AuditableUserTable extends Component {
       <>
         {
           auditableAccounts.map((boss, i) => {
+
+            let getNumberOfAccountsPerAllEmployees = boss => {
+              let numberOfAccountsPerAllEmployees = 0;
+              boss.empleados.forEach(auxEmployee => {
+                numberOfAccountsPerAllEmployees += auxEmployee.cuentas ? auxEmployee.cuentas.length : 0;
+              });
+              return numberOfAccountsPerAllEmployees;
+            }
+
+            let numberOfAccounstPerAllEMployees = getNumberOfAccountsPerAllEmployees(boss);
+
             return boss.empleados.map((employee, j) => {
               return employee.cuentas.map((accountsInSystems, k) => {
-                console.log (`i: ${i}, j: ${j}, k: ${k}`);
+                console.log(`i: ${i}, j: ${j}, k: ${k}`);
+                let numberOfAccounts = employee.cuentas.length;
                 return (
                   <TableRow key={boss.idJefe}>
-                    <TableCell key={boss.idJefe}>
-                      {boss.idJefe ? boss.idJefe : "----"}
-                    </TableCell>
-                    <TableCell key={boss.jefe}>
-                      {boss.jefe ? boss.jefe : "----"}
-                    </TableCell>
-                    <TableCell key={employee.idEmpleado}>
-                      {employee.idEmpleado ? employee.idEmpleado : "----"}
-                    </TableCell>
-                    <TableCell key={employee.empleado}>
-                      {employee.empleado ? employee.empleado : "----"}
-                    </TableCell>
+                    {
+                      (j === 0 && k === 0) ?
+                        <>
+                          <TableCell key={boss.idJefe} rowSpan={boss.empleados.length + numberOfAccounstPerAllEMployees}>
+                            {boss.idJefe ? boss.idJefe : "----"}
+                          </TableCell>
+                          <TableCell key={boss.jefe} rowSpan={boss.empleados.length + numberOfAccounstPerAllEMployees}>
+                            {boss.jefe ? boss.jefe : "----"}
+                          </TableCell>
+                        </>
+                        :
+                        <>
+                        </>
+                    }
+                    {
+                      ( k === 0) ?
+                        <>
+                          <TableCell key={employee.idEmpleado} rowSpan={numberOfAccounts}>
+                            {employee.idEmpleado ? employee.idEmpleado : "----"}
+                          </TableCell>
+                          <TableCell key={employee.empleado}>
+                            {employee.empleado ? employee.empleado : "----"}
+                          </TableCell>
+                        </>
+                        :
+                        <>
+                        </>
+                    }
                     <TableCell key={accountsInSystems.csap}>
                       {accountsInSystems.csap ? accountsInSystems.csap : "----"}
                     </TableCell>
