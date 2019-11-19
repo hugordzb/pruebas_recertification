@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { TextField, Button } from '@material-ui/core';
 import { SSOServices } from '../../services/SSOServices';
 
+import { connect } from 'react-redux';
+
 class AddUserControl extends Component {
   constructor(props) {
     super(props);
@@ -35,6 +37,7 @@ class AddUserControl extends Component {
   }
 
   addUser = () => {
+    const { userData } = this.props;
     alert("agregando usuario")
     let data = {
       tipoMov: "A",
@@ -48,7 +51,7 @@ class AddUserControl extends Component {
       nCuentaSistema: "9",
       idJefe: "jefecito",
       nIdJefe: "jefecito",
-      solicitante: "hdrodriguezb"
+      solicitante: userData.userId
     }
 
     let token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU3NDIzNzQyNiwiaWF0IjoxNTc0MTc3NDI2fQ.77emK6QtNfNbAX1mrLnkk5CDGqsvxdq-grMVZPGdRVFMYr9eqY5yC44cHqjw0nEjoi2p0nULkSWmyDrDfE4CVQ";
@@ -102,4 +105,8 @@ class AddUserControl extends Component {
   }
 }
 
-export default AddUserControl;
+const mapStateToProps = state => ({
+  userData: state.authenticate.userData
+})
+
+export default connect(mapStateToProps, null)(AddUserControl);
