@@ -42,5 +42,16 @@ export class SSOServices {
     }));
   }
 
+  addUser = (callback, callbackError = (error => { console.log(error); })) => {
+    API.request(this.token).post(`${global.config.current.SERVERS.RECERTIFICATION}/requestChange`, (responseJson => {
+      Promise.resolve({
+        data: responseJson
+      }).then(callback);
+    }), (responseError => {
+      Promise.resolve({
+        error: responseError
+      }).then(callbackError);
+    }));
+  }
 
 }

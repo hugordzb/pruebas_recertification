@@ -8,6 +8,7 @@ import { Grid } from '@material-ui/core';
 import AuditableUserTable from '../../components/AuditableUserTable';
 
 import { SSOServices } from '../../services/SSOServices';
+import AddUserControl from '../../components/AddUserControl';
 
 class Recertification extends React.Component {
   constructor(props) {
@@ -41,8 +42,8 @@ class Recertification extends React.Component {
       <>
         <Grid container direction="row">
           <p>Los sistemas auditables son: </p>
-          {systems.map((system, i) => <div style={{margin: "1%"}} key={system}>
-            {system}
+          {systems.map((system, i) => <div style={{ margin: "1%" }} key={system.sistema}>
+            {system.sistema}
           </div>)}
         </Grid>
         <Grid item container direcction="row">
@@ -62,6 +63,7 @@ class Recertification extends React.Component {
             {systems ? this.renderSystems(systems) : <p>No hay sistemas que mostrar</p>}
           </Grid>
         </Grid>
+        <AddUserControl />
       </TemplatePage >
     )
   }
