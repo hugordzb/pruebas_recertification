@@ -65,7 +65,7 @@ const API = {
         return {
           headers: {
             'Content-Type': contentType,
-            'Authorization': `Basic ${tokenBasic}`,
+            'Authorization': `Bearer ${tokenBasic}`,
           },
           method: method,
           body: (isJson ? JSON.stringify(body) : body)

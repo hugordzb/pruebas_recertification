@@ -4,86 +4,6 @@ import { Table, TableHead, TableRow, TableCell, TableBody, Paper, withStyles } f
 import { SSOServices } from '../../services/SSOServices';
 import { style } from '../../styles/AuditableUserTable';
 
-const data = {
-  "jefes": [
-    {
-      "idJefe": "jefe",
-      "jefe": "ZARAZUA ORTEGA GONZALO MOISES",
-      "inAD": false,
-      "empleados": [
-        {
-          "idEmpleado": "bcavazos",
-          "empleado": "ELIZONDO CASTRO OSCAR HUGO",
-          "sap": null,
-          "tel": [
-            {
-              "cuenta": "CCAT018",
-              "perfil": "CCAT018"
-            }
-          ],
-          "ciat": [
-            {
-              "cuenta": "rx_bca",
-              "perfil": "Admin"
-            },
-            {
-              "cuenta": "rx_bca_2",
-              "perfil": "Admin_2"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "idJefe": "jefecito",
-      "jefe": "JEFECITO",
-      "inAD": false,
-      "empleados": [
-        {
-          "idEmpleado": "oacarmonac",
-          "empleado": "CARMONA OSCAR",
-          "sap": [
-            {
-              "cuenta": "tester",
-              "perfil": "Admin"
-            }
-          ],
-          "tel": null,
-          "ciat": null
-        },
-        {
-          "idEmpleado": "ysandoval",
-          "empleado": "CAB AMBROCIO JESUS ABRAHAM BALTAZAR",
-          "sap": [
-            {
-              "cuenta": "prueba1",
-              "perfil": "Admin"
-            }
-          ],
-          "tel": [
-            {
-              "cuenta": "prueba2",
-              "perfil": "Admin"
-            }
-          ],
-          "ciat": [
-            {
-              "cuenta": "prueba3",
-              "perfil": "Admin"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "idJefe": "jefa",
-      "jefe": "Elizabeth",
-      "inAD": true,
-      "empleados": null
-    }
-  ]
-}
-
 class AuditableUserTable extends Component {
   constructor(props) {
     super(props);
@@ -97,8 +17,6 @@ class AuditableUserTable extends Component {
     new SSOServices(token).getAuditableUserAccounts((response => {
       console.log(response.data.jefes);
       this.setState({ auditableAccounts: response.data.jefes });
-      console.log(data.jefes);
-      this.setState({ auditableAccounts: data.jefes });
     }), (responseError => {
       console.log(responseError);
     }));
@@ -106,16 +24,121 @@ class AuditableUserTable extends Component {
 
   renderAccounts = () => {
     const { auditableAccounts } = this.state;
-    console.log(auditableAccounts);
     return (
       <>
-        <TableRow><TableCell>prueba</TableCell></TableRow>
-        <TableRow><TableCell>prueba</TableCell></TableRow>
-        <TableRow>
-          <TableCell>prueba</TableCell>
-          <TableCell>prueba</TableCell>
-          <TableCell>prueba</TableCell>
-        </TableRow>
+        {
+          auditableAccounts.forEach(boss => {
+            alert("Entran a las cuentas");
+            return boss.empleados.forEach(employee => {
+              alert("Entran a los jefes");
+              let arrayLengthArray = [
+                {
+                  system: "sap",
+                  numberOfAccounts: employee.sap ? employee.sap.length : 0,
+                },
+                {
+                  system: "tel",
+                  numberOfAccounts: employee.tel ? employee.tel.length : 0,
+                },
+                {
+                  system: "ciat",
+                  numberOfAccounts: employee.ciat ? employee.ciat.length : 0,
+                }
+              ];
+
+              let orderedArrayLengthArray = arrayLengthArray.sort((a, b) => b.numberOfAccounts - a.numberOfAccounts);
+
+              switch (orderedArrayLengthArray[0].system) {
+                case "sap":
+                  return employee.sap.forEach(SAPAccount => {
+                    console.log(`${boss.idJefe}
+                                | ${boss.jefe}
+                                | ${employee.idEmpleado}
+                                | ${employee.empleado}
+                                | ${SAPAccount.cuenta}
+                                | ${SAPAccount.perfil}
+                                | -------------------
+                                | -------------------
+                                | -------------------
+                                | -------------------`);
+                    return (
+                      <TableRow key={boss.idJefe}>
+                        <TableCell key={boss.idJefe}>{boss.idJefe}</TableCell>
+                        <TableCell key={boss.jefe}>{boss.jefe}</TableCell>
+                        <TableCell key={employee.idEmpleado}>{employee.idEmpleado}</TableCell>
+                        <TableCell key={employee.empleado}>{employee.empleado}</TableCell>
+                        <TableCell key={SAPAccount.cuenta}>{SAPAccount.cuenta}</TableCell>
+                        <TableCell key={SAPAccount.perfil}>{SAPAccount.perfil}</TableCell>
+                        <TableCell>{"-"}</TableCell>
+                        <TableCell>{"-"}</TableCell>
+                        <TableCell>{"-"}</TableCell>
+                        <TableCell>{"-"}</TableCell>
+                      </TableRow>
+                    )
+                  })
+                case "tel":
+                  return employee.tel.forEach(TELAccount => {
+                    console.log(`${boss.idJefe}
+                                | ${boss.jefe}
+                                | ${employee.idEmpleado}
+                                | ${employee.empleado}
+                                | -------------------
+                                | -------------------
+                                | ${TELAccount.cuenta}
+                                | ${TELAccount.perfil}
+                                | -------------------
+                                | -------------------`);
+                    return (
+                      <TableRow key={boss.idJefe}>
+                        <TableCell key={boss.idJefe}>{boss.idJefe}</TableCell>
+                        <TableCell key={boss.jefe}>{boss.jefe}</TableCell>
+                        <TableCell key={employee.idEmpleado}>{employee.idEmpleado}</TableCell>
+                        <TableCell key={employee.empleado}>{employee.empleado}</TableCell>
+                        <TableCell>{"-"}</TableCell>
+                        <TableCell>{"-"}</TableCell>
+                        <TableCell key={TELAccount.cuenta}>{TELAccount.cuenta}</TableCell>
+                        <TableCell key={TELAccount.perfil}>{TELAccount.perfil}</TableCell>
+                        <TableCell>{"-"}</TableCell>
+                        <TableCell>{"-"}</TableCell>
+                      </TableRow>
+                    )
+                  })
+                case "ciat":
+                  return employee.ciat.forEach(CIATAccount => {
+                    console.log(`${boss.idJefe}
+                                | ${boss.jefe}
+                                | ${employee.idEmpleado}
+                                | ${employee.empleado}
+                                | -------------------
+                                | -------------------
+                                | -------------------
+                                | -------------------
+                                | ${CIATAccount.cuenta}
+                                | ${CIATAccount.perfil}`);
+                    return (
+                      <TableRow key={boss.idJefe}>
+                        <TableCell key={boss.idJefe}>{boss.idJefe}</TableCell>
+                        <TableCell key={boss.jefe}>{boss.jefe}</TableCell>
+                        <TableCell key={employee.idEmpleado}>{employee.idEmpleado}</TableCell>
+                        <TableCell key={employee.empleado}>{employee.empleado}</TableCell>
+                        <TableCell>{"-"}</TableCell>
+                        <TableCell>{"-"}</TableCell>
+                        <TableCell>{"-"}</TableCell>
+                        <TableCell>{"-"}</TableCell>
+                        <TableCell key={CIATAccount.cuenta}>{CIATAccount.cuenta}</TableCell>
+                        <TableCell key={CIATAccount.perfil}>{CIATAccount.perfil}</TableCell>
+                      </TableRow>
+                    )
+                  })
+                default:
+                  break;
+              }
+
+
+
+            })
+          })
+        }
       </>
     )
   }

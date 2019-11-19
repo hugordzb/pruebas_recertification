@@ -15,13 +15,12 @@ class Recertification extends React.Component {
     super(props);
     this.state = {
       systems: [],
-      selectedSystem: "",
     };
   }
 
   componentDidMount() {
     const { userData } = this.props;
-    userData.token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU3Mzg4NDA1NywiaWF0IjoxNTczODI0MDU3fQ.c-SESrJ1O3W4LUf3ap-sia5CxjY0bsvCfKWM-7GYQLlVtZ3DXNjJ4oNG9bW219FJyI-_WMbkjPCGKFwnLk3ZQw";
+    userData.token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU3NDIzMDY4NSwiaWF0IjoxNTc0MTcwNjg1fQ.OzWn9bfbZrhI6fmiuCcQXnaKPuYm95ZfxgEWFTooEdNOdmXO3G9XGQFrur_lwnRE32rY4vzMHkEOZqb0FArCZg";
     new SSOServices(userData.token).getSystems((response => {
       console.log(response.data.systems);
       this.setState({ systems: response.data.systems });
@@ -30,19 +29,14 @@ class Recertification extends React.Component {
     }));
   }
 
-  changeSystem = system => {
-    alert("Se selecciono" + system)
-    this.setState({ selectedSystem: system });
-  }
-
   renderSystems = systems => {
     const { userData } = this.props;
-    userData.token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU3Mzg4NDA1NywiaWF0IjoxNTczODI0MDU3fQ.c-SESrJ1O3W4LUf3ap-sia5CxjY0bsvCfKWM-7GYQLlVtZ3DXNjJ4oNG9bW219FJyI-_WMbkjPCGKFwnLk3ZQw";
+    userData.token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU3NDIzMDY4NSwiaWF0IjoxNTc0MTcwNjg1fQ.OzWn9bfbZrhI6fmiuCcQXnaKPuYm95ZfxgEWFTooEdNOdmXO3G9XGQFrur_lwnRE32rY4vzMHkEOZqb0FArCZg";
     return (
       <>
         <Grid container direction="row">
           <p>Los sistemas auditables son: </p>
-          {systems.map((system, i) => <div style={{ margin: "1%" }} key={system.sistema}>
+          {systems.map((system, i) => <div style={{ margin: "1%" }} key={i}>
             {system.sistema}
           </div>)}
         </Grid>
