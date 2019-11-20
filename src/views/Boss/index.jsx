@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import TemplatePage from '../../components/TemplatePage';
+import EmployeesTable from '../../components/EmployeesTable';
 
 class Boss extends Component {
   render() {
     return (
       <TemplatePage>
-        <h1>JEfe</h1>
+        <EmployeesTable />
       </TemplatePage >
     );
   }

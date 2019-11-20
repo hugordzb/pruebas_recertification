@@ -77,7 +77,6 @@ class App extends React.Component {
   }
 
   render() {
-    const { profile } = this.props;
     return (
       <Switch>
         {

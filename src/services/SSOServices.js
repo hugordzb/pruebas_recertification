@@ -1,10 +1,12 @@
 import API from "./API";
 
 export class SSOServices {
-  constructor(token, credential = false, body = null) {
+  constructor(token, credential = false, body = null, sensibleInfoKey = null, sensibleInfoValue = null) {
     this.token = token;
     this.credential = credential;
     this.body = body;
+    this.sensibleInfoKey = sensibleInfoKey;
+    this.sensibleInfoValue = sensibleInfoValue;
   }
 
   signInRecertificaction = (callback, callbackError = (error => { console.log(error); })) => {
@@ -31,8 +33,32 @@ export class SSOServices {
     }));
   }
 
+  getProfilesInSystems = (callback, callbackError = (error => { console.log(error); })) => {
+    API.request(this.token).get(`${global.config.current.SERVERS.RECERTIFICATION}/profileSystems`, (responseJson => {
+      Promise.resolve({
+        data: responseJson
+      }).then(callback);
+    }), (responseError => {
+      Promise.resolve({
+        error: responseError
+      }).then(callbackError);
+    }));
+  }
+
   getAuditableUserAccounts = (callback, callbackError = (error => { console.log(error); })) => {
     API.request(this.token).get(`${global.config.current.SERVERS.RECERTIFICATION}/auditableAcounts`, (responseJson => {
+      Promise.resolve({
+        data: responseJson
+      }).then(callback);
+    }), (responseError => {
+      Promise.resolve({
+        error: responseError
+      }).then(callbackError);
+    }));
+  }
+
+  getBossDetail = (callback, callbackError = (error => { console.log(error); })) => {
+    API.request(this.token, this.sensibleInfoKey, this.sensibleInfoValue).get(`${global.config.current.SERVERS.RECERTIFICATION}/bossDetail`, (responseJson => {
       Promise.resolve({
         data: responseJson
       }).then(callback);

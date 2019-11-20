@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TextField, Button } from '@material-ui/core';
+import { TextField, Button, Select, MenuItem } from '@material-ui/core';
 import { SSOServices } from '../../services/SSOServices';
 
 import { connect } from 'react-redux';
@@ -8,12 +8,31 @@ class AddUserControl extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      sistemas: [],
+      perfiles: [],
       idEmpleado: "",
       idJefe: "",
       sistema: "",
       cuenta: "",
       perfil: "",
     }
+  }
+
+  componentDidMount() {
+    let token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU3NDIzMDY4NSwiaWF0IjoxNTc0MTcwNjg1fQ.OzWn9bfbZrhI6fmiuCcQXnaKPuYm95ZfxgEWFTooEdNOdmXO3G9XGQFrur_lwnRE32rY4vzMHkEOZqb0FArCZg";
+    new SSOServices(token).getSystems((response => {
+      console.log(response.data.systems);
+      this.setState({ sistemas: response.data.systems });
+    }), (responseError => {
+      console.log(responseError);
+    }));
+
+    new SSOServices(token).getProfilesInSystems((response => {
+      console.log(response.data.perfiles);
+      this.setState({ perfiles: response.data.perfiles });
+    }), (responseError => {
+      console.log(responseError);
+    }));
   }
 
   handleChangeIdEmpleado = event => {
@@ -65,6 +84,7 @@ class AddUserControl extends Component {
   }
 
   render() {
+    const { sistemas, perfiles } = this.state;
     return (
       <form noValidate autoComplete="off">
 
@@ -80,27 +100,35 @@ class AddUserControl extends Component {
           margin="normal"
           onChange={this.handleChangeIdJefe}
         />
-        <TextField
-          id="sistema"
-          label="Sistema"
-          margin="normal"
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
           onChange={this.handleChangeSistema}
-        />
+        >
+          {sistemas.map(sistema => {
+            return < MenuItem value={sistema.sistema} >{sistema.sistema}</MenuItem>
+          })}
+        </Select>
+
         <TextField
           id="cuenta"
           label="Cuenta"
           margin="normal"
           onChange={this.handleChangeCuenta}
         />
-        <TextField
-          id="perfil"
-          label="Perfil"
-          margin="normal"
+
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
           onChange={this.handleChangePerfil}
-        />
+        >
+          {perfiles.map(perfil => {
+            return < MenuItem value={`${perfil.systemData.sistema} ${perfil.perfil}`} >{`${perfil.systemData.sistema} ${perfil.perfil}`}</MenuItem>
+          })}
+        </Select>
 
         <Button onClick={this.addUser}>Agregar</Button>
-      </form>
+      </form >
     );
   }
 }

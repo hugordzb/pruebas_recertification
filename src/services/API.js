@@ -52,15 +52,26 @@ const request = {
 
 const API = {
   request: (tokenBasic, contentType = 'application/json') => {
-    var getConfig = (method, body = null, isJson = false) => {
+    var getConfig = (method, body = null, isJson = false, sensibleInfoKey = "", sensibleInfoValue = "") => {
       if (body === null) {
-        return {
-          headers: {
-            'Content-Type': contentType,
-            'Authorization': `Bearer ${tokenBasic}`,
-          },
-          method: method
-        };
+        if (sensibleInfoKey && sensibleInfoValue) {
+          return {
+            headers: {
+              'Content-Type': contentType,
+              'Authorization': `Bearer ${tokenBasic}`,
+              sensibleInfoKey : sensibleInfoValue
+            },
+            method: method
+          };
+        } else {
+          return {
+            headers: {
+              'Content-Type': contentType,
+              'Authorization': `Bearer ${tokenBasic}`,
+            },
+            method: method
+          };
+        }
       } else {
         return {
           headers: {
