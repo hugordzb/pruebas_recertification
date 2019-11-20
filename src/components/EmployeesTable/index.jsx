@@ -1,20 +1,11 @@
 import React, { Component } from 'react';
 import { Table, Paper, TableHead, TableRow, TableCell, TableBody, withStyles } from '@material-ui/core';
 import { style } from '../../styles/EmployeesTable';
-import { SSOServices } from '../../services/SSOServices';
 
 class EmployeesTable extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      empleados: []
-    }
-  }
-
-  renderEmployees = () => {
-    const { empleados } = this.state;
-    return empleados.map(employee => {
+  renderEmployees = employees => {
+    return employees.map(employee => {
       return employee.cuentas.map(accountsInSystems => {
         return (
           <TableRow>
@@ -48,20 +39,13 @@ class EmployeesTable extends Component {
     })
   }
 
-  componentDidMount() {
-    let token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU3NDIzMDY4NSwiaWF0IjoxNTc0MTcwNjg1fQ.OzWn9bfbZrhI6fmiuCcQXnaKPuYm95ZfxgEWFTooEdNOdmXO3G9XGQFrur_lwnRE32rY4vzMHkEOZqb0FArCZg";
-    new SSOServices(token, "idJefe", "jefe").getBossDetail((response => {
-      console.log(response.data.empleados);
-      this.setState({ auditableAccounts: response.data.empleados });
-    }), (responseError => {
-      console.log(responseError);
-    }));
-  }
-
   render() {
-    const { classes } = this.props;
+    const { bossData, classes } = this.props;
     return (
+
       <Paper className={classes.paper}>
+        <h1>{bossData.idJefe}</h1>
+        <h2>{bossData.jefe}</h2>
         <Table size="small" className={classes.table}>
           <TableHead>
             <TableRow>
@@ -85,7 +69,9 @@ class EmployeesTable extends Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {this.renderEmployees()}
+            {
+              this.renderEmployees(bossData.empleados)
+            }
           </TableBody>
         </Table>
       </Paper>

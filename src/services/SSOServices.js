@@ -1,12 +1,10 @@
 import API from "./API";
 
 export class SSOServices {
-  constructor(token, credential = false, body = null, sensibleInfoKey = null, sensibleInfoValue = null) {
+  constructor(token, pathParam = null, body = null) {
     this.token = token;
-    this.credential = credential;
     this.body = body;
-    this.sensibleInfoKey = sensibleInfoKey;
-    this.sensibleInfoValue = sensibleInfoValue;
+    this.pathParam = pathParam;
   }
 
   signInRecertificaction = (callback, callbackError = (error => { console.log(error); })) => {
@@ -58,7 +56,7 @@ export class SSOServices {
   }
 
   getBossDetail = (callback, callbackError = (error => { console.log(error); })) => {
-    API.request(this.token, this.sensibleInfoKey, this.sensibleInfoValue).get(`${global.config.current.SERVERS.RECERTIFICATION}/bossDetail`, (responseJson => {
+    API.request(this.token).get(`${global.config.current.SERVERS.RECERTIFICATION}/bossDetail/${this.pathParam}`, (responseJson => {
       Promise.resolve({
         data: responseJson
       }).then(callback);
@@ -80,5 +78,19 @@ export class SSOServices {
       }).then(callbackError);
     }));
   }
+
+  getRequestedChanges = (callback, callbackError = (error => { console.log(error); })) => {
+    API.request(this.token).get(`${global.config.current.SERVERS.RECERTIFICATION}/binnacle`, (responseJson => {
+      Promise.resolve({
+        data: responseJson
+      }).then(callback);
+    }), (responseError => {
+      Promise.resolve({
+        error: responseError
+      }).then(callbackError);
+    }));
+  }
+
+  binnacle
 
 }
