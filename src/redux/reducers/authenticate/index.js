@@ -14,7 +14,7 @@ const initialState = () => {
     state = {
       userData,
       isAuthenticated,
-      profile: "Mesa de servicio"
+      profile: "Jefe"
     }
   }
 

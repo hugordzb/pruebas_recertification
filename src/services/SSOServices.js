@@ -91,6 +91,29 @@ export class SSOServices {
     }));
   }
 
-  binnacle
+  sendEmailToBoss = (callback, callbackError = (error => { console.log(error); })) => {
+    API.request(this.token).get(`${global.config.current.SERVERS.RECERTIFICATION}/sendRecertification/${this.pathParam}`, (responseJson => {
+      Promise.resolve({
+        data: responseJson
+      }).then(callback);
+    }), (responseError => {
+      Promise.resolve({
+        error: responseError
+      }).then(callbackError);
+    }));
+  }
 
+  processChange = (callback, callbackError = (error => { console.log(error); })) => {
+    API.request(this.token).put(`${global.config.current.SERVERS.RECERTIFICATION}/requestChange`, this.body, (responseJson => {
+      Promise.resolve({
+        data: responseJson
+      }).then(callback);
+    }), (responseError => {
+      Promise.resolve({
+        error: responseError
+      }).then(callbackError);
+    }));
+  }
+  
+  
 }

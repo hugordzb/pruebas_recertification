@@ -33,7 +33,7 @@ class UserSessionMenu extends Component {
   render() {
     const open = Boolean(this.state.anchorEl);
     const id = open ? "user-session-menu" : undefined;
-    const { classes } = this.props;
+    //const { classes } = this.props;
     return (
       <div>
         <IconButton variant="contained" onClick={this.handleClick}>

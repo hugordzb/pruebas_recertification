@@ -4,44 +4,63 @@ import { withRouter } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import TemplatePage from '../../components/TemplatePage';
-import { Grid } from '@material-ui/core';
+import { Grid, LinearProgress } from '@material-ui/core';
 import AuditableUserTable from '../../components/AuditableUserTable';
 
 import { SSOServices } from '../../services/SSOServices';
-import AddUserControl from '../../components/AddUserControl';
 
 class Recertification extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
-      systems: [],
+      isLoading: false,
+      systems: null,
+      bosses: null
     };
   }
 
   componentDidMount() {
+    let bossesFlag = false, systemsFlag = false;
+    (bossesFlag && systemsFlag) ? this.setState({isLoading: false}) : this.setState({isLoading: true});
+
     const { userData } = this.props;
-    userData.token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU3NDIzMDY4NSwiaWF0IjoxNTc0MTcwNjg1fQ.OzWn9bfbZrhI6fmiuCcQXnaKPuYm95ZfxgEWFTooEdNOdmXO3G9XGQFrur_lwnRE32rY4vzMHkEOZqb0FArCZg";
+    userData.token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU3NDMzNTU2MCwiaWF0IjoxNTc0Mjc1NTYwfQ.XUnk7DQ2Ass5Xtxk1k8msA8Y9PXErktP_qLo24lng4qlO_crUsf_nh2xRHHH5wdK2WaF9VkHW5wHVVxsZnL25A";
+
+    new SSOServices(userData.token).getAuditableUserAccounts((response => {
+      console.log(response.data.jefes);
+      this.setState({ bosses: response.data.jefes });
+    }), (responseError => {
+      console.log(responseError);
+    }));
+
     new SSOServices(userData.token).getSystems((response => {
       console.log(response.data.systems);
       this.setState({ systems: response.data.systems });
     }), (responseError => {
       console.log(responseError);
     }));
+
   }
 
-  renderSystems = systems => {
-    const { userData } = this.props;
-    userData.token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU3NDIzMDY4NSwiaWF0IjoxNTc0MTcwNjg1fQ.OzWn9bfbZrhI6fmiuCcQXnaKPuYm95ZfxgEWFTooEdNOdmXO3G9XGQFrur_lwnRE32rY4vzMHkEOZqb0FArCZg";
+  renderRecertification = (bosses, systems) => {
+    let token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU3NDMzNTU2MCwiaWF0IjoxNTc0Mjc1NTYwfQ.XUnk7DQ2Ass5Xtxk1k8msA8Y9PXErktP_qLo24lng4qlO_crUsf_nh2xRHHH5wdK2WaF9VkHW5wHVVxsZnL25A";
     return (
       <>
         <Grid container direction="row">
           <p>Los sistemas auditables son: </p>
-          {systems.map((system, i) => <div style={{ margin: "1%" }} key={i}>
-            {system.sistema}
-          </div>)}
+          {
+            systems.map((system, i) => {
+              return (
+                <div style={{ margin: "1%" }} key={i}>
+                  {system.sistema}
+                </div>
+              )
+            })
+          }
         </Grid>
         <Grid item container direcction="row">
-          <AuditableUserTable token={userData.token} />
+          <AuditableUserTable bosses={bosses} token={token} />
         </Grid>
       </>
 
@@ -49,15 +68,14 @@ class Recertification extends React.Component {
   }
 
   render() {
-    const { systems } = this.state;
+    const { bosses, systems } = this.state;
     return (
       <TemplatePage>
-        <Grid container spacing={1}>
-          <Grid item container direcction="column">
-            {systems ? this.renderSystems(systems) : <p>No hay sistemas que mostrar</p>}
-          </Grid>
-        </Grid>
-        <AddUserControl />
+        {
+          (bosses && systems)? 
+            this.renderRecertification(bosses, systems):
+            <LinearProgress color="secondary" />
+        }
       </TemplatePage >
     )
   }

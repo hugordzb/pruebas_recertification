@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import TemplatePage from '../../components/TemplatePage';
 import EmployeesTable from '../../components/EmployeesTable';
 import { SSOServices } from '../../services/SSOServices';
+import { LinearProgress } from '@material-ui/core';
 
 class Boss extends Component {
   constructor(props) {
@@ -29,7 +30,7 @@ class Boss extends Component {
       <TemplatePage>
         {
           bossData ? <EmployeesTable bossData={bossData} />
-            : <h1>No se encuentra la información del usuario</h1>
+            : <LinearProgress color="secondary" />
         }
       </TemplatePage >
     );

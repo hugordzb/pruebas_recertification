@@ -1,101 +1,36 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table, TableHead, TableRow, TableCell, TableBody, Paper, withStyles } from '@material-ui/core';
-import { SSOServices } from '../../services/SSOServices';
+import { Table, TableHead, TableRow, TableCell, TableBody, Paper, withStyles, Fab, Button } from '@material-ui/core';
 import { style } from '../../styles/AuditableUserTable';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import { SSOServices } from '../../services/SSOServices';
 
 class AuditableUserTable extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      auditableAccounts: []
-    };
+
+  handleRecertificate = boss => {
+    alert("Se va a recertificar por termino a " + boss.jefe);
   }
 
-  componentDidMount() {
+  handleSendEmail = boss => {
     const { token } = this.props;
-    new SSOServices(token).getAuditableUserAccounts((response => {
-      console.log(response.data.jefes);
-      this.setState({ auditableAccounts: response.data.jefes });
+    alert("Se va a enviar correo a " + boss.jefe);
+    let pathParam = boss.idJefe;
+    new SSOServices(token, pathParam).sendEmailToBoss((response => {
+      console.log(response);
     }), (responseError => {
       console.log(responseError);
     }));
   }
 
-  renderAccounts = () => {
-    const { auditableAccounts } = this.state;
-    return (
-      <>
-        {
-          auditableAccounts.map((boss, i) => {
-
-            /*let getNumberOfAccountsPerAllEmployees = boss => {
-              let numberOfAccountsPerAllEmployees = 0;
-              boss.empleados.forEach(auxEmployee => {
-                numberOfAccountsPerAllEmployees += auxEmployee.cuentas ? auxEmployee.cuentas.length : 0;
-              });
-              return numberOfAccountsPerAllEmployees;
-            }*/
-
-            //let numberOfAccounstPerAllEMployees = getNumberOfAccountsPerAllEmployees(boss);
-
-            return boss.empleados.map((employee, j) => {
-              return employee.cuentas.map((accountsInSystems, k) => {
-                console.log(`i: ${i}, j: ${j}, k: ${k}`);
-                //let numberOfAccounts = employee.cuentas.length;
-                return (
-                  <TableRow key={boss.idJefe}>
-
-                    <TableCell key={boss.idJefe} >
-                      {boss.idJefe ? boss.idJefe : "----"}
-                    </TableCell>
-                    <TableCell key={boss.jefe}>
-
-                      {boss.jefe ? boss.jefe : "----"}
-                    </TableCell>
-                    <TableCell key={employee.idEmpleado} >
-                      {employee.idEmpleado ? employee.idEmpleado : "----"}
-                    </TableCell>
-                    <TableCell key={employee.empleado} >
-                      {employee.empleado ? employee.empleado : "----"}
-                    </TableCell>
-                    <TableCell key={accountsInSystems.csap}>
-                      {accountsInSystems.csap ? accountsInSystems.csap : "----"}
-                    </TableCell>
-                    <TableCell key={accountsInSystems.psap}>
-                      {accountsInSystems.psap ? accountsInSystems.psap : "----"}
-                    </TableCell>
-                    <TableCell key={accountsInSystems.ctel}>
-                      {accountsInSystems.ctel ? accountsInSystems.ctel : "----"}
-                    </TableCell>
-                    <TableCell key={accountsInSystems.ptel}>
-                      {accountsInSystems.ptel ? accountsInSystems.ptel : "----"}
-                    </TableCell>
-                    <TableCell key={accountsInSystems.cciat}>
-                      {accountsInSystems.cciat ? accountsInSystems.cciat : "----"}
-                    </TableCell>
-                    <TableCell key={accountsInSystems.pciat}>
-                      {accountsInSystems.pciat ? accountsInSystems.pciat : "----"}
-                    </TableCell>
-                  </TableRow>
-                )
-              })
-            })
-          })
-        }
-      </>
-    )
-  }
-  renderTableBody = system => {
-    const { classes } = this.props;
-    console.log()
+  renderAuditableUsersTable = () => {
+    const { classes, bosses } = this.props;
     return (
       <Paper className={classes.paper}>
         <Table size="small" className={classes.table}>
           <TableHead>
             <TableRow>
               <TableCell colSpan={2} className={classes.tableTitle}>Jefe</TableCell>
-              <TableCell colSpan={8} className={classes.tableTitle}>Empleados</TableCell>
+              <TableCell colSpan={10} className={classes.tableTitle}>Empleados</TableCell>
             </TableRow>
             <TableRow>
               <TableCell className={classes.tableTitle}>Id</TableCell>
@@ -105,19 +40,100 @@ class AuditableUserTable extends Component {
               <TableCell colSpan={2} className={classes.tableTitle}>SAP</TableCell>
               <TableCell colSpan={2} className={classes.tableTitle}>TEL</TableCell>
               <TableCell colSpan={2} className={classes.tableTitle}>CIAT</TableCell>
+              <TableCell colSpan={2} className={classes.tableTitle}>Opciones</TableCell>
             </TableRow>
             <TableRow>
               <TableCell colSpan={4} className={classes.tableTitle}></TableCell>
               <TableCell className={classes.tableTitle}>Cuenta</TableCell>
-              <TableCell className={classes.tableTitle}>Perfil</TableCell>
+              <TableCell className={classes.tableTitle}>Rol</TableCell>
+              <TableCell className={classes.tableTitle}>Cuenta</TableCell>
+              <TableCell className={classes.tableTitle}>Rol</TableCell>
               <TableCell className={classes.tableTitle}>Cuenta</TableCell>
               <TableCell className={classes.tableTitle}>Perfil</TableCell>
-              <TableCell className={classes.tableTitle}>Cuenta</TableCell>
-              <TableCell className={classes.tableTitle}>Perfil</TableCell>
+              <TableCell colSpan={2} className={classes.tableTitle}></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {this.renderAccounts()}
+            {
+              bosses.map((boss, i) => {
+
+                let totalNumberOfAccounts = 0;
+                boss.empleados.forEach(employee => {
+                  totalNumberOfAccounts += employee.cuentas.length;
+                });
+
+                return boss.empleados.map((employee, j) => {
+                  return employee.cuentas.map((accountsInSystems, k) => {
+                    console.log(`i: ${i}, j: ${j}, k: ${k}`);
+                    return (
+                      <TableRow key={boss.idJefe}>
+                        {
+                          (j === 0 && k === 0) ?
+                            <>
+                              <TableCell key={boss.idJefe} rowSpan={totalNumberOfAccounts}>
+                                {boss.idJefe ? boss.idJefe : "----"}
+                              </TableCell>
+                              <TableCell key={boss.jefe} rowSpan={totalNumberOfAccounts}>
+                                {boss.jefe ? boss.jefe : "----"}
+                              </TableCell>
+                            </>
+                            :
+                            <></>
+                        }
+                        {
+                          k === 0 ?
+                            <>
+                              <TableCell key={employee.idEmpleado} rowSpan={employee.cuentas.length}>
+                                {employee.idEmpleado ? employee.idEmpleado : "----"}
+                              </TableCell>
+                              <TableCell key={employee.empleado} rowSpan={employee.cuentas.length}>
+                                {employee.empleado ? employee.empleado : "----"}
+                              </TableCell>
+                            </>
+                            :
+                            <></>
+                        }
+
+                        <TableCell key={accountsInSystems.csap}>
+                          {accountsInSystems.csap ? accountsInSystems.csap : "----"}
+                        </TableCell>
+                        <TableCell key={accountsInSystems.psap}>
+                          {accountsInSystems.psap ? accountsInSystems.psap : "----"}
+                        </TableCell>
+                        <TableCell key={accountsInSystems.ctel}>
+                          {accountsInSystems.ctel ? accountsInSystems.ctel : "----"}
+                        </TableCell>
+                        <TableCell key={accountsInSystems.ptel}>
+                          {accountsInSystems.ptel ? accountsInSystems.ptel : "----"}
+                        </TableCell>
+                        <TableCell key={accountsInSystems.cciat}>
+                          {accountsInSystems.cciat ? accountsInSystems.cciat : "----"}
+                        </TableCell>
+                        <TableCell key={accountsInSystems.pciat}>
+                          {accountsInSystems.pciat ? accountsInSystems.pciat : "----"}
+                        </TableCell>
+
+                        {
+                          (j === 0 && k === 0) ?
+                            <>
+                              <TableCell key={boss.idJefe} rowSpan={totalNumberOfAccounts}>
+                                <Fab color="primary" onClick={() => this.handleRecertificate(boss)}>
+                                  <CheckCircleIcon />
+                                </Fab>
+                              </TableCell>
+                              <TableCell key={boss.idJefe} rowSpan={totalNumberOfAccounts}>
+                                <Button onClick={() => this.handleSendEmail(boss)}>Enviar correo</Button>
+                              </TableCell>
+                            </>
+                            :
+                            <></>
+                        }
+                      </TableRow>
+                    )
+                  })
+                })
+              })
+            }
           </TableBody>
         </Table>
       </Paper>
@@ -125,12 +141,12 @@ class AuditableUserTable extends Component {
   }
 
   render() {
-    const { auditableAccounts } = this.state;
+    const { bosses } = this.props;
     return (
       <div>
         {
-          auditableAccounts ?
-            this.renderTableBody() :
+          bosses ?
+            this.renderAuditableUsersTable() :
             <p>No se encuentran usuarios para auditar</p>
         }
       </div>
