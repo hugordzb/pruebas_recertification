@@ -2,7 +2,8 @@ import { ACTIONS } from '../../actions';
 
 const initialState = () => {
   let state = {
-    bosses: [],
+    auditableSystems: [],
+    auditableAccounts: [],
     boss: {},
     requestedChanges: [],
     errorMessage: ""
@@ -13,42 +14,42 @@ const initialState = () => {
 
 export const recertification = (state = initialState(), action) => {
   switch (action.type) {
-    case ACTIONS.DELETE_EMPLOYEE:
+    case ACTIONS.DELETE_EMPLOYEE_SUCCESS:
       return {
         ...state,
         userData: action.userData,
         isAuthenticated: (action.userData.userId && action.userData.token) ? true : false
       }
-    case ACTIONS.ADD_EMPLOYEE:
+    case ACTIONS.ADD_EMPLOYEE_SUCCESS:
       return {
         ...state,
         userData: action.userData,
         isAuthenticated: (action.userData.userId && action.userData.token) ? true : false
       }
-    case ACTIONS.GET_BOSS_DETAIL:
+    case ACTIONS.GET_BOSS_DETAIL_SUCCESS:
       return {
         ...state,
-        userData: action.userData,
-        isAuthenticated: (action.userData.userId && action.userData.token) ? true : false
+        boss: action.boss
       }
-    case ACTIONS.GET_EMPLOYEE_DETAIL:
+    case ACTIONS.GET_EMPLOYEE_DETAIL_SUCCESS:
       return {
         ...state,
-        userData: action.userData,
-        isAuthenticated: (action.userData.userId && action.userData.token) ? true : false
       }
-    case ACTIONS.GET_AUDITABLE_ACCOUNTS:
+    case ACTIONS.GET_AUDITABLE_SYSTEMS_SUCCESS:
       return {
         ...state,
-        userData: action.userData,
-        isAuthenticated: (action.userData.userId && action.userData.token) ? true : false
+        auditableSystems: action.auditableSystems
       }
-    case ACTIONS.NOTIFY_ERROR:
-        return {
-          ...state,
-          userData: action.userData,
-          isAuthenticated: (action.userData.userId && action.userData.token) ? true : false
-        }
+    case ACTIONS.GET_AUDITABLE_ACCOUNTS_SUCCESS:
+      return {
+        ...state,
+        auditableAccounts: action.auditableAccounts
+      }
+    case ACTIONS.NOTIFY_ERROR_SUCCESS:
+      return {
+        ...state,
+        messageError: action.messageError
+      }
     default:
       return state
   }

@@ -1,53 +1,27 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom';
-
 import { connect } from 'react-redux';
 import TemplatePage from '../../components/TemplatePage';
 import { Grid, LinearProgress } from '@material-ui/core';
 import AuditableUserTable from '../../components/AuditableUserTable';
-
-import { SSOServices } from '../../services/SSOServices';
+import { getAuditableUserAccounts } from '../../redux/actions';
 
 class Arquitecture extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      systems: null,
-      bosses: null
-    };
-  }
-
+  
   componentDidMount() {
     const { userData } = this.props;
-    userData.token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU3NDMzNTU2MCwiaWF0IjoxNTc0Mjc1NTYwfQ.XUnk7DQ2Ass5Xtxk1k8msA8Y9PXErktP_qLo24lng4qlO_crUsf_nh2xRHHH5wdK2WaF9VkHW5wHVVxsZnL25A";
-
-    new SSOServices(userData.token).getAuditableUserAccounts((response => {
-      console.log(response.data.jefes);
-      this.setState({ bosses: response.data.jefes });
-    }), (responseError => {
-      console.log(responseError);
-    }));
-
-    new SSOServices(userData.token).getSystems((response => {
-      console.log(response.data.systems);
-      this.setState({ systems: response.data.systems });
-    }), (responseError => {
-      console.log(responseError);
-    }));
-
+    this.props.getAuditableUserAccounts(userData.token);
   }
 
-  renderArquitecture = (bosses, systems) => {
+  renderArquitecture = (auditableAccounts, auditableSystems) => {
     const { userData } = this.props;
-    userData.token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU3NDMzNTU2MCwiaWF0IjoxNTc0Mjc1NTYwfQ.XUnk7DQ2Ass5Xtxk1k8msA8Y9PXErktP_qLo24lng4qlO_crUsf_nh2xRHHH5wdK2WaF9VkHW5wHVVxsZnL25A";
     return (
       <>
         <Grid container direction="row">
           <p>Los sistemas auditables son: </p>
           {
-            systems.map((system, i) => {
+            auditableSystems.map((system, i) => {
               return (
                 <div style={{ margin: "1%" }} key={i}>
                   {system.sistema}
@@ -57,7 +31,7 @@ class Arquitecture extends React.Component {
           }
         </Grid>
         <Grid item container direcction="row">
-          <AuditableUserTable bosses={bosses} userData={userData} />
+          <AuditableUserTable auditableAccounts={auditableAccounts} userData={userData} />
         </Grid>
       </>
 
@@ -65,12 +39,13 @@ class Arquitecture extends React.Component {
   }
 
   render() {
-    const { bosses, systems } = this.state;
+    const { auditableAccounts, auditableSystems } = this.props;
     return (
       <TemplatePage>
         {
-          (bosses && systems)? 
-            this.renderArquitecture(bosses, systems):
+          ((Array.isArray(auditableAccounts) && auditableAccounts.length) &&
+            (Array.isArray(auditableSystems) && auditableSystems.length)) ?
+            this.renderArquitecture(auditableAccounts, auditableSystems) :
             <LinearProgress color="secondary" />
         }
       </TemplatePage >
@@ -84,9 +59,14 @@ Arquitecture.prototypes = {
 
 const mapStateToProps = state => ({
   userData: state.authenticate.userData,
-  isAuthenticated: state.authenticate.isAuthenticated,
+  auditableSystems: state.recertification.auditableSystems,
+  auditableAccounts: state.recertification.auditableAccounts,
 });
 
-const connectedArquitecture = connect(mapStateToProps, null)(Arquitecture);
+const mapDispatchToProps = dispatch => ({
+  getAuditableUserAccounts: token => dispatch(getAuditableUserAccounts(token))
+})
+
+const connectedArquitecture = connect(mapStateToProps, mapDispatchToProps)(Arquitecture);
 
 export default withRouter(connectedArquitecture);

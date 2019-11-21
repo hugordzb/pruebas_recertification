@@ -23,7 +23,7 @@ class AuditableUserTable extends Component {
   }
 
   renderAuditableUsersTable = () => {
-    const { classes, bosses } = this.props;
+    const { classes, auditableAccounts } = this.props;
     return (
       <Paper className={classes.paper}>
         <Table size="small" className={classes.table}>
@@ -55,7 +55,7 @@ class AuditableUserTable extends Component {
           </TableHead>
           <TableBody>
             {
-              bosses.map((boss, i) => {
+              auditableAccounts.map((boss, i) => {
 
                 let totalNumberOfAccounts = 0;
                 boss.empleados.forEach(employee => {
@@ -141,11 +141,11 @@ class AuditableUserTable extends Component {
   }
 
   render() {
-    const { bosses } = this.props;
+    const { auditableAccounts } = this.props;
     return (
       <div>
         {
-          bosses ?
+          auditableAccounts.length > 0 ?
             this.renderAuditableUsersTable() :
             <p>No se encuentran usuarios para auditar</p>
         }

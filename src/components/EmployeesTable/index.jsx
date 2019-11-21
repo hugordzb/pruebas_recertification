@@ -242,16 +242,16 @@ class EmployeesTable extends Component {
   }
 
   render() {
-    const { bossData, classes } = this.props;
+    const { boss, classes } = this.props;
     const { deletes, updates } = this.state;
     return (
       <>
         <Paper className={classes.paper}>
-          <h1>{bossData.idJefe}</h1>
-          <h2>{bossData.jefe}</h2>
+          <h1>{boss.idJefe}</h1>
+          <h2>{boss.jefe}</h2>
           <Button onClick={this.handleSaveChanges}>Guardar cambios</Button>
           {
-            this.renderEmployeesTable(bossData.empleados)
+            this.renderEmployeesTable(boss.empleados)
           }
         </Paper>
 
