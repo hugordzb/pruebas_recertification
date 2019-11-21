@@ -1,8 +1,4 @@
-const ACTIONS = {
-  AUTHENTICATE: "AUTHENTICATE",
-  REFRESH: "REFRESH",
-  SIGNOUT: "SIGNOUT"
-}
+import { ACTIONS } from '../../actions';
 
 const initialState = () => {
   let state = {};
