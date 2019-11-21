@@ -89,47 +89,47 @@ class EmployeesTable extends Component {
               employees.map((employee, i) => {
                 return employee.cuentas.map((accountsInSystems, j) => {
                   return (
-                    <TableRow key={`${employee.idEmpleado} ${i} ${j} recertification row`}>
+                    <TableRow key={`${employee.idEmpleado} ${i} ${j} employees row`}>
                       {
                         j === 0 ?
                           <>
-                            <TableCell key={`${employee.idEmpleado} recertification cell`} rowSpan={employee.cuentas.length}>
+                            <TableCell key={`${employee.idEmpleado} employees cell`} rowSpan={employee.cuentas.length}>
                               {employee.idEmpleado ? employee.idEmpleado : "----"}
                             </TableCell>
-                            <TableCell key={`${employee.empleado} recertification cell`} rowSpan={employee.cuentas.length}>
+                            <TableCell key={`${employee.empleado} employees cell`} rowSpan={employee.cuentas.length}>
                               {employee.empleado ? employee.empleado : "----"}
                             </TableCell>
                           </>
                           :
                           <></>
                       }
-                      <TableCell key={`${accountsInSystems.csap} sap account recertification cell`}>
+                      <TableCell key={`${accountsInSystems.csap} sap account employees cell`}>
                         {accountsInSystems.csap ? accountsInSystems.csap : "----"}
                       </TableCell>
-                      <TableCell key={`${accountsInSystems.psap} sap role recertification cell`}>
+                      <TableCell key={`${accountsInSystems.psap} sap role employees cell`}>
                         {accountsInSystems.psap ? accountsInSystems.psap : "----"}
                       </TableCell>
-                      <TableCell key={`${accountsInSystems.ctel} tel account recertification cell`}>
+                      <TableCell key={`${accountsInSystems.ctel} tel account employees cell`}>
                         {accountsInSystems.ctel ? accountsInSystems.ctel : "----"}
                       </TableCell>
-                      <TableCell key={`${accountsInSystems.ptel} tel role recertification cell`}>
+                      <TableCell key={`${accountsInSystems.ptel} tel role employees cell`}>
                         {accountsInSystems.ptel ? accountsInSystems.ptel : "----"}
                       </TableCell>
-                      <TableCell key={`${accountsInSystems.cciat} ciat account recertification cell`}>
+                      <TableCell key={`${accountsInSystems.cciat} ciat account employees cell`}>
                         {accountsInSystems.cciat ? accountsInSystems.cciat : "----"}
                       </TableCell>
-                      <TableCell key={`${accountsInSystems.pciat} ciat profile recertification cell`}>
+                      <TableCell key={`${accountsInSystems.pciat} ciat profile employees cell`}>
                         {accountsInSystems.pciat ? accountsInSystems.pciat : "----"}
                       </TableCell>
                       {
                         j === 0 ?
                           <>
-                            <TableCell key={`${employee.idEmpleado} delete recertification cell`} rowSpan={employee.cuentas.length}>
+                            <TableCell key={`${employee.idEmpleado} delete employees cell`} rowSpan={employee.cuentas.length}>
                               <Fab color="secondary" onClick={() => this.handleDelete(employee)}>
                                 <HighlightOffIcon />
                               </Fab>
                             </TableCell>
-                            <TableCell key={`${employee.idEmpleado} update recertification cell`} rowSpan={employee.cuentas.length}>
+                            <TableCell key={`${employee.idEmpleado} update employees cell`} rowSpan={employee.cuentas.length}>
                               <Button>{"Modificar"}</Button>
                             </TableCell>
                           </>

@@ -12,10 +12,10 @@ class AuditableUserTable extends Component {
   }
 
   handleSendEmail = boss => {
-    const { token } = this.props;
+    const { userData } = this.props;
     alert("Se va a enviar correo a " + boss.jefe);
     let pathParam = boss.idJefe;
-    new SSOServices(token, pathParam).sendEmailToBoss((response => {
+    new SSOServices(userData.token, pathParam).sendEmailToBoss((response => {
       console.log(response);
     }), (responseError => {
       console.log(responseError);
@@ -66,7 +66,7 @@ class AuditableUserTable extends Component {
                   return employee.cuentas.map((accountsInSystems, k) => {
                     console.log(`i: ${i}, j: ${j}, k: ${k}`);
                     return (
-                      <TableRow key={boss.idJefe}>
+                      <TableRow key={`${employee.idEmpleado} ${i} ${j} ${k} recertification row`}>
                         {
                           (j === 0 && k === 0) ?
                             <>
@@ -83,10 +83,10 @@ class AuditableUserTable extends Component {
                         {
                           k === 0 ?
                             <>
-                              <TableCell key={employee.idEmpleado} rowSpan={employee.cuentas.length}>
+                              <TableCell key={`${employee.idEmpleado} recertification cell`} rowSpan={employee.cuentas.length}>
                                 {employee.idEmpleado ? employee.idEmpleado : "----"}
                               </TableCell>
-                              <TableCell key={employee.empleado} rowSpan={employee.cuentas.length}>
+                              <TableCell key={`${employee.empleado} recertification cell`} rowSpan={employee.cuentas.length}>
                                 {employee.empleado ? employee.empleado : "----"}
                               </TableCell>
                             </>
@@ -94,34 +94,34 @@ class AuditableUserTable extends Component {
                             <></>
                         }
 
-                        <TableCell key={accountsInSystems.csap}>
+                        <TableCell key={`${accountsInSystems.csap} sap account recertification cell`}>
                           {accountsInSystems.csap ? accountsInSystems.csap : "----"}
                         </TableCell>
-                        <TableCell key={accountsInSystems.psap}>
+                        <TableCell key={`${accountsInSystems.psap} sap role recertification cell`}>
                           {accountsInSystems.psap ? accountsInSystems.psap : "----"}
                         </TableCell>
-                        <TableCell key={accountsInSystems.ctel}>
+                        <TableCell key={`${accountsInSystems.ctel} tel account recertification cell`}>
                           {accountsInSystems.ctel ? accountsInSystems.ctel : "----"}
                         </TableCell>
-                        <TableCell key={accountsInSystems.ptel}>
+                        <TableCell key={`${accountsInSystems.ptel} tel role recertification cell`}>
                           {accountsInSystems.ptel ? accountsInSystems.ptel : "----"}
                         </TableCell>
-                        <TableCell key={accountsInSystems.cciat}>
+                        <TableCell key={`${accountsInSystems.cciat} ciat account recertification cell`}>
                           {accountsInSystems.cciat ? accountsInSystems.cciat : "----"}
                         </TableCell>
-                        <TableCell key={accountsInSystems.pciat}>
+                        <TableCell key={`${accountsInSystems.pciat} ciat profile recertification cell`}>
                           {accountsInSystems.pciat ? accountsInSystems.pciat : "----"}
                         </TableCell>
 
                         {
                           (j === 0 && k === 0) ?
                             <>
-                              <TableCell key={boss.idJefe} rowSpan={totalNumberOfAccounts}>
+                              <TableCell key={`${boss.idJefe} recertificate recertification cell`} rowSpan={totalNumberOfAccounts}>
                                 <Fab color="primary" onClick={() => this.handleRecertificate(boss)}>
                                   <CheckCircleIcon />
                                 </Fab>
                               </TableCell>
-                              <TableCell key={boss.idJefe} rowSpan={totalNumberOfAccounts}>
+                              <TableCell key={`${boss.idJefe} send email recertification cell`} rowSpan={totalNumberOfAccounts}>
                                 <Button onClick={() => this.handleSendEmail(boss)}>Enviar correo</Button>
                               </TableCell>
                             </>

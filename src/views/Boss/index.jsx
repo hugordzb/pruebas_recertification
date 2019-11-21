@@ -14,10 +14,11 @@ class Boss extends Component {
   }
 
   componentDidMount() {
-    let token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU3NDMxNzQ1OSwiaWF0IjoxNTc0MjU3NDU5fQ.5Z-1Oxp5-1o1nELGbQJAJ-OKwQEfTB_pvCBL7Evdf1aq7V1mA1t8HsirPUnxGnySwtxEPz4sRMKTVWP7NYtPCA";
+    const { userData } = this.props;
+    userData.token ="eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU3NDMxNzQ1OSwiaWF0IjoxNTc0MjU3NDU5fQ.5Z-1Oxp5-1o1nELGbQJAJ-OKwQEfTB_pvCBL7Evdf1aq7V1mA1t8HsirPUnxGnySwtxEPz4sRMKTVWP7NYtPCA"; 
     let pathParam = "jefe";
 
-    new SSOServices(token, pathParam).getBossDetail((response => {
+    new SSOServices(userData.token, pathParam).getBossDetail((response => {
       console.log(response);
       this.setState({ bossData: response.data });
     }), (responseError => {
