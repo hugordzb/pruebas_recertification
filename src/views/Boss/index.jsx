@@ -3,6 +3,7 @@ import TemplatePage from '../../components/TemplatePage';
 import EmployeesTable from '../../components/EmployeesTable';
 import { SSOServices } from '../../services/SSOServices';
 import { LinearProgress } from '@material-ui/core';
+import { connect } from 'react-redux';
 
 class Boss extends Component {
   constructor(props) {
@@ -25,11 +26,12 @@ class Boss extends Component {
   }
 
   render() {
+    const { userData } = this.props;
     const { bossData } = this.state;
     return (
       <TemplatePage>
         {
-          bossData ? <EmployeesTable bossData={bossData} />
+          bossData ? <EmployeesTable bossData={bossData} userData={userData}/>
             : <LinearProgress color="secondary" />
         }
       </TemplatePage >
@@ -37,4 +39,11 @@ class Boss extends Component {
   }
 }
 
-export default Boss;
+const mapStateToProps = state => ({
+  userData: state.authenticate.userData,
+  isAuthenticated: state.authenticate.isAuthenticated,
+});
+
+const connectedBoss = connect(mapStateToProps, null)(Boss);
+
+export default connectedBoss;

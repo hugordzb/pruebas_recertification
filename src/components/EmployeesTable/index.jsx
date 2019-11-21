@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Table, Paper, TableHead, TableRow, TableCell, TableBody, withStyles, Fab, Button } from '@material-ui/core';
 import { style } from '../../styles/EmployeesTable';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import { SSOServices } from '../../services/SSOServices';
 
 class EmployeesTable extends Component {
   constructor(props) {
@@ -12,19 +13,46 @@ class EmployeesTable extends Component {
     }
   }
 
+  handleSaveChanges = () => {
+    const { userData } = this.props;
+    userData.token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU3NDMzNTU2MCwiaWF0IjoxNTc0Mjc1NTYwfQ.XUnk7DQ2Ass5Xtxk1k8msA8Y9PXErktP_qLo24lng4qlO_crUsf_nh2xRHHH5wdK2WaF9VkHW5wHVVxsZnL25A";
+    let { deletes, updates } = this.state;
+    deletes.forEach(deletedEmployee => {
+
+      let data = {
+        tipoMov: "B",
+        idUsuario: deletedEmployee.idEmpleado,
+        nIdUsuario: "",
+        perfil: "",
+        sistema: "",
+        nPerfil: "",
+        nSistema: "",
+        cuentaSistema: "",
+        nCuentaSistema: "",
+        idJefe: "",
+        nIdJefe: "",
+        solicitante: userData.userId
+      }
+
+      new SSOServices(userData.token, null, data).requestChange((response => {
+        console.log(response);
+      }), (responseError => {
+        console.log(responseError);
+      }));
+    });
+  }
+
   handleDelete = employee => {
-    alert(`Se va a eliminar ${employee.empleado}`);
-    let deletes = this.state.deletes;
-    if(!deletes.includes(employee)){
+    let { deletes } = this.state;
+    if (!deletes.includes(employee)) {
       deletes.push(employee);
     }
     this.setState({ deletes });
   }
 
   handleDeleteFromDeletes = employee => {
-    alert(`Se va a eliminar ${employee.empleado}`);
-    let deletes = this.state.deletes;
-    deletes.splice( deletes.indexOf(employee), 1 );
+    let { deletes } = this.state;
+    deletes.splice(deletes.indexOf(employee), 1);
     this.setState({ deletes });
   }
 
@@ -58,50 +86,50 @@ class EmployeesTable extends Component {
           </TableHead>
           <TableBody>
             {
-              employees.map(employee => {
-                return employee.cuentas.map((accountsInSystems, i) => {
+              employees.map((employee, i) => {
+                return employee.cuentas.map((accountsInSystems, j) => {
                   return (
-                    <TableRow>
+                    <TableRow key={`${employee.idEmpleado} ${i} ${j} recertification row`}>
                       {
-                        i === 0 ?
+                        j === 0 ?
                           <>
-                            <TableCell key={employee.idEmpleado} rowSpan={employee.cuentas.length}>
+                            <TableCell key={`${employee.idEmpleado} recertification cell`} rowSpan={employee.cuentas.length}>
                               {employee.idEmpleado ? employee.idEmpleado : "----"}
                             </TableCell>
-                            <TableCell key={employee.empleado} rowSpan={employee.cuentas.length}>
+                            <TableCell key={`${employee.empleado} recertification cell`} rowSpan={employee.cuentas.length}>
                               {employee.empleado ? employee.empleado : "----"}
                             </TableCell>
                           </>
                           :
                           <></>
                       }
-                      <TableCell key={accountsInSystems.csap}>
+                      <TableCell key={`${accountsInSystems.csap} sap account recertification cell`}>
                         {accountsInSystems.csap ? accountsInSystems.csap : "----"}
                       </TableCell>
-                      <TableCell key={accountsInSystems.psap}>
+                      <TableCell key={`${accountsInSystems.psap} sap role recertification cell`}>
                         {accountsInSystems.psap ? accountsInSystems.psap : "----"}
                       </TableCell>
-                      <TableCell key={accountsInSystems.ctel}>
+                      <TableCell key={`${accountsInSystems.ctel} tel account recertification cell`}>
                         {accountsInSystems.ctel ? accountsInSystems.ctel : "----"}
                       </TableCell>
-                      <TableCell key={accountsInSystems.ptel}>
+                      <TableCell key={`${accountsInSystems.ptel} tel role recertification cell`}>
                         {accountsInSystems.ptel ? accountsInSystems.ptel : "----"}
                       </TableCell>
-                      <TableCell key={accountsInSystems.cciat}>
+                      <TableCell key={`${accountsInSystems.cciat} ciat account recertification cell`}>
                         {accountsInSystems.cciat ? accountsInSystems.cciat : "----"}
                       </TableCell>
-                      <TableCell key={accountsInSystems.pciat}>
+                      <TableCell key={`${accountsInSystems.pciat} ciat profile recertification cell`}>
                         {accountsInSystems.pciat ? accountsInSystems.pciat : "----"}
                       </TableCell>
                       {
-                        i === 0 ?
+                        j === 0 ?
                           <>
-                            <TableCell key={`${employee.idEmpleado} delete`} rowSpan={employee.cuentas.length}>
+                            <TableCell key={`${employee.idEmpleado} delete recertification cell`} rowSpan={employee.cuentas.length}>
                               <Fab color="secondary" onClick={() => this.handleDelete(employee)}>
                                 <HighlightOffIcon />
                               </Fab>
                             </TableCell>
-                            <TableCell key={accountsInSystems.pciat} rowSpan={employee.cuentas.length}>
+                            <TableCell key={`${employee.idEmpleado} update recertification cell`} rowSpan={employee.cuentas.length}>
                               <Button>{"Modificar"}</Button>
                             </TableCell>
                           </>
@@ -128,7 +156,7 @@ class EmployeesTable extends Component {
         <Table size="small" className={classes.table}>
           <TableHead>
             <TableRow>
-              <TableCell colSpan={8} className={classes.tableTitle}>Deletes</TableCell>
+              <TableCell colSpan={9} className={classes.tableTitle}>Deletes</TableCell>
             </TableRow>
             <TableRow>
               <TableCell className={classes.tableTitle}>Id</TableCell>
@@ -136,58 +164,60 @@ class EmployeesTable extends Component {
               <TableCell colSpan={2} className={classes.tableTitle}>SAP</TableCell>
               <TableCell colSpan={2} className={classes.tableTitle}>TEL</TableCell>
               <TableCell colSpan={2} className={classes.tableTitle}>CIAT</TableCell>
+              <TableCell colSpan={1} className={classes.tableTitle}></TableCell>
             </TableRow>
             <TableRow>
               <TableCell colSpan={2} className={classes.tableTitle}></TableCell>
               <TableCell className={classes.tableTitle}>Cuenta</TableCell>
-              <TableCell className={classes.tableTitle}>Perfil</TableCell>
+              <TableCell className={classes.tableTitle}>Rol</TableCell>
+              <TableCell className={classes.tableTitle}>Cuenta</TableCell>
+              <TableCell className={classes.tableTitle}>Rol</TableCell>
               <TableCell className={classes.tableTitle}>Cuenta</TableCell>
               <TableCell className={classes.tableTitle}>Perfil</TableCell>
-              <TableCell className={classes.tableTitle}>Cuenta</TableCell>
-              <TableCell className={classes.tableTitle}>Perfil</TableCell>
+              <TableCell colSpan={1} className={classes.tableTitle}></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {
-              deletes.map(employee => {
+              deletes.map((employee, i) => {
                 return employee.cuentas.map((accountsInSystems, j) => {
                   return (
-                    <TableRow>
+                    <TableRow key={`${employee.idEmpleado} ${i} ${j} deletes row`}>
                       {
                         j === 0 ?
                           <>
-                            <TableCell key={employee.idEmpleado} rowSpan={employee.cuentas.length}>
+                            <TableCell key={`${employee.idEmpleado} deletes cell`} rowSpan={employee.cuentas.length}>
                               {employee.idEmpleado ? employee.idEmpleado : "----"}
                             </TableCell>
-                            <TableCell key={employee.empleado} rowSpan={employee.cuentas.length}>
+                            <TableCell key={`${employee.empleado} deletes cell`} rowSpan={employee.cuentas.length}>
                               {employee.empleado ? employee.empleado : "----"}
                             </TableCell>
                           </>
                           :
                           <></>
                       }
-                      <TableCell key={accountsInSystems.csap}>
+                      <TableCell key={`${accountsInSystems.csap} sap account deletes cell`}>
                         {accountsInSystems.csap ? accountsInSystems.csap : "----"}
                       </TableCell>
-                      <TableCell key={accountsInSystems.psap}>
+                      <TableCell key={`${accountsInSystems.psap} sap role deletes cell`}>
                         {accountsInSystems.psap ? accountsInSystems.psap : "----"}
                       </TableCell>
-                      <TableCell key={accountsInSystems.ctel}>
+                      <TableCell key={`${accountsInSystems.ctel} tel account deletes cell`}>
                         {accountsInSystems.ctel ? accountsInSystems.ctel : "----"}
                       </TableCell>
-                      <TableCell key={accountsInSystems.ptel}>
+                      <TableCell key={`${accountsInSystems.ptel} tel role deletes cell`}>
                         {accountsInSystems.ptel ? accountsInSystems.ptel : "----"}
                       </TableCell>
-                      <TableCell key={accountsInSystems.cciat}>
+                      <TableCell key={`${accountsInSystems.cciat} ciat account deletes cell`}>
                         {accountsInSystems.cciat ? accountsInSystems.cciat : "----"}
                       </TableCell>
-                      <TableCell key={accountsInSystems.pciat}>
+                      <TableCell key={`${accountsInSystems.pciat} ciat profile deletes cell`}>
                         {accountsInSystems.pciat ? accountsInSystems.pciat : "----"}
                       </TableCell>
                       {
                         j === 0 ?
                           <>
-                            <TableCell key={`${employee.idEmpleado} delete`} rowSpan={employee.cuentas.length}>
+                            <TableCell key={`${employee.idEmpleado} delete deletes cell`} rowSpan={employee.cuentas.length}>
                               <Fab color="secondary" onClick={() => this.handleDeleteFromDeletes(employee)}>
                                 <HighlightOffIcon />
                               </Fab>
@@ -219,6 +249,7 @@ class EmployeesTable extends Component {
         <Paper className={classes.paper}>
           <h1>{bossData.idJefe}</h1>
           <h2>{bossData.jefe}</h2>
+          <Button onClick={this.handleSaveChanges}>Guardar cambios</Button>
           {
             this.renderEmployeesTable(bossData.empleados)
           }

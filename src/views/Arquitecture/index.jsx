@@ -9,7 +9,7 @@ import AuditableUserTable from '../../components/AuditableUserTable';
 
 import { SSOServices } from '../../services/SSOServices';
 
-class Recertification extends React.Component {
+class Arquitecture extends React.Component {
 
   constructor(props) {
     super(props);
@@ -43,7 +43,7 @@ class Recertification extends React.Component {
 
   }
 
-  renderRecertification = (bosses, systems) => {
+  renderArquitecture = (bosses, systems) => {
     let token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU3NDMzNTU2MCwiaWF0IjoxNTc0Mjc1NTYwfQ.XUnk7DQ2Ass5Xtxk1k8msA8Y9PXErktP_qLo24lng4qlO_crUsf_nh2xRHHH5wdK2WaF9VkHW5wHVVxsZnL25A";
     return (
       <>
@@ -73,7 +73,7 @@ class Recertification extends React.Component {
       <TemplatePage>
         {
           (bosses && systems)? 
-            this.renderRecertification(bosses, systems):
+            this.renderArquitecture(bosses, systems):
             <LinearProgress color="secondary" />
         }
       </TemplatePage >
@@ -81,7 +81,7 @@ class Recertification extends React.Component {
   }
 }
 
-Recertification.prototypes = {
+Arquitecture.prototypes = {
   system: PropTypes.string.isRequired,
 }
 
@@ -90,6 +90,6 @@ const mapStateToProps = state => ({
   isAuthenticated: state.authenticate.isAuthenticated,
 });
 
-const RecertificationConnected = connect(mapStateToProps, null)(Recertification);
+const connectedArquitecture = connect(mapStateToProps, null)(Arquitecture);
 
-export default withRouter(RecertificationConnected);
+export default withRouter(connectedArquitecture);
