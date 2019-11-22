@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Table, Paper, TableHead, TableRow, TableCell, TableBody, withStyles, Fab, Button } from '@material-ui/core';
 import { style } from '../../styles/EmployeesTable';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import { SSOServices } from '../../services/SSOServices';
+import { Services } from '../../services';
 
 class EmployeesTable extends Component {
   constructor(props) {
@@ -34,7 +34,7 @@ class EmployeesTable extends Component {
         solicitante: userData.userId
       }
 
-      new SSOServices(userData.token, null, data).requestChange((response => {
+      new Services(userData.token, null, data).requestChange((response => {
         console.log(response);
       }), (responseError => {
         console.log(responseError);

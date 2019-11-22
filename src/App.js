@@ -8,7 +8,7 @@ import Whoops404 from './views/Whoops404';
 
 import { connect } from 'react-redux';
 import { authenticate } from './redux/actions/';
-import { SSOServices } from './services/SSOServices';
+import { Services } from './services/';
 
 import Arquitecture from './views/Arquitecture';
 import Boss from './views/Boss';
@@ -50,7 +50,7 @@ class App extends React.Component {
       let sPageURL = window.location.search.substring(1);
       if (sPageURL.includes("token")) {
         let token = sPageURL.substring(sPageURL.indexOf("=") + 1, sPageURL.length);
-        new SSOServices(token).signInRecertificaction((response => {
+        new Services(token).signInRecertificaction((response => {
           this.setState({ isLoading: false });
           let userData = {
             userId: response.data.userId,

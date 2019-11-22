@@ -1,6 +1,6 @@
-import API from "./API";
+import API from "../network/API";
 
-export class SSOServices {
+export class Services {
   constructor(token, pathParam = null, body = null) {
     this.token = token;
     this.body = body;

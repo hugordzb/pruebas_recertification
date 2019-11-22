@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Table, TableHead, TableRow, TableCell, TableBody, Paper, withStyles, Fab, Button } from '@material-ui/core';
 import { style } from '../../styles/AuditableUserTable';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import { SSOServices } from '../../services/SSOServices';
+import { Services } from '../../services';
 
 class AuditableUserTable extends Component {
 
@@ -15,7 +15,7 @@ class AuditableUserTable extends Component {
     const { userData } = this.props;
     alert("Se va a enviar correo a " + boss.jefe);
     let pathParam = boss.idJefe;
-    new SSOServices(userData.token, pathParam).sendEmailToBoss((response => {
+    new Services(userData.token, pathParam).sendEmailToBoss((response => {
       console.log(response);
     }), (responseError => {
       console.log(responseError);

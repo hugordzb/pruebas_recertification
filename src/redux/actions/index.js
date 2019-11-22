@@ -1,4 +1,4 @@
-import { SSOServices } from "../../services/SSOServices";
+import { Services } from "../../services";
 
 const aux_token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU3NDQyMTI1OCwiaWF0IjoxNTc0MzYxMjU4fQ.r8iS0L1JtagVKfy3dZaUcAb-3V1199s_2egc8c0H1X8KSVKZlczUX9kJ5Pg7UOs1b0cjCRcdNZLBCeO5K015ew";
 
@@ -76,7 +76,7 @@ export const deleteEmployee = (employee, token, requester) => {
       solicitante: requester
     }
 
-    new SSOServices(token, null, data).requestChange((response => {
+    new Services(token, null, data).requestChange((response => {
       console.log(response);
       dispatch(deleteEmployeeSuccess(employee));
     }), (responseError => {
@@ -112,7 +112,7 @@ export const addEmployee = (employee, token, requester) => {
       solicitante: requester
     }
 
-    new SSOServices(token, null, data).requestChange((response => {
+    new Services(token, null, data).requestChange((response => {
       console.log(response);
       dispatch(addEmployeeSuccess(employee));
     }), (responseError => {
@@ -131,7 +131,7 @@ const addEmployeeSuccess = employee => {
 export const getBossDetail = (idBoss, token) => {
   return dispatch => {
     let boss = {};
-    new SSOServices(token, idBoss).getBossDetail((response => {
+    new Services(token, idBoss).getBossDetail((response => {
       console.log(response);
       boss = response.data;
       dispatch(getBossDetailSuccess(boss));
@@ -165,7 +165,7 @@ export const getAuditableSystems = token => {
   return dispatch => {
     let auditableSystems = [];
 
-    new SSOServices(token).getSystems((response => {
+    new Services(token).getSystems((response => {
       console.log(response.data.systems);
       auditableSystems = response.data.systems;
       dispatch(getAuditableSystemsSucccess(auditableSystems));
@@ -186,7 +186,7 @@ export const getAuditableUserAccounts = token => {
   return dispatch => {
     let auditableAccounts = [];
 
-    new SSOServices(token).getAuditableUserAccounts((response => {
+    new Services(token).getAuditableUserAccounts((response => {
       console.log(response.data.jefes);
       auditableAccounts = response.data.jefes;
       dispatch(getAuditableUserAccountsSuccess(auditableAccounts));
@@ -208,7 +208,7 @@ export const getRequestedChanges = token => {
   return dispatch => {
     let requestedChanges = [];
 
-    new SSOServices(token).getRequestedChanges((response => {
+    new Services(token).getRequestedChanges((response => {
       console.log(response.data.movimientos);
       requestedChanges = response.data.movimientos;
       dispatch(getRequestedChangesSuccess(requestedChanges));
