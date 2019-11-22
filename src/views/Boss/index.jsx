@@ -14,11 +14,10 @@ class Boss extends Component {
   }
 
   componentDidMount() {
-    const { userData } = this.props;
+    const { userData, getBossDetail } = this.props;
 
-    let idBoss = "jefe";
-    this.props.getBossDetail(idBoss, userData.token);
-
+    let idBoss = "908901";
+    getBossDetail(idBoss, userData.token);
   }
 
   render() {
@@ -35,9 +34,10 @@ class Boss extends Component {
 }
 
 const mapStateToProps = state => ({
-  userData: state.authenticate.userData,
-  isAuthenticated: state.authenticate.isAuthenticated,
-  boss: state.recertification.boss
+  userData: state.authentication.userData,
+  isAuthenticated: state.authentication.isAuthenticated,
+  boss: state.recertification.boss,
+  isLoading: state.loader.isLoading
 });
 
 const mapDispatchToProps = dispatch => ({

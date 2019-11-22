@@ -10,8 +10,8 @@ import { getAuditableUserAccounts } from '../../redux/actions';
 class Arquitecture extends React.Component {
   
   componentDidMount() {
-    const { userData } = this.props;
-    this.props.getAuditableUserAccounts(userData.token);
+    const { userData, getAuditableUserAccounts } = this.props;
+    getAuditableUserAccounts(userData.token);
   }
 
   renderArquitecture = (auditableAccounts, auditableSystems) => {
@@ -39,12 +39,11 @@ class Arquitecture extends React.Component {
   }
 
   render() {
-    const { auditableAccounts, auditableSystems } = this.props;
+    const { auditableAccounts, auditableSystems, isLoading } = this.props;
     return (
       <TemplatePage>
         {
-          ((Array.isArray(auditableAccounts) && auditableAccounts.length) &&
-            (Array.isArray(auditableSystems) && auditableSystems.length)) ?
+          !isLoading ?
             this.renderArquitecture(auditableAccounts, auditableSystems) :
             <LinearProgress color="secondary" />
         }
@@ -61,6 +60,7 @@ const mapStateToProps = state => ({
   userData: state.authentication.userData,
   auditableSystems: state.recertification.auditableSystems,
   auditableAccounts: state.recertification.auditableAccounts,
+  isLoading: state.loader.isloading
 });
 
 const mapDispatchToProps = dispatch => ({

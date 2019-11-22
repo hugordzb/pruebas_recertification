@@ -1,6 +1,6 @@
 import { Services } from "../../services";
 
-const aux_token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU3NDQ0MjE5MCwiaWF0IjoxNTc0MzgyMTkwfQ.QvZwIWLiNLaEJD55jYBEeV9fG2liJSRXNdKvYpN81oORQcYZwcb8ZmP_Wb5Yyz-xbVVjqrbtYEP6sHUtdzRIQQ";
+const aux_token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU3NDUwNDMwOCwiaWF0IjoxNTc0NDQ0MzA4fQ.XU1FPkGwro5YVFQzueGCtfpwDTY6U_xlIJ__08OVLvtdvAJ9E-9f8hOpaK1QnSqCx12SGtVDhqxVNSBzYY77UtdzRIQQ";
 
 export const ACTIONS = {
   SIGNIN_SUCCESS: "SIGNIN_SUCCESS",
@@ -12,7 +12,8 @@ export const ACTIONS = {
   GET_BOSS_DETAIL_SUCCESS: "GET_BOSS_DETAIL_SUCCESS",
   GET_EMPLOYEE_DETAIL_SUCCESS: "GET_EMPLOYEE_DETAIL_SUCCESS",
   GET_AUDITABLE_SYSTEMS_SUCCESS: "GET_AUDITABLE_SYSTEMS_SUCCESS",
-  GET_AUDITABLE_USER_ACCOUNTS_SUCCESS: "GET_AUDITABLE_USER_ACCOUNTS_SUCCESS"
+  GET_AUDITABLE_USER_ACCOUNTS_SUCCESS: "GET_AUDITABLE_USER_ACCOUNTS_SUCCESS",
+  SEND_EMAIL_SUCCESS: "SEND_EMAIL_SUCCESS"
 }
 
 export const signIn = token => {
@@ -25,7 +26,7 @@ export const signIn = token => {
       localStorage.setItem('userData', JSON.stringify(userData));
       dispatch(signInSuccess(userData));
       dispatch(finishLoad("Inicio de sesión de forma correcta"));
-      window.location.href = `${window.location.href.replace(`${window.location.pathname}`, "")}${window.location.pathname}`;
+      //window.location.href = `${window.location.href.replace(`${window.location.pathname}`, "")}${window.location.pathname}`;
     }), (responseError => {
       console.log(responseError);
       dispatch(finishLoad("Hubo un error en la carga"));
@@ -260,3 +261,16 @@ const getRequestedChangesSuccess = requestedChanges => {
     requestedChanges
   }
 }
+
+
+export const sendEmail = (token, boss) => {
+  return dispatch => {
+    dispatch(initLoad());
+    new Services(aux_token, boss.idJefe).sendEmailToBoss((response => {
+      console.log(response);
+      dispatch(finishLoad("Se envio de forma correcta el correo"));
+    }), (responseError => {
+      dispatch(finishLoad(`Hubo un error al enviar el correo a ${boss.jefe}`));
+    }));
+  }
+} 
