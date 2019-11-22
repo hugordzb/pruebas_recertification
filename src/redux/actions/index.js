@@ -1,6 +1,6 @@
 import { Services } from "../../services";
 
-const aux_token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU3NDQyMTI1OCwiaWF0IjoxNTc0MzYxMjU4fQ.r8iS0L1JtagVKfy3dZaUcAb-3V1199s_2egc8c0H1X8KSVKZlczUX9kJ5Pg7UOs1b0cjCRcdNZLBCeO5K015ew";
+const aux_token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU3NDQ0MjE5MCwiaWF0IjoxNTc0MzgyMTkwfQ.QvZwIWLiNLaEJD55jYBEeV9fG2liJSRXNdKvYpN81oORQcYZwcb8ZmP_Wb5Yyz-xbVVjqrbtYEP6sHUtdzRIQQ";
 
 export const ACTIONS = {
   SIGNIN_SUCCESS: "SIGNIN_SUCCESS",
@@ -12,20 +12,20 @@ export const ACTIONS = {
   GET_BOSS_DETAIL_SUCCESS: "GET_BOSS_DETAIL_SUCCESS",
   GET_EMPLOYEE_DETAIL_SUCCESS: "GET_EMPLOYEE_DETAIL_SUCCESS",
   GET_AUDITABLE_SYSTEMS_SUCCESS: "GET_AUDITABLE_SYSTEMS_SUCCESS",
-  GET_AUDITABLE_USER_ACCOUNTS_SUCCESS: "GET_AUDITABLE_USER_ACCOUNTS_SUCCESS",
-  NOTIFY_ERROR: "NOTIFY_ERROR"
+  GET_AUDITABLE_USER_ACCOUNTS_SUCCESS: "GET_AUDITABLE_USER_ACCOUNTS_SUCCESS"
 }
 
 export const signIn = token => {
   return dispatch => {
     dispatch(initLoad());
 
-    new Services(token).signIn((response => {
+    new Services(aux_token).signIn((response => {
       let userData = response.data;
-      userData["token"] = token;
+      userData["token"] = aux_token;
       localStorage.setItem('userData', JSON.stringify(userData));
       dispatch(signInSuccess(userData));
       dispatch(finishLoad("Inicio de sesión de forma correcta"));
+      window.location.href = `${window.location.href.replace(`${window.location.pathname}`, "")}${window.location.pathname}`;
     }), (responseError => {
       console.log(responseError);
       dispatch(finishLoad("Hubo un error en la carga"));
@@ -84,8 +84,7 @@ const finishLoad = message => {
 /*************** RECERTIFICATION **********************/
 export const deleteEmployee = (employee, token, requester) => {
   return dispatch => {
-    token = aux_token;// borrar al terminar pruebas
-    alert("Borrando usuario");// borrar al terminar pruebas
+    dispatch(initLoad());
 
     let data = {
       tipoMov: "B",
@@ -102,11 +101,12 @@ export const deleteEmployee = (employee, token, requester) => {
       solicitante: requester
     }
 
-    new Services(token, null, data).requestChange((response => {
+    new Services(aux_token, null, data).requestChange((response => {
       console.log(response);
       dispatch(deleteEmployeeSuccess(employee));
+      dispatch(finishLoad("Se borro el empleado de manera correcta"));
     }), (responseError => {
-      dispatch(notifyError(responseError));
+      dispatch(finishLoad("Hubo un error en la carga"));
     }));
   }
 }
@@ -120,8 +120,7 @@ const deleteEmployeeSuccess = employee => {
 
 export const addEmployee = (employee, token, requester) => {
   return dispatch => {
-    token = aux_token;// borrar al terminar pruebas
-    alert("Borrando usuario");// borrar al terminar pruebas
+    dispatch(initLoad());
 
     let data = {
       tipoMov: "A",
@@ -138,11 +137,12 @@ export const addEmployee = (employee, token, requester) => {
       solicitante: requester
     }
 
-    new Services(token, null, data).requestChange((response => {
+    new Services(aux_token, null, data).requestChange((response => {
       console.log(response);
       dispatch(addEmployeeSuccess(employee));
+      dispatch(finishLoad("Se dio de alta el empleado de manera correcta"));
     }), (responseError => {
-      dispatch(notifyError(responseError));
+      dispatch(finishLoad("Hubo un error en la carga"));
     }));
   }
 }
@@ -156,13 +156,16 @@ const addEmployeeSuccess = employee => {
 
 export const getBossDetail = (idBoss, token) => {
   return dispatch => {
+    dispatch(initLoad());
+
     let boss = {};
-    new Services(token, idBoss).getBossDetail((response => {
+    new Services(aux_token, idBoss).getBossDetail((response => {
       console.log(response);
       boss = response.data;
       dispatch(getBossDetailSuccess(boss));
+      dispatch(finishLoad("Carga exitosa de la información del jefe"));
     }), (responseError => {
-      dispatch(notifyError(responseError));
+      dispatch(finishLoad("Hubo un error en la carga"));
     }));
   }
 }
@@ -177,7 +180,6 @@ const getBossDetailSuccess = boss => {
 export const getEmployeeDetail = idEmployee => {// Falta actualizar
   let employee = {};
   getEmployeeDetailSuccess(employee);
-  notifyError();
 }
 
 const getEmployeeDetailSuccess = employee => {
@@ -189,14 +191,17 @@ const getEmployeeDetailSuccess = employee => {
 
 export const getAuditableSystems = token => {
   return dispatch => {
+    dispatch(initLoad());
+
     let auditableSystems = [];
 
-    new Services(token).getSystems((response => {
+    new Services(aux_token).getSystems((response => {
       console.log(response.data.systems);
       auditableSystems = response.data.systems;
       dispatch(getAuditableSystemsSucccess(auditableSystems));
+      dispatch(finishLoad("Carga exitosa de los sistemas auditables"));
     }), (responseError => {
-      dispatch(notifyError(responseError));
+      dispatch(finishLoad("Hubo un error en la carga"));
     }));
   }
 }
@@ -210,15 +215,17 @@ const getAuditableSystemsSucccess = auditableSystems => {
 
 export const getAuditableUserAccounts = token => {
   return dispatch => {
+    dispatch(initLoad());
     let auditableAccounts = [];
 
-    new Services(token).getAuditableUserAccounts((response => {
+    new Services(aux_token).getAuditableUserAccounts((response => {
       console.log(response.data.jefes);
       auditableAccounts = response.data.jefes;
       dispatch(getAuditableUserAccountsSuccess(auditableAccounts));
+      dispatch(finishLoad("Carga exitosa de las cuentas auditables"));
     }), (responseError => {
       console.log(responseError);
-      dispatch(notifyError(responseError));
+      dispatch(finishLoad("Hubo un error en la carga"));
     }));
   }
 }
@@ -232,14 +239,17 @@ const getAuditableUserAccountsSuccess = auditableAccounts => {
 
 export const getRequestedChanges = token => {
   return dispatch => {
+    dispatch(initLoad());
+
     let requestedChanges = [];
 
-    new Services(token).getRequestedChanges((response => {
+    new Services(aux_token).getRequestedChanges((response => {
       console.log(response.data.movimientos);
       requestedChanges = response.data.movimientos;
       dispatch(getRequestedChangesSuccess(requestedChanges));
+      dispatch(finishLoad("Carga exitosa de los cambios solicitados"));
     }), (responseError => {
-      dispatch(notifyError(responseError));
+      dispatch(finishLoad("Hubo un error en la carga"));
     }));
   }
 };
@@ -248,13 +258,5 @@ const getRequestedChangesSuccess = requestedChanges => {
   return {
     type: ACTIONS.GET_AUDITABLE_USER_ACCOUNTS_SUCCESS,
     requestedChanges
-  }
-}
-
-
-const notifyError = errorMessage => {
-  return {
-    type: ACTIONS.NOTIFY_ERROR,
-    errorMessage
   }
 }
