@@ -7,9 +7,7 @@ import {
 import Whoops404 from './views/Whoops404';
 
 import { connect } from 'react-redux';
-import { authenticate } from './redux/actions/';
-import { Services } from './services/';
-
+import { signIn } from './redux/actions/';
 import Arquitecture from './views/Arquitecture';
 import Boss from './views/Boss';
 import HelpDesk from './views/HelpDesk';
@@ -44,34 +42,12 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    let { isAuthenticated } = this.props;
+    let { isAuthenticated, signIn } = this.props;
     if (!isAuthenticated) {
-
       let sPageURL = window.location.search.substring(1);
       if (sPageURL.includes("token")) {
         let token = sPageURL.substring(sPageURL.indexOf("=") + 1, sPageURL.length);
-        new Services(token).signInRecertificaction((response => {
-          this.setState({ isLoading: false });
-          let userData = {
-            userId: response.data.userId,
-            name: response.data.name,
-            displayName: response.data.displayName,
-            title: response.data.title,
-            department: response.data.department,
-            token
-          };
-
-          if (userData.userId !== null) {
-            this.props.authenticate(userData);
-          }
-
-          window.location.href = `${window.location.href.replace(`${window.location.pathname}`, "")}${window.location.pathname}`;
-
-        }), (responseError => {
-          console.log(responseError);
-          this.setState({ isLoading: false });
-          window.location.href = "http://localhost:3000/sso";
-        }));
+        signIn(token);
       }
     }
   }
@@ -89,13 +65,13 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  userData: state.authenticate.userData,
-  isAuthenticated: state.authenticate.isAuthenticated,
-  profile: state.authenticate.profile
+  userData: state.authentication.userData,
+  isAuthenticated: state.authentication.isAuthenticated,
+  profile: state.authentication.profile
 });
 
 const mapDispatchToProps = dispatch => ({
-  authenticate: userData => dispatch(authenticate(userData))
+  signIn: userData => dispatch(signIn(userData))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

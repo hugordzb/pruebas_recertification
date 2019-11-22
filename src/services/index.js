@@ -7,7 +7,7 @@ export class Services {
     this.pathParam = pathParam;
   }
 
-  signInRecertificaction = (callback, callbackError = (error => { console.log(error); })) => {
+  signIn = (callback, callbackError = (error => { console.log(error); })) => {
     API.request(this.token).get(`${global.config.current.SERVERS.SSO}/system`, (responseJson => {
       Promise.resolve({
         data: responseJson

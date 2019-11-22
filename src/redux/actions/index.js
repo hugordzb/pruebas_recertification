@@ -3,9 +3,10 @@ import { Services } from "../../services";
 const aux_token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU3NDQyMTI1OCwiaWF0IjoxNTc0MzYxMjU4fQ.r8iS0L1JtagVKfy3dZaUcAb-3V1199s_2egc8c0H1X8KSVKZlczUX9kJ5Pg7UOs1b0cjCRcdNZLBCeO5K015ew";
 
 export const ACTIONS = {
-  AUTHENTICATE: "AUTHENTICATE",
-  REFRESH: "REFRESH",
-  SIGNOUT: "SIGNOUT",
+  SIGNIN_SUCCESS: "SIGNIN_SUCCESS",
+  SIGNOUT_SUCCESS: "SIGNOUT_SUCCESS",
+  INIT_LOAD: "INIT_LOAD",
+  FINISH_LOAD: "FINISH_LOAD",
   DELETE_EMPLOYEE_SUCCESS: "DELETE_EMPLOYEE_SUCCESS",
   ADD_EMPLOYEE_SUCCESS: "ADD_EMPLOYEE_SUCCESS",
   GET_BOSS_DETAIL_SUCCESS: "GET_BOSS_DETAIL_SUCCESS",
@@ -15,43 +16,68 @@ export const ACTIONS = {
   NOTIFY_ERROR: "NOTIFY_ERROR"
 }
 
-export const authenticate = userData => {
-  localStorage.setItem('userData', JSON.stringify(userData))
+export const signIn = token => {
+  return dispatch => {
+    dispatch(initLoad());
+
+    new Services(token).signIn((response => {
+      let userData = response.data;
+      userData["token"] = token;
+      localStorage.setItem('userData', JSON.stringify(userData));
+      dispatch(signInSuccess(userData));
+      dispatch(finishLoad("Inicio de sesión de forma correcta"));
+    }), (responseError => {
+      console.log(responseError);
+      dispatch(finishLoad("Hubo un error en la carga"));
+    }));
+  }
+
+};
+
+const signInSuccess = userData => {
   return {
-    type: ACTIONS.AUTHENTICATE,
+    type: ACTIONS.SIGNIN_SUCCESS,
     userData
   }
 };
 
-export const refresh = () => {
-  let userData = {};
-  let userJson = localStorage.getItem("userData");
-  if (userJson) {
-    userData = JSON.parse(userJson);
+export const signOut = () => {
+  return dispatch => {
+    localStorage.clear();
 
+    var userData = {
+      userId: "",
+      token: "",
+      department: "",
+      name: "",
+      displayName: "",
+      title: "",
+      apps: []
+    }
+    dispatch(signOutSuccess(userData));
   }
+}
+
+const signOutSuccess = userData => {
   return {
-    type: ACTIONS.REFRESH,
+    type: ACTIONS.SIGNOUT_SUCCESS,
     userData
   }
 }
 
-export const signOut = () => {
-  localStorage.clear();
+/************LOADER ACTIONS ***************/
 
-  var userData = {
-    department: "",
-    displayName: "",
-    name: "",
-    title: "",
-    token: "",
-    userId: "",
-    userType: ""
-  }
-
+const initLoad = () => {
   return {
-    type: ACTIONS.SIGNOUT,
-    userData
+    type: ACTIONS.INIT_LOAD
+  }
+}
+
+
+const finishLoad = message => {
+  return {
+    type: ACTIONS.FINISH_LOAD,
+    message
   }
 }
 

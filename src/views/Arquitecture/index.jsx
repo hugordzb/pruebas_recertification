@@ -58,7 +58,7 @@ Arquitecture.prototypes = {
 }
 
 const mapStateToProps = state => ({
-  userData: state.authenticate.userData,
+  userData: state.authentication.userData,
   auditableSystems: state.recertification.auditableSystems,
   auditableAccounts: state.recertification.auditableAccounts,
 });

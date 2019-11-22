@@ -40,7 +40,7 @@ export const recertification = (state = initialState(), action) => {
         ...state,
         auditableSystems: action.auditableSystems
       }
-    case ACTIONS.GET_AUDITABLE_ACCOUNTS_SUCCESS:
+    case ACTIONS.GET_AUDITABLE_USER_ACCOUNTS_SUCCESS:
       return {
         ...state,
         auditableAccounts: action.auditableAccounts
