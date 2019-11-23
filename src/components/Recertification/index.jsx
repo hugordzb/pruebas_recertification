@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Grid } from '@material-ui/core';
 import BossesTable from '../BossesTable';
-import EmployeesTable from '../EmployeesTable';
 import { connect } from 'react-redux';
 import { getBossesData, getBossDetail } from '../../redux/actions';
 
@@ -15,12 +14,8 @@ class Recertification extends Component {
   render() {
     const {  bosses } = this.props;
     return (
-      <Grid
-        container
-        direction="column"
-        justify="center"
-        alignItems="center"
-      >
+      <Grid container
+        direction="column" justify="center" alignItems="center" >
         <Grid item>
           <BossesTable bosses={bosses} />
         </Grid>
@@ -30,7 +25,6 @@ class Recertification extends Component {
             //<EmployeesTable selectedBoss={selectedBoss} />
           }
         </Grid>
-
       </Grid>
     );
   }

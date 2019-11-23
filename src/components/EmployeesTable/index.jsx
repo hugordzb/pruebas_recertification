@@ -16,7 +16,7 @@ class EmployeesTable extends Component {
   handleSaveChanges = () => {
     const { userData } = this.props;
     userData.token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU3NDMzNTU2MCwiaWF0IjoxNTc0Mjc1NTYwfQ.XUnk7DQ2Ass5Xtxk1k8msA8Y9PXErktP_qLo24lng4qlO_crUsf_nh2xRHHH5wdK2WaF9VkHW5wHVVxsZnL25A";
-    let { deletes, updates } = this.state;
+    let { deletes} = this.state;
     deletes.forEach(deletedEmployee => {
 
       let data = {

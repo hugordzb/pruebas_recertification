@@ -45,7 +45,7 @@ export const recertification = (state = initialState(), action) => {
     case ACTIONS.GET_BOSSES_DATA_SUCCESS:
       return {
         ...state,
-        auditableBosses: action.auditableBosses
+        bosses: action.bosses
       }
     case ACTIONS.SET_SELECTED_BOSS:
       return {
