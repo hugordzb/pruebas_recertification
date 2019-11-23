@@ -1,16 +1,10 @@
 import React, { Component } from 'react';
-import { Table, Paper, TableHead, TableRow, TableCell, TableBody, withStyles, Fab, Button, LinearProgress } from '@material-ui/core';
+import { Table, Paper, TableHead, TableRow, TableCell, TableBody, withStyles, LinearProgress } from '@material-ui/core';
 import { style } from '../../styles/EmployeesTable';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import { getBossDetail } from '../../redux/actions';
 import { connect } from 'react-redux';
 
-class EmployeesTable extends Component {
-
-  componentDidMount() {
-    const { userData, getBossDetail } = this.props;
-    getBossDetail(userData.token, userData.userId);
-  }
+class EmployeesTableForRecertification extends Component {
 
   renderEmployeesTable = boss => {
     const { classes } = this.props;
@@ -24,7 +18,7 @@ class EmployeesTable extends Component {
             <Table size="small" className={classes.table}>
               <TableHead>
                 <TableRow>
-                  <TableCell colSpan={10} className={classes.tableTitle}>Empleados</TableCell>
+                  <TableCell colSpan={8} className={classes.tableTitle}>Empleados</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell className={classes.tableTitle}>Id</TableCell>
@@ -32,7 +26,6 @@ class EmployeesTable extends Component {
                   <TableCell colSpan={2} className={classes.tableTitle}>SAP</TableCell>
                   <TableCell colSpan={2} className={classes.tableTitle}>TEL</TableCell>
                   <TableCell colSpan={2} className={classes.tableTitle}>CIAT</TableCell>
-                  <TableCell colSpan={2} className={classes.tableTitle}>Opciones</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell colSpan={2} className={classes.tableTitle}></TableCell>
@@ -42,7 +35,6 @@ class EmployeesTable extends Component {
                   <TableCell className={classes.tableTitle}>Perfil</TableCell>
                   <TableCell className={classes.tableTitle}>Cuenta</TableCell>
                   <TableCell className={classes.tableTitle}>Perfil</TableCell>
-                  <TableCell colSpan={2} className={classes.tableTitle}></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -82,22 +74,6 @@ class EmployeesTable extends Component {
                           <TableCell key={`${accountsInSystems.pciat} ciat profile employees cell`}>
                             {accountsInSystems.pciat ? accountsInSystems.pciat : "----"}
                           </TableCell>
-                          {
-                            j === 0 ?
-                              <>
-                                <TableCell key={`${employee.idEmpleado} delete employees cell`} rowSpan={employee.cuentas.length}>
-                                  <Fab color="secondary" onClick={() => this.handleDelete(employee)}>
-                                    <HighlightOffIcon />
-                                  </Fab>
-                                </TableCell>
-                                <TableCell key={`${employee.idEmpleado} update employees cell`} rowSpan={employee.cuentas.length}>
-                                  <Button>{"Modificar"}</Button>
-                                </TableCell>
-                              </>
-                              :
-                              <></>
-                          }
-
                         </TableRow>
                       )
                     })
@@ -114,12 +90,11 @@ class EmployeesTable extends Component {
   }
 
   render() {
-    const { boss, isloading } = this.props;
+    const { boss } = this.props;
     return (
       <>
-
         {
-          boss.idJefe && !isloading ? this.renderEmployeesTable(boss) :
+          boss.idJefe ? this.renderEmployeesTable(boss) :
             <LinearProgress color={"secondary"} />
         }
       </>
@@ -129,13 +104,13 @@ class EmployeesTable extends Component {
 
 const mapStateToProps = state => ({
   boss: state.recertification.boss,
-  isloading: state.loader.isloading
+  isLoading: state.loader.isloading
 });
 
 const mapDispatchToProps = dispatch => ({
   getBossDetail: (token, bossId) => dispatch(getBossDetail(token, bossId))
 });
 
-const connectedEmployeesTable = connect(mapStateToProps, mapDispatchToProps)(EmployeesTable);
+const connectedEmployeesTableForRecertification = connect(mapStateToProps, mapDispatchToProps)(EmployeesTableForRecertification);
 
-export default withStyles(style)(connectedEmployeesTable);
+export default withStyles(style)(connectedEmployeesTableForRecertification);

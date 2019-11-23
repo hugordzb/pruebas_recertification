@@ -77,11 +77,11 @@ class BossesTable extends Component {
   render() {
     const { bosses } = this.props;
     return (
-      <div>
+      <>
         {
-          bosses ? this.renderBossesTable(bosses) : <p>No hay nada que renderizar jefes</p>
+          bosses ? this.renderBossesTable(bosses) : <p>No hay jefes para mostrar</p>
         }
-      </div>
+      </>
     );
   }
 }

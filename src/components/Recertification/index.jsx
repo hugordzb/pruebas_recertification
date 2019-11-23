@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid, LinearProgress } from '@material-ui/core';
 import BossesTable from '../BossesTable';
 import EmployeesTableForRecertification from '../EmployeesTableForRecertification';
 import { connect } from 'react-redux';
@@ -13,12 +13,14 @@ class Recertification extends Component {
   }
 
   render() {
-    const { bosses, selectedBoss } = this.props;
+    const { bosses, selectedBoss, isloading } = this.props;
     return (
       <Grid container
         direction="column" justify="center" alignItems="center" >
         <Grid item>
-          <BossesTable bosses={bosses} />
+          {
+            bosses.length > 0 && !isloading ? <BossesTable bosses={bosses} /> : <LinearProgress color={"secondary"}/>
+          }
         </Grid>
 
         <Grid item>
@@ -33,7 +35,8 @@ class Recertification extends Component {
 
 const mapStateToProps = state => ({
   bosses: state.recertification.bosses,
-  boss: state.recertification.boss
+  selectedBoss: state.recertification.selectedBoss,
+  isloading: state.loader.isloading
 })
 
 const mapDispatchToProps = dispatch => ({

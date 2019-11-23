@@ -5,7 +5,7 @@ import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import { getBossDetail } from '../../redux/actions';
 import { connect } from 'react-redux';
 
-class EmployeesTable extends Component {
+class EmployeesTableForBoss extends Component {
 
   componentDidMount() {
     const { userData, getBossDetail } = this.props;
@@ -117,7 +117,6 @@ class EmployeesTable extends Component {
     const { boss, isloading } = this.props;
     return (
       <>
-
         {
           boss.idJefe && !isloading ? this.renderEmployeesTable(boss) :
             <LinearProgress color={"secondary"} />
@@ -136,6 +135,6 @@ const mapDispatchToProps = dispatch => ({
   getBossDetail: (token, bossId) => dispatch(getBossDetail(token, bossId))
 });
 
-const connectedEmployeesTable = connect(mapStateToProps, mapDispatchToProps)(EmployeesTable);
+const connectedEmployeesTableForBoss = connect(mapStateToProps, mapDispatchToProps)(EmployeesTableForBoss);
 
-export default withStyles(style)(connectedEmployeesTable);
+export default withStyles(style)(connectedEmployeesTableForBoss);

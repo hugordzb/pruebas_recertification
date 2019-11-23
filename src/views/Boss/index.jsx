@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import TemplatePage from '../../components/TemplatePage';
-import EmployeesTable from '../../components/EmployeesTable';
+import EmployeesTableForBoss from '../../components/EmployeesTableForBoss';
 import { connect } from 'react-redux';
 
 class Boss extends Component {
@@ -8,7 +8,7 @@ class Boss extends Component {
     const { userData } = this.props;
     return (
       <TemplatePage>
-        <EmployeesTable userData={userData} />
+        <EmployeesTableForBoss userData={userData} />
       </TemplatePage >
     );
   }
