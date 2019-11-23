@@ -14,6 +14,17 @@ import HelpDesk from './views/HelpDesk';
 
 class App extends React.Component {
 
+  componentDidMount() {
+    let { isAuthenticated, signIn } = this.props;
+    if (!isAuthenticated) {
+      let sPageURL = window.location.search.substring(1);
+      if (sPageURL.includes("token")) {
+        let token = sPageURL.substring(sPageURL.indexOf("=") + 1, sPageURL.length);
+        signIn(token);
+      }
+    }
+  }
+  
   renderForProfile = () => {
     const { profile } = this.props;
 
@@ -38,17 +49,6 @@ class App extends React.Component {
         )
       default:
         break;
-    }
-  }
-
-  componentDidMount() {
-    let { isAuthenticated, signIn } = this.props;
-    if (!isAuthenticated) {
-      let sPageURL = window.location.search.substring(1);
-      if (sPageURL.includes("token")) {
-        let token = sPageURL.substring(sPageURL.indexOf("=") + 1, sPageURL.length);
-        signIn(token);
-      }
     }
   }
 

@@ -18,13 +18,13 @@ export const ACTIONS = {
   SEND_EMAIL_SUCCESS: "SEND_EMAIL_SUCCESS"
 }
 
-export const signIn = token => {
+export const signIn = token => {//Este token no se cambia, tiene que ser el que se recibe
   return dispatch => {
     dispatch(initLoad());
 
-    new Services(aux_token).signIn((response => {
+    new Services(token).signIn((response => {
       let userData = response.data;
-      userData["token"] = aux_token;
+      userData["token"] = token;
       localStorage.setItem('userData', JSON.stringify(userData));
       dispatch(signInSuccess(userData));
       dispatch(finishLoad("Inicio de sesión de forma correcta"));
