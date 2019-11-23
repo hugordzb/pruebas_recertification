@@ -1,6 +1,6 @@
 import { Services } from "../../services";
 
-const aux_token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU3NDUwNDMwOCwiaWF0IjoxNTc0NDQ0MzA4fQ.XU1FPkGwro5YVFQzueGCtfpwDTY6U_xlIJ__08OVLvtdvAJ9E-9f8hOpaK1QnSqCx12SGtVDhqxVNSBzYY77UtdzRIQQ";
+const aux_token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU3NDUwNTU1NiwiaWF0IjoxNTc0NDQ1NTU2fQ.0VnEi6EFTZX9fgLCnPjR-dn7v7MI0e2jjri2SvyycVVhFmdHc6NgyCiQqRcrJeY0ikW6UeH5D2qKutJFHMAxzg";
 
 export const ACTIONS = {
   SIGNIN_SUCCESS: "SIGNIN_SUCCESS",
