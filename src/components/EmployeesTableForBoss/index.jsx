@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Table, Paper, TableHead, TableRow, TableCell, TableBody, withStyles, Fab, Button, LinearProgress } from '@material-ui/core';
 import { style } from '../../styles/EmployeesTable';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import { getBossDetail } from '../../redux/actions';
+import { getBossDetail, deleteEmployee } from '../../redux/actions';
 import { connect } from 'react-redux';
 
 class EmployeesTableForBoss extends Component {
@@ -12,6 +12,11 @@ class EmployeesTableForBoss extends Component {
     getBossDetail(userData.token, userData.userId);
   }
 
+  handleDelete = employee => {
+    alert(`Se va a elminar ${employee.empleado}`);
+    const { userData } = this.props;
+    this.props.deleteEmployee(userData.token, employee, userData.userId);
+  }
   renderEmployeesTable = boss => {
     const { classes } = this.props;
     let employees = boss.empleados;
@@ -132,7 +137,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getBossDetail: (token, bossId) => dispatch(getBossDetail(token, bossId))
+  getBossDetail: (token, bossId) => dispatch(getBossDetail(token, bossId)),
+  deleteEmployee: (token, employee, requester) => dispatch(deleteEmployee(token, employee, requester))
 });
 
 const connectedEmployeesTableForBoss = connect(mapStateToProps, mapDispatchToProps)(EmployeesTableForBoss);

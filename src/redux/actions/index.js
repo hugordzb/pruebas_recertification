@@ -86,7 +86,7 @@ const finishLoad = message => {
 }
 
 /*************** RECERTIFICATION **********************/
-export const deleteEmployee = (employee, token, requester) => {
+export const deleteEmployee = (token, employee, requester) => {
   return dispatch => {
     dispatch(initLoad());
 
