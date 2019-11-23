@@ -5,7 +5,7 @@ const initialState = () => {
     systems: [],
     bosses: [],
     selectedBoss: {},
-    employees: [], 
+    employees: [],
     boss: {},
     requestedChanges: []
   };
@@ -51,6 +51,11 @@ export const recertification = (state = initialState(), action) => {
       return {
         ...state,
         selectedBoss: action.selectedBoss
+      }
+    case ACTIONS.GET_REQUESTED_CHANGES_SUCCESS:
+      return {
+        ...state,
+        requestedChanges: action.requestedChanges
       }
     default:
       return state

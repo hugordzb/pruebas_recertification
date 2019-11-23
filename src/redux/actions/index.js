@@ -15,7 +15,8 @@ export const ACTIONS = {
   GET_EMPLOYEE_DETAIL_SUCCESS: "GET_EMPLOYEE_DETAIL_SUCCESS",
   GET_AUDITABLE_SYSTEMS_SUCCESS: "GET_AUDITABLE_SYSTEMS_SUCCESS",
   GET_AUDITABLE_USER_ACCOUNTS_SUCCESS: "GET_AUDITABLE_USER_ACCOUNTS_SUCCESS",
-  SEND_EMAIL_SUCCESS: "SEND_EMAIL_SUCCESS"
+  SEND_EMAIL_SUCCESS: "SEND_EMAIL_SUCCESS",
+  GET_REQUESTED_CHANGES_SUCCESS: "GET_REQUESTED_CHANGES_SUCCESS"
 }
 
 export const signIn = token => {//Este token no se cambia, tiene que ser el que se recibe
@@ -239,9 +240,9 @@ export const getRequestedChanges = token => {
     dispatch(initLoad());
 
     let requestedChanges = [];
-
     new Services(aux_token).getRequestedChanges((response => {
       requestedChanges = response.data.movimientos;
+      console.log(response.data.movimientos);
       dispatch(getRequestedChangesSuccess(requestedChanges));
       dispatch(finishLoad("Carga exitosa de los cambios solicitados"));
     }), (responseError => {
@@ -252,7 +253,7 @@ export const getRequestedChanges = token => {
 
 const getRequestedChangesSuccess = requestedChanges => {
   return {
-    type: ACTIONS.GET_AUDITABLE_USER_ACCOUNTS_SUCCESS,
+    type: ACTIONS.GET_REQUESTED_CHANGES_SUCCESS,
     requestedChanges
   }
 }
