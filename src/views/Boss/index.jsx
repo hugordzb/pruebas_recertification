@@ -15,17 +15,16 @@ class Boss extends Component {
 
   componentDidMount() {
     const { userData, getBossDetail } = this.props;
-
-    let idBoss = "908901";
-    getBossDetail(idBoss, userData.token);
+    console.log(userData.userId);
+    getBossDetail(userData.token, userData.userId);
   }
 
   render() {
-    const { userData, boss } = this.props;
+    const { userData, isLoading, boss } = this.props;
     return (
       <TemplatePage>
         {
-          boss ? <EmployeesTable boss={boss} userData={userData}/>
+          !isLoading ? <EmployeesTable boss={boss} userData={userData}/>
             : <LinearProgress color="secondary" />
         }
       </TemplatePage >
@@ -35,13 +34,12 @@ class Boss extends Component {
 
 const mapStateToProps = state => ({
   userData: state.authentication.userData,
-  isAuthenticated: state.authentication.isAuthenticated,
   boss: state.recertification.boss,
   isLoading: state.loader.isLoading
 });
 
 const mapDispatchToProps = dispatch => ({
-  getBossDetail: token => dispatch(getBossDetail(token))
+  getBossDetail: (token, bossId) => dispatch(getBossDetail(token, bossId))
 });
 
 const connectedBoss = connect(mapStateToProps, mapDispatchToProps)(Boss);
