@@ -30,7 +30,6 @@ export const signIn = token => {
       dispatch(finishLoad("Inicio de sesión de forma correcta"));
       //window.location.href = `${window.location.href.replace(`${window.location.pathname}`, "")}${window.location.pathname}`;
     }), (responseError => {
-      console.log(responseError);
       dispatch(finishLoad("Hubo un error en la carga"));
     }));
   }
@@ -105,7 +104,6 @@ export const deleteEmployee = (employee, token, requester) => {
     }
 
     new Services(aux_token, null, data).requestChange((response => {
-      console.log(response);
       dispatch(deleteEmployeeSuccess(employee));
       dispatch(finishLoad("Se borro el empleado de manera correcta"));
     }), (responseError => {
@@ -141,7 +139,6 @@ export const addEmployee = (employee, token, requester) => {
     }
 
     new Services(aux_token, null, data).requestChange((response => {
-      console.log(response);
       dispatch(addEmployeeSuccess(employee));
       dispatch(finishLoad("Se dio de alta el empleado de manera correcta"));
     }), (responseError => {
@@ -158,13 +155,11 @@ const addEmployeeSuccess = employee => {
 }
 
 export const getBossDetail = (token, bossId) => {
-  console.log("Se recibe en el action " + bossId + "   " + token)
   return dispatch => {
     dispatch(initLoad());
 
     let boss = {};
     new Services(aux_token, bossId).getBossDetail((response => {
-      console.log(response);
       boss = response.data;
       dispatch(getBossDetailSuccess(boss));
       dispatch(finishLoad("Carga exitosa de la información del jefe"));
@@ -200,7 +195,6 @@ export const getAuditableSystems = token => {
     let auditableSystems = [];
 
     new Services(aux_token).getSystems((response => {
-      console.log(response.data.systems);
       auditableSystems = response.data.systems;
       dispatch(getAuditableSystemsSucccess(auditableSystems));
       dispatch(finishLoad("Carga exitosa de los sistemas auditables"));
@@ -223,12 +217,10 @@ export const getAuditableUserAccounts = token => {
     let auditableAccounts = [];
 
     new Services(aux_token).getAuditableUserAccounts((response => {
-      console.log(response.data.jefes);
       auditableAccounts = response.data.jefes;
       dispatch(getAuditableUserAccountsSuccess(auditableAccounts));
       dispatch(finishLoad("Carga exitosa de las cuentas auditables"));
     }), (responseError => {
-      console.log(responseError);
       dispatch(finishLoad("Hubo un error en la carga"));
     }));
   }
@@ -248,7 +240,6 @@ export const getRequestedChanges = token => {
     let requestedChanges = [];
 
     new Services(aux_token).getRequestedChanges((response => {
-      console.log(response.data.movimientos);
       requestedChanges = response.data.movimientos;
       dispatch(getRequestedChangesSuccess(requestedChanges));
       dispatch(finishLoad("Carga exitosa de los cambios solicitados"));
@@ -270,7 +261,6 @@ export const sendEmail = (token, boss) => {
   return dispatch => {
     dispatch(initLoad());
     new Services(aux_token, boss.idJefe).sendEmailToBoss((response => {
-      console.log(response);
       dispatch(finishLoad("Se envio de forma correcta el correo"));
     }), (responseError => {
       dispatch(finishLoad(`Hubo un error al enviar el correo a ${boss.jefe}`));

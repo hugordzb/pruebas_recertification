@@ -9,9 +9,7 @@ class BossesTable extends Component {
 
   showBossInfo = boss => {
     const { userData, setSelectedBoss, getBossDetail } = this.props;
-    console.log("Se a a mostra info de " + boss.idJefe)
     setSelectedBoss(boss);
-    console.log("Token: " + userData.token)
     getBossDetail(userData.token, boss.idJefe);
   }
 
@@ -31,7 +29,7 @@ class BossesTable extends Component {
         <Table size="small" className={classes.table}>
           <TableHead>
             <TableRow>
-              <TableCell colSpan={6} className={classes.tableTitle}>Jefes para la recertificación</TableCell>
+              <TableCell colSpan={7} className={classes.tableTitle}>Jefes para la recertificación</TableCell>
             </TableRow>
             <TableRow>
               <TableCell className={classes.tableTitle}>Id</TableCell>
@@ -39,14 +37,14 @@ class BossesTable extends Component {
               <TableCell className={classes.tableTitle}>Correo</TableCell>
               <TableCell className={classes.tableTitle}>CorreoCC</TableCell>
               <TableCell className={classes.tableTitle}>Departamento</TableCell>
-              <TableCell className={classes.tableTitle}>Opciones</TableCell>
+              <TableCell colSpan={2} className={classes.tableTitle}>Opciones</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {
               bosses.map(boss => {
                 return (
-                  <TableRow key={`${boss.idJefe}`} onClick={() => this.showBossInfo(boss)}>
+                  <TableRow key={`${boss.idJefe}`}>
                     <TableCell key={`${boss.idJefe}`}>
                       {`${boss.idJefe}`}
                     </TableCell>
@@ -62,8 +60,11 @@ class BossesTable extends Component {
                     <TableCell key={`${boss.departamento}`}>
                       {`${boss.departamento}`}
                     </TableCell>
-                    <TableCell key={`${boss.idJefe} opciones`}>
+                    <TableCell key={`${boss.idJefe} send email`}>
                       <Button onClick={() => this.handleSendEmail(boss.idJefe)}>Enviar correo</Button>
+                    </TableCell>
+                    <TableCell key={`${boss.idJefe} show employees`}>
+                      <Button onClick={() => this.showBossInfo(boss)}>Ver empleados</Button>
                     </TableCell>
                   </TableRow>
                 )
