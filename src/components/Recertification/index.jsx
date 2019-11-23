@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import { Grid } from '@material-ui/core';
 import BossesTable from '../BossesTable';
+import EmployeesTable from '../EmployeesTable';
 import { connect } from 'react-redux';
-import { getBossesData, getBossDetail } from '../../redux/actions';
+import { getBossesData } from '../../redux/actions';
 
 class Recertification extends Component {
   componentDidMount() {
-    const { userData, selectedBoss, getBossesData, getBossDetail } = this.props;
+    const { userData, getBossesData } = this.props;
     getBossesData(userData.token);
-    if(selectedBoss) getBossDetail(userData.token, selectedBoss);
   }
 
   render() {
-    const {  bosses } = this.props;
+    const { bosses, boss } = this.props;
     return (
       <Grid container
         direction="column" justify="center" alignItems="center" >
@@ -22,7 +22,7 @@ class Recertification extends Component {
 
         <Grid item>
           {
-            //<EmployeesTable selectedBoss={selectedBoss} />
+            <EmployeesTable boss={boss} />
           }
         </Grid>
       </Grid>
@@ -31,13 +31,12 @@ class Recertification extends Component {
 }
 
 const mapStateToProps = state => ({
-  selectedBoss: state.recertification.selectedBoss,
-  bosses: state.recertification.bosses
+  bosses: state.recertification.bosses,
+  boss: state.recertification.boss
 })
 
 const mapDispatchToProps = dispatch => ({
-  getBossesData: token => dispatch(getBossesData(token)),
-  getBossDetail: (token, selectedBoss) => dispatch(getBossDetail(token, selectedBoss))
+  getBossesData: token => dispatch(getBossesData(token))
 })
 
 const connectedRecertification = connect(mapStateToProps, mapDispatchToProps)(Recertification);

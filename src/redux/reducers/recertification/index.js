@@ -2,10 +2,10 @@ import { ACTIONS } from '../../actions';
 
 const initialState = () => {
   let state = {
-    auditableSystems: [],
-    auditableBosses: [],
-    auditableEmployees: [],
-    selectedBoss: {}, 
+    systems: [],
+    bosses: [],
+    selectedBoss: {},
+    employees: [], 
     boss: {},
     requestedChanges: []
   };

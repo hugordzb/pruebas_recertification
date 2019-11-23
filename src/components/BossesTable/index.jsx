@@ -3,13 +3,16 @@ import { Table, TableHead, TableRow, TableCell,
   TableBody, Paper, withStyles, Button} from '@material-ui/core';
 import { style } from '../../styles/BossesTable';
 import { connect } from 'react-redux';
-import { sendEmail, setSelectedBoss } from '../../redux/actions';
+import { sendEmail, setSelectedBoss, getBossDetail } from '../../redux/actions';
 
 class BossesTable extends Component {
 
   showBossInfo = boss => {
-    const { setSelectedBoss } = this.props;
+    const { userData, setSelectedBoss, getBossDetail } = this.props;
+    console.log("Se a a mostra info de " + boss.idJefe)
     setSelectedBoss(boss);
+    console.log("Token: " + userData.token)
+    getBossDetail(userData.token, boss.idJefe);
   }
 
   handleRecertificate = boss => {
@@ -77,7 +80,7 @@ class BossesTable extends Component {
     return (
       <div>
         {
-          bosses ? this.renderBossesTable(bosses) : <p>NO hay nada que renderizar jefes</p>
+          bosses ? this.renderBossesTable(bosses) : <p>No hay nada que renderizar jefes</p>
         }
       </div>
     );
@@ -85,12 +88,14 @@ class BossesTable extends Component {
 }
 
 const mapStateToProps = state => ({
-  isloading: state.loader.isLoading
+  isloading: state.loader.isLoading,
+  userData: state.authentication.userData
 });
 
 const mapDispatchToProps = dispatch => ({
   sendEmail: (token, boss) => dispatch(sendEmail(token, boss)),
-  setSelectedBoss: selectedBoss => dispatch(setSelectedBoss(selectedBoss))
+  setSelectedBoss: selectedBoss => dispatch(setSelectedBoss(selectedBoss)),
+  getBossDetail: (token, bossId) => dispatch(getBossDetail(token, bossId))
 });
 
 const connectedBossesTable = connect(mapStateToProps, mapDispatchToProps)(BossesTable);

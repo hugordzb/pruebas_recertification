@@ -157,12 +157,13 @@ const addEmployeeSuccess = employee => {
   }
 }
 
-export const getBossDetail = (boss, token) => {
+export const getBossDetail = (token, bossId) => {
+  console.log("Se recibe en el action " + bossId + "   " + token)
   return dispatch => {
     dispatch(initLoad());
 
     let boss = {};
-    new Services(aux_token, boss.idJefe).getBossDetail((response => {
+    new Services(aux_token, bossId).getBossDetail((response => {
       console.log(response);
       boss = response.data;
       dispatch(getBossDetailSuccess(boss));
