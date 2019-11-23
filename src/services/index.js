@@ -3,8 +3,8 @@ import API from "../network/API";
 export class Services {
   constructor(token, pathParam = null, body = null) {
     this.token = token;
-    this.body = body;
     this.pathParam = pathParam;
+    this.body = body;
   }
 
   signIn = (callback, callbackError = (error => { console.log(error); })) => {
@@ -45,18 +45,6 @@ export class Services {
 
   getAuditableUserAccounts = (callback, callbackError = (error => { console.log(error); })) => {
     API.request(this.token).get(`${global.config.current.SERVERS.RECERTIFICATION}/auditableAcounts`, (responseJson => {
-      Promise.resolve({
-        data: responseJson
-      }).then(callback);
-    }), (responseError => {
-      Promise.resolve({
-        error: responseError
-      }).then(callbackError);
-    }));
-  }
-
-  getBossDetail = (callback, callbackError = (error => { console.log(error); })) => {
-    API.request(this.token).get(`${global.config.current.SERVERS.RECERTIFICATION}/bossDetail/${this.pathParam}`, (responseJson => {
       Promise.resolve({
         data: responseJson
       }).then(callback);
@@ -115,5 +103,29 @@ export class Services {
     }));
   }
   
+
+  getBossesData = (callback, callbackError = (error => { console.log(error); })) => {
+    API.request(this.token).get(`${global.config.current.SERVERS.RECERTIFICATION}/bossesData`, (responseJson => {
+      Promise.resolve({
+        data: responseJson
+      }).then(callback);
+    }), (responseError => {
+      Promise.resolve({
+        error: responseError
+      }).then(callbackError);
+    }));
+  }
+
+  getBossDetail = (callback, callbackError = (error => { console.log(error); })) => {
+    API.request(this.token).get(`${global.config.current.SERVERS.RECERTIFICATION}/bossDetail/${this.pathParam}`, (responseJson => {
+      Promise.resolve({
+        data: responseJson
+      }).then(callback);
+    }), (responseError => {
+      Promise.resolve({
+        error: responseError
+      }).then(callbackError);
+    }));
+  }
   
 }

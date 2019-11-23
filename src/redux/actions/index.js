@@ -1,12 +1,14 @@
 import { Services } from "../../services";
 
-const aux_token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU3NDUwNDMwOCwiaWF0IjoxNTc0NDQ0MzA4fQ.XU1FPkGwro5YVFQzueGCtfpwDTY6U_xlIJ__08OVLvtdvAJ9E-9f8hOpaK1QnSqCx12SGtVDhqxVNSBzYY77UtdzRIQQ";
+const aux_token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU3NDU4ODAzMCwiaWF0IjoxNTc0NTI4MDMwfQ.2nXRmvI0l4aynkuFNn_WaSGz2ee3uJ00j7wMjamVZC_g8IOAqCDNwWN2Ivhg6K4KJ0a0HThs7ZLYO0tZEzYzzw";
 
 export const ACTIONS = {
   SIGNIN_SUCCESS: "SIGNIN_SUCCESS",
   SIGNOUT_SUCCESS: "SIGNOUT_SUCCESS",
   INIT_LOAD: "INIT_LOAD",
   FINISH_LOAD: "FINISH_LOAD",
+  SET_SELECTED_BOSS: "SET_SELECTED_BOSS",
+  GET_BOSSES_DATA_SUCCESS: "GET_BOSSES_DATA_SUCCESS",
   DELETE_EMPLOYEE_SUCCESS: "DELETE_EMPLOYEE_SUCCESS",
   ADD_EMPLOYEE_SUCCESS: "ADD_EMPLOYEE_SUCCESS",
   GET_BOSS_DETAIL_SUCCESS: "GET_BOSS_DETAIL_SUCCESS",
@@ -155,12 +157,12 @@ const addEmployeeSuccess = employee => {
   }
 }
 
-export const getBossDetail = (idBoss, token) => {
+export const getBossDetail = (boss, token) => {
   return dispatch => {
     dispatch(initLoad());
 
     let boss = {};
-    new Services(aux_token, idBoss).getBossDetail((response => {
+    new Services(aux_token, boss.idJefe).getBossDetail((response => {
       console.log(response);
       boss = response.data;
       dispatch(getBossDetailSuccess(boss));
@@ -274,3 +276,30 @@ export const sendEmail = (token, boss) => {
     }));
   }
 } 
+
+
+export const getBossesData = token => {
+  return dispatch => {
+    dispatch(initLoad());
+    new Services(aux_token).getBossesData((response => {
+      dispatch(getBossesDataSuccess(response.data.jefes));
+      dispatch(finishLoad("Se obtuvieron de forma correcta los jefes"));
+    }), (responseError => {
+      dispatch(finishLoad("No se pudo obtener la información de los jefes"));
+    }));
+  }
+}
+
+const getBossesDataSuccess = bosses => {
+  return {
+    type: ACTIONS.GET_BOSSES_DATA_SUCCESS,
+    bosses
+  }
+}
+
+export const setSelectedBoss = selectedBoss => {
+  return {
+    type: ACTIONS.SET_SELECTED_BOSS,
+    selectedBoss
+  }
+}
