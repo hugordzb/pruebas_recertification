@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Grid } from '@material-ui/core';
 import BossesTable from '../BossesTable';
-import EmployeesTable from '../EmployeesTable';
+import EmployeesTableForRecertification from '../EmployeesTableForRecertification';
 import { connect } from 'react-redux';
 import { getBossesData } from '../../redux/actions';
 
@@ -13,7 +13,7 @@ class Recertification extends Component {
   }
 
   render() {
-    const { bosses, boss } = this.props;
+    const { bosses, selectedBoss } = this.props;
     return (
       <Grid container
         direction="column" justify="center" alignItems="center" >
@@ -23,7 +23,7 @@ class Recertification extends Component {
 
         <Grid item>
           {
-            <EmployeesTable boss={boss} />
+            <EmployeesTableForRecertification selectedBoss={selectedBoss} />
           }
         </Grid>
       </Grid>

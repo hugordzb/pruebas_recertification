@@ -10,7 +10,7 @@ const initialState = () => {
     state = {
       userData,
       isAuthenticated,
-      profile: "Jefe"
+      profile: "Arquitectura"
     }
   }
 
