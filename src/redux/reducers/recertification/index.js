@@ -3,10 +3,11 @@ import { ACTIONS } from '../../actions';
 const initialState = () => {
   let state = {
     auditableSystems: [],
-    auditableAccounts: [],
+    auditableBosses: [],
+    auditableEmployees: [],
+    selectedBoss: {}, 
     boss: {},
-    requestedChanges: [],
-    errorMessage: ""
+    requestedChanges: []
   };
 
   return state;
@@ -17,14 +18,10 @@ export const recertification = (state = initialState(), action) => {
     case ACTIONS.DELETE_EMPLOYEE_SUCCESS:
       return {
         ...state,
-        userData: action.userData,
-        isAuthenticated: (action.userData.userId && action.userData.token) ? true : false
       }
     case ACTIONS.ADD_EMPLOYEE_SUCCESS:
       return {
         ...state,
-        userData: action.userData,
-        isAuthenticated: (action.userData.userId && action.userData.token) ? true : false
       }
     case ACTIONS.GET_BOSS_DETAIL_SUCCESS:
       return {
@@ -45,10 +42,15 @@ export const recertification = (state = initialState(), action) => {
         ...state,
         auditableAccounts: action.auditableAccounts
       }
-    case ACTIONS.NOTIFY_ERROR_SUCCESS:
+    case ACTIONS.GET_BOSSES_DATA_SUCCESS:
       return {
         ...state,
-        messageError: action.messageError
+        auditableBosses: action.auditableBosses
+      }
+    case ACTIONS.SET_SELECTED_BOSS:
+      return {
+        ...state,
+        selectedBoss: action.selectedBoss
       }
     default:
       return state
