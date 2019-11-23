@@ -1,4 +1,7 @@
 const DEV_VARS = {
+  PAGES: {
+    SSO_CLIENT: "http://localhost:3000/sso"
+  },
   SERVERS: {
     RECERTIFICATION: `http://172.18.8.210:8080/recertification/api/v1`,
     SSO: `http://172.20.3.28:8070/wsso/api/v1`,
@@ -7,6 +10,9 @@ const DEV_VARS = {
 };
 
 const PROD_VARS = {
+  PAGES: {
+    SSO_CLIENT: "http://localhost:3000/sso"
+  },
   SERVERS: {
     RECERTIFICATION: `http://172.18.8.210:8080/recertification/api/v1`,
     SSO: `http://172.20.3.28:8070/wsso/api/v1`,

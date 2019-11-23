@@ -28,7 +28,7 @@ export const signIn = token => {//Este token no se cambia, tiene que ser el que 
       localStorage.setItem('userData', JSON.stringify(userData));
       dispatch(signInSuccess(userData));
       dispatch(finishLoad("Inicio de sesión de forma correcta"));
-      //window.location.href = `${window.location.href.replace(`${window.location.pathname}`, "")}${window.location.pathname}`;
+      window.location.href = `${window.location.href.replace(`${window.location.pathname}`, "")}${window.location.pathname}`;
     }), (responseError => {
       dispatch(finishLoad("Hubo un error en la carga"));
     }));
@@ -57,6 +57,7 @@ export const signOut = () => {
       apps: []
     }
     dispatch(signOutSuccess(userData));
+    window.location.href = `${global.config.current.PAGES.SSO_CLIENT}`;
   }
 }
 
