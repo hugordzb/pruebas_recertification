@@ -257,13 +257,13 @@ const getRequestedChangesSuccess = requestedChanges => {
 }
 
 
-export const sendEmail = (token, boss) => {
+export const sendEmail = (token, bossId) => {
   return dispatch => {
     dispatch(initLoad());
-    new Services(aux_token, boss.idJefe).sendEmailToBoss((response => {
+    new Services(aux_token, bossId).sendEmailToBoss((response => {
       dispatch(finishLoad("Se envio de forma correcta el correo"));
     }), (responseError => {
-      dispatch(finishLoad(`Hubo un error al enviar el correo a ${boss.jefe}`));
+      dispatch(finishLoad(`Hubo un error al enviar el correo a ${bossId}`));
     }));
   }
 } 

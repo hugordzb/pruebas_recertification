@@ -19,7 +19,7 @@ class BossesTable extends Component {
 
   handleSendEmail = boss => {
     const { userData, sendEmail } = this.props;
-    sendEmail(userData.token, boss)
+    sendEmail(userData.token, boss);
   }
 
   renderBossesTable = bosses => {
@@ -94,7 +94,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  sendEmail: (token, boss) => dispatch(sendEmail(token, boss)),
+  sendEmail: (token, bossId) => dispatch(sendEmail(token, bossId)),
   setSelectedBoss: selectedBoss => dispatch(setSelectedBoss(selectedBoss)),
   getBossDetail: (token, bossId) => dispatch(getBossDetail(token, bossId))
 });
