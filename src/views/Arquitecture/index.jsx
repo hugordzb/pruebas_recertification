@@ -10,7 +10,7 @@ class Arquitecture extends React.Component {
     return (
       <TemplatePage>
         <Recertification userData={userData}/>
-      </TemplatePage >
+      </TemplatePage>
     )
   }
 }

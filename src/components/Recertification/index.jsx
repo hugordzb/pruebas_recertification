@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { getBossesData } from '../../redux/actions';
 
 class Recertification extends Component {
+  
   componentDidMount() {
     const { userData, getBossesData } = this.props;
     getBossesData(userData.token);

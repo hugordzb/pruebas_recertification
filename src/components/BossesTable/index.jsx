@@ -8,9 +8,8 @@ import { sendEmail, setSelectedBoss, getBossDetail } from '../../redux/actions';
 class BossesTable extends Component {
 
   showBossInfo = boss => {
-    const { userData, setSelectedBoss, getBossDetail } = this.props;
-    setSelectedBoss(boss);
-    getBossDetail(userData.token, boss.idJefe);
+    this.props.setSelectedBoss(boss);
+    this.props.getBossDetail(this.props.userData.token, boss.idJefe);
   }
 
   handleRecertificate = boss => {
@@ -18,8 +17,7 @@ class BossesTable extends Component {
   }
 
   handleSendEmail = boss => {
-    const { userData, sendEmail } = this.props;
-    sendEmail(userData.token, boss);
+    this.props.sendEmail(this.props.userData.token, boss);
   }
 
   renderBossesTable = bosses => {

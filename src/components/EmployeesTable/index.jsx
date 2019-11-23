@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { Table, Paper, TableHead, TableRow, TableCell, TableBody, withStyles, Fab, Button } from '@material-ui/core';
 import { style } from '../../styles/EmployeesTable';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
-import { connect } from 'react-redux';
-import { getBossDetail } from '../../redux/actions';
 
 class EmployeesTable extends Component {
 
