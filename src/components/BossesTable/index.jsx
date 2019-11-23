@@ -44,21 +44,21 @@ class BossesTable extends Component {
             {
               bosses.map(boss => {
                 return (
-                  <TableRow key={`${boss.idJefe}`}>
-                    <TableCell key={`${boss.idJefe}`}>
-                      {`${boss.idJefe}`}
+                  <TableRow key={boss.idJefe}>
+                    <TableCell key={boss.idJefe}>
+                      {boss.idJefe}
                     </TableCell>
-                    <TableCell key={`${boss.nombre}`}>
-                      {`${boss.nombre}`}
+                    <TableCell key={boss.nombre}>
+                      {boss.nombre}
                     </TableCell>
-                    <TableCell key={`${boss.correo}`}>
-                      {`${boss.correo}`}
+                    <TableCell key={boss.correo}>
+                      {boss.correo}
                     </TableCell>
-                    <TableCell key={`${boss.correoCC}`}>
-                      {`${boss.correoCC}`}
+                    <TableCell key={boss.correoCC}>
+                      {boss.correoCC ? boss.correoCC : ''}
                     </TableCell>
-                    <TableCell key={`${boss.departamento}`}>
-                      {`${boss.departamento}`}
+                    <TableCell key={boss.departamento}>
+                      {boss.departamento}
                     </TableCell>
                     <TableCell key={`${boss.idJefe} send email`}>
                       <Button onClick={() => this.handleSendEmail(boss.idJefe)}>Enviar correo</Button>
