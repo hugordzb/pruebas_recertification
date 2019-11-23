@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Paper, Table, TableHead, TableRow, TableCell, TableBody, LinearProgress } from '@material-ui/core';
+import { Table, TableHead, TableRow, TableCell, TableBody, LinearProgress } from '@material-ui/core';
 import { style } from '../../styles/Binnacle'
 import { withStyles } from '@material-ui/core';
 import { connect } from 'react-redux';
