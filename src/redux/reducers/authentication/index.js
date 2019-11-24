@@ -9,8 +9,7 @@ const initialState = () => {
     let isAuthenticated = (userData.userId && userData.token) ? true : false;
     state = {
       userData,
-      isAuthenticated,
-      profile: "Mesa de servicio"
+      isAuthenticated
     }
   }
 

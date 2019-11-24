@@ -19,22 +19,21 @@ export const ACTIONS = {
   GET_REQUESTED_CHANGES_SUCCESS: "GET_REQUESTED_CHANGES_SUCCESS"
 }
 
-export const signIn = token => {//Este token no se cambia, tiene que ser el que se recibe
+export const signIn = (token, idSistema, idPerfil) => {//Este token no se cambia, tiene que ser el que se recibe
   return dispatch => {
     dispatch(initLoad());
 
-    new Services(token).signIn((response => {
+    new Services(token).checkAccessSignIn(idSistema, idPerfil, (response => {
       let userData = response.data;
       userData["token"] = token;
       localStorage.setItem('userData', JSON.stringify(userData));
       dispatch(signInSuccess(userData));
       dispatch(finishLoad("Inicio de sesión de forma correcta"));
-      window.location.href = `${window.location.href.replace(`${window.location.pathname}`, "")}${window.location.pathname}`;
+      //window.location.href = `${window.location.href.replace(`${window.location.pathname}`, "")}${window.location.pathname}`;
     }), (responseError => {
       dispatch(finishLoad("Hubo un error en la carga"));
     }));
   }
-
 };
 
 const signInSuccess = userData => {

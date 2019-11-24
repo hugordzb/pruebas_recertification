@@ -7,8 +7,8 @@ export class Services {
     this.body = body;
   }
 
-  signIn = (callback, callbackError = (error => { console.log(error); })) => {
-    API.request(this.token).get(`${global.config.current.SERVERS.SSO}/system`, (responseJson => {
+  checkAccessSignIn = (idSistema, idPerfil, callback, callbackError = (error => { console.log(error); })) => {
+    API.request(this.token).get(`${global.config.current.SERVERS.SSO}/system?sistema=${idSistema}&idPerfil=${idPerfil}`, (responseJson => {
       Promise.resolve({
         data: responseJson
       }).then(callback);
