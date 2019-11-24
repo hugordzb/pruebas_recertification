@@ -1,6 +1,8 @@
 import React from 'react';
 import {Switch, Route} from "react-router-dom";
+import { LinearProgress } from '@material-ui/core';
 import Whoops404 from './views/Whoops404';
+import TemplatePage from './components/TemplatePage';
 import { connect } from 'react-redux';
 import { signIn } from './redux/actions/';
 import Arquitecture from './views/Arquitecture';
@@ -24,17 +26,29 @@ class App extends React.Component {
       }
     }
   }
+
+  loadingComponent = () => {
+    return (
+      <TemplatePage>
+        <LinearProgress />
+      </TemplatePage>
+    );
+  }
   
   renderForProfile = () => {
-    switch (this.props.userData.profile) {
-      case "Arquitectura":
-        return <Route path="/" component={Arquitecture} />
-      case "Mesa de servicio":
-        return <Route path="/" component={HelpDesk} />
-      case "Jefe":
-        return <Route path="/" component={Boss} />
-      default:
-        break;
+    if( this.props.userData && this.props.userData.profile){
+      switch (this.props.userData.profile) {
+        case "Arquitectura":
+          return <Route path="/" component={Arquitecture} />
+        case "Mesa de servicio":
+          return <Route path="/" component={HelpDesk} />
+        case "Jefe":
+          return <Route path="/" component={Boss} />
+        default:
+          break;
+      }
+    }else{
+      return <Route path="/" component={this.loadingComponent} />
     }
   }
 
