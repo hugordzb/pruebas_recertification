@@ -18,12 +18,10 @@ class App extends React.Component {
     let sistema = params.get('sistema');
     let idPerfil = params.get('idPerfil');
 
-    if (!this.props.isAuthenticated) {
-      if((token && token !== '') 
-        && (sistema && sistema !== '') 
-        && (idPerfil && idPerfil !== '')){
-          this.props.signIn(token, sistema, idPerfil);
-      }
+    if((token && token !== '') 
+      && (sistema && sistema !== '') 
+      && (idPerfil && idPerfil !== '')){
+      this.props.signIn(token, sistema, idPerfil);
     }
   }
 
