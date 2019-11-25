@@ -6,17 +6,20 @@ import Recertification from '../../components/Recertification';
 
 class Arquitecture extends React.Component {
   render() {
-    const { userData } = this.props;
+    const { userData, isAuthenticated } = this.props;
     return (
       <TemplatePage>
-        <Recertification userData={userData}/>
+        {
+          isAuthenticated ? <Recertification userData={userData}/> : <></>
+        }
       </TemplatePage>
     )
   }
 }
 
 const mapStateToProps = state => ({
-  userData: state.authentication.userData
+  userData: state.authentication.userData,
+  isAuthenticated : state.authentication.isAuthenticated
 });
 
 const connectedArquitecture = connect(mapStateToProps, null)(Arquitecture);

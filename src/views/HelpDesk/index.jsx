@@ -5,10 +5,12 @@ import { connect } from 'react-redux';
 
 class HelpDesk extends Component {
   render() {
-    const { userData } = this.props;
+    const { userData, isAuthenticated } = this.props;
     return (
       <TemplatePage>
-        <Binnacle userData={userData} />
+        {
+          isAuthenticated ? <Binnacle userData={userData} /> : <></>
+        }
       </TemplatePage >
     );
   }
@@ -16,6 +18,7 @@ class HelpDesk extends Component {
 
 const mapStateToProps = state => ({
   userData: state.authentication.userData,
+  isAuthenticated: state.authentication.isAuthenticated
 });
 
 const connectedHelpDesk = connect(mapStateToProps, null)(HelpDesk);

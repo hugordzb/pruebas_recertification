@@ -5,17 +5,20 @@ import { connect } from 'react-redux';
 
 class Boss extends Component {
   render() {
-    const { userData } = this.props;
+    const { userData, isAuthenticated } = this.props;
     return (
       <TemplatePage>
-        <EmployeesTableForBoss userData={userData} />
+        {
+          isAuthenticated ? <EmployeesTableForBoss userData={userData} /> : <></>
+        }
       </TemplatePage >
     );
   }
 }
 
 const mapStateToProps = state => ({
-  userData: state.authentication.userData
+  userData: state.authentication.userData,
+  isAuthenticated: state.authentication.isAuthenticated
 });
 
 const connectedBoss = connect(mapStateToProps, null)(Boss);
