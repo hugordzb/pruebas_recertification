@@ -57,6 +57,13 @@ export const recertification = (state = initialState(), action) => {
         ...state,
         requestedChanges: action.requestedChanges
       }
+    case ACTIONS.PROCESS_CHANGE_SUCCESS:
+      let newRequestedChanges = state.requestedChanges;
+      newRequestedChanges.splice( newRequestedChanges.indexOf(action.change), 1 );
+      return {
+        ...state,
+        requestedChanges: newRequestedChanges
+      }
     default:
       return state
   }

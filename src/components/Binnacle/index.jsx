@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { Table, TableHead, TableRow, TableCell, TableBody, LinearProgress } from '@material-ui/core';
+import { Table, TableHead, TableRow, TableCell, TableBody, LinearProgress, Fab } from '@material-ui/core';
 import { style } from '../../styles/Binnacle'
 import { withStyles } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { getRequestedChanges } from '../../redux/actions';
+import { getRequestedChanges, processChange } from '../../redux/actions';
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 
 class Binnacle extends Component {
   componentDidMount() {
@@ -11,58 +13,78 @@ class Binnacle extends Component {
     getRequestedChanges(userData.token);
   }
 
+  handleApprovement = (change, approvement) => {
+    const { userData } = this.props;
+    if (approvement) {
+      alert("Se va a aprobar ");
+      this.props.processChange(userData.token, change, userData.userId);
+    } else {
+      alert("No se va a aprobar");
+    }
+
+  }
+
   renderBinnacle = requestedChanges => {
     const { classes } = this.props;
     if (requestedChanges.length > 0) {
-      return requestedChanges.map(change => {
-        return (
-          <Table size="small" className={classes.table}>
-            <TableHead>
-              <TableRow>
-                <TableCell colSpan={13} className={classes.tableTitle}>Movimientos</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className={classes.tableTitle}>Número</TableCell>
-                <TableCell className={classes.tableTitle}>Tipo</TableCell>
-                <TableCell className={classes.tableTitle}>Id usuario</TableCell>
-                <TableCell className={classes.tableTitle}>Id perfil</TableCell>
-                <TableCell className={classes.tableTitle}>Id sistema</TableCell>
-                <TableCell className={classes.tableTitle}>Cuenta sistema</TableCell>
-                <TableCell className={classes.tableTitle}>Id jefe</TableCell>
-                <TableCell className={classes.tableTitle}>Solicitante</TableCell>
-                <TableCell className={classes.tableTitle}>Nueva cuenta sistema</TableCell>
-                <TableCell className={classes.tableTitle}>Nuevo id suario</TableCell>
-                <TableCell className={classes.tableTitle}>Nuevo id jefe</TableCell>
-                <TableCell className={classes.tableTitle}>Nuevo id perfil</TableCell>
-                <TableCell className={classes.tableTitle}>Nuevo id sistema</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {
-                requestedChanges.map(change => {
-                  return (
-                    <TableRow key={change.idMovimiento}>
-                      <TableCell key={change.idMovimiento}>{change.idMovimiento}</TableCell>
-                      <TableCell key={change.tipoMov}>{change.tipoMov}</TableCell>
-                      <TableCell key={change.idUsuario}>{change.idUsuario}</TableCell>
-                      <TableCell key={change.idPerfil}>{change.idPerfil}</TableCell>
-                      <TableCell key={change.idSistema}>{change.idSistema}</TableCell>
-                      <TableCell key={change.cuentaSistema}>{change.cuentaSistema}</TableCell>
-                      <TableCell key={change.idJefe}>{change.idJefe}</TableCell>
-                      <TableCell key={change.solicitante}>{change.solicitante}</TableCell>
-                      <TableCell key={change.ncuentaSistema}>{change.ncuentaSistema}</TableCell>
-                      <TableCell key={change.nidUsuario}>{change.nidUsuario}</TableCell>
-                      <TableCell key={change.nidJefe}>{change.nidJefe}</TableCell>
-                      <TableCell key={change.nidPerfil}>{change.nidPerfil}</TableCell>
-                      <TableCell key={change.nidSistema}>{change.nidSistema}</TableCell>
-                    </TableRow>
-                  )
-                })
-              }
-            </TableBody>
-          </Table>
-        )
-      })
+      return (
+        <Table size="small" className={classes.table}>
+          <TableHead>
+            <TableRow>
+              <TableCell colSpan={13} className={classes.tableTitle}>Movimientos</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell className={classes.tableTitle}>Número</TableCell>
+              <TableCell className={classes.tableTitle}>Tipo</TableCell>
+              <TableCell className={classes.tableTitle}>Id usuario</TableCell>
+              <TableCell className={classes.tableTitle}>Id perfil</TableCell>
+              <TableCell className={classes.tableTitle}>Id sistema</TableCell>
+              <TableCell className={classes.tableTitle}>Cuenta sistema</TableCell>
+              <TableCell className={classes.tableTitle}>Id jefe</TableCell>
+              <TableCell className={classes.tableTitle}>Solicitante</TableCell>
+              <TableCell className={classes.tableTitle}>Nueva cuenta sistema</TableCell>
+              <TableCell className={classes.tableTitle}>Nuevo id suario</TableCell>
+              <TableCell className={classes.tableTitle}>Nuevo id jefe</TableCell>
+              <TableCell className={classes.tableTitle}>Nuevo id perfil</TableCell>
+              <TableCell className={classes.tableTitle}>Nuevo id sistema</TableCell>
+              <TableCell colSpan={2} className={classes.tableTitle}>Opciones</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {
+              requestedChanges.map((change, i) => {
+                return (
+                  <TableRow key={`${change.idMovimiento} id ${i} row`}>
+                    <TableCell key={`${change.idMovimiento} id ${i} cell`}>{`${change.idMovimiento}`}</TableCell>
+                    <TableCell key={`${change.tipoMov} ${i} type cell`}>{change.tipoMov}</TableCell>
+                    <TableCell key={`${change.idUsuario} ${i} userId cell`}>{change.idUsuario}</TableCell>
+                    <TableCell key={`${change.idPerfil} ${i} profile cell`}>{change.idPerfil}</TableCell>
+                    <TableCell key={`${change.idSistema} ${i} systemId cell`}>{change.idSistema}</TableCell>
+                    <TableCell key={`${change.cuentaSistema} ${i} systemAccount cell`}>{change.cuentaSistema}</TableCell>
+                    <TableCell key={`${change.idJefe} ${i} bossId cell`}>{change.idJefe}</TableCell>
+                    <TableCell key={`${change.solicitante} ${i} requester cell`}>{change.solicitante}</TableCell>
+                    <TableCell key={`${change.ncuentaSistema} ${i} new systemAccount cell`}>{change.ncuentaSistema}</TableCell>
+                    <TableCell key={`${change.nidUsuario} ${i} new userId cell`}>{change.nidUsuario}</TableCell>
+                    <TableCell key={`${change.nidJefe} ${i} new bossId cell`}>{change.nidJefe}</TableCell>
+                    <TableCell key={`${change.nidPerfil} ${i} new profileId cell`}>{change.nidPerfil}</TableCell>
+                    <TableCell key={`${change.nidSistema} ${i} new systemId cell`}>{change.nidSistema}</TableCell>
+                    <TableCell key={`${change.idMovimiento} ${i} approvement change cell`}>
+                      <Fab color="primary" onClick={() => this.handleApprovement(change, true)}>
+                        <ThumbUpIcon />
+                      </Fab>
+                    </TableCell>
+                    <TableCell key={`${change.idMovimiento} ${i} disapprovement change cell`}>
+                      <Fab color="secondary" onClick={() => this.handleApprovement(change, false)}>
+                        <ThumbDownIcon />
+                      </Fab>
+                    </TableCell>
+                  </TableRow>
+                )
+              })
+            }
+          </TableBody>
+        </Table>
+      )
     } else {
       return (<p>No hay cambios registrados</p>)
     }
@@ -82,7 +104,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getRequestedChanges: token => dispatch(getRequestedChanges(token))
+  getRequestedChanges: token => dispatch(getRequestedChanges(token)),
+  processChange: (token, change, whoAttended) => dispatch(processChange(token, change, whoAttended))
 })
 
 const connectedBinnacle = connect(mapStateToProps, mapDispatchToProps)(Binnacle)

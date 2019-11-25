@@ -115,7 +115,7 @@ export class Services {
   }
 
   processChange = (callback, callbackError = (error => { console.log(error); })) => {
-    API.request(this.token).put(`${global.config.current.SERVERS.RECERTIFICATION}/requestChange`, this.body, (responseJson => {
+    API.request(this.token).put(`${global.config.current.SERVERS.RECERTIFICATION}/processChange`, this.body, (responseJson => {
       Promise.resolve({
         data: responseJson
       }).then(callback);

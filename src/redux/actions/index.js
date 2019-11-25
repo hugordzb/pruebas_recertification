@@ -14,7 +14,8 @@ export const ACTIONS = {
   GET_AUDITABLE_SYSTEMS_SUCCESS: "GET_AUDITABLE_SYSTEMS_SUCCESS",
   GET_AUDITABLE_USER_ACCOUNTS_SUCCESS: "GET_AUDITABLE_USER_ACCOUNTS_SUCCESS",
   SEND_EMAIL_SUCCESS: "SEND_EMAIL_SUCCESS",
-  GET_REQUESTED_CHANGES_SUCCESS: "GET_REQUESTED_CHANGES_SUCCESS"
+  GET_REQUESTED_CHANGES_SUCCESS: "GET_REQUESTED_CHANGES_SUCCESS",
+  PROCESS_CHANGE_SUCCESS: "PROCESS_CHANGE_SUCCESS"
 }
 
 export const signIn = (token, idSistema, idPerfil) => {//Este token no se cambia, tiene que ser el que se recibe
@@ -30,7 +31,7 @@ export const signIn = (token, idSistema, idPerfil) => {//Este token no se cambia
       dispatch(signInSuccess(userData));
       dispatch(finishLoad("Inicio de sesión de forma correcta"));
 
-      servicio.createTokenRecertification(userData.userId, token, 
+      servicio.createTokenRecertification(userData.userId, token,
         (responseRecert => {
           console.log('Responsio ' + responseRecert.data.token);
           userData['token'] = responseRecert.data.token;
@@ -100,16 +101,16 @@ export const deleteEmployee = (token, employee, requester) => {
 
     let data = {
       tipoMov: "B",
-      idUsuario: "bcavazos",
-      nIdUsuario: "3",
-      perfil: "admin",
-      sistema: "TEL",
-      nPerfil: "1",
-      nSistema: "CIAT",
-      cuentaSistema: "1",
-      nCuentaSistema: "9",
-      idJefe: "jefecito",
-      nIdJefe: "jefecito",
+      idUsuario: employee.idEmpleado,
+      nIdUsuario: "-",
+      perfil: "-",
+      sistema: "-",
+      nPerfil: "-",
+      nSistema: "-",
+      cuentaSistema: "-",
+      nCuentaSistema: "-",
+      idJefe: requester,
+      nIdJefe: "-",
       solicitante: requester
     }
 
@@ -276,7 +277,7 @@ export const sendEmail = (token, bossId) => {
       dispatch(finishLoad(`Hubo un error al enviar el correo a ${bossId}`));
     }));
   }
-} 
+}
 
 export const getBossesData = token => {
   return dispatch => {
@@ -301,5 +302,29 @@ export const setSelectedBoss = selectedBoss => {
   return {
     type: ACTIONS.SET_SELECTED_BOSS,
     selectedBoss
+  }
+}
+
+export const processChange = (token, change, whoAttended) => {
+  let data = {
+    idMovimiento: change.idMovimiento,
+    atendio: whoAttended,
+    estatus: "true",
+    comentarios: "Se va a hacer"
+  }
+  return dispatch => {
+    new Services(token, null, data).processChange((response => {
+      dispatch(processChangeSuccess(change));
+      dispatch(finishLoad("Se borro el empleado de manera correcta"));
+    }), (responseError => {
+      dispatch(finishLoad("Hubo un error en la carga"));
+    }));
+  }
+}
+
+const processChangeSuccess = change => {
+  return {
+    type: ACTIONS.PROCESS_CHANGE_SUCCESS,
+    change
   }
 }
