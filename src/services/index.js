@@ -7,6 +7,29 @@ export class Services {
     this.body = body;
   }
 
+  createTokenRecertification = (username, tokenSSO, callback, callbackError = (error => { console.log(error); })) => {
+    let customHeader = new Headers();
+    customHeader.append('Content-Type', 'application/json');
+    customHeader.append('credential', username);
+    customHeader.append('ssoToken', tokenSSO);
+
+    var config = {
+      headers : customHeader,
+      method: 'POST'
+    }
+
+    API.request().custom_get(`${global.config.current.SERVERS.RECERTIFICATION}/login`, config, 
+    (responseJSON => {
+      Promise.resolve({
+        data: responseJSON
+      }).then(callback);
+    }), (responseError => {
+      Promise.resolve({
+        error: responseError
+      }).then(callbackError);
+    }));
+  }
+
   checkAccessSignIn = (idSistema, idPerfil, callback, callbackError = (error => { console.log(error); })) => {
     API.request(this.token).get(`${global.config.current.SERVERS.SSO}/system?sistema=${idSistema}&idPerfil=${idPerfil}`, (responseJson => {
       Promise.resolve({

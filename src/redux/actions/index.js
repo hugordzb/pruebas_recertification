@@ -1,7 +1,5 @@
 import { Services } from "../../services";
 
-const aux_token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTU3NDU4ODAzMCwiaWF0IjoxNTc0NTI4MDMwfQ.2nXRmvI0l4aynkuFNn_WaSGz2ee3uJ00j7wMjamVZC_g8IOAqCDNwWN2Ivhg6K4KJ0a0HThs7ZLYO0tZEzYzzw";
-
 export const ACTIONS = {
   SIGNIN_SUCCESS: "SIGNIN_SUCCESS",
   SIGNOUT_SUCCESS: "SIGNOUT_SUCCESS",
@@ -23,13 +21,25 @@ export const signIn = (token, idSistema, idPerfil) => {//Este token no se cambia
   return dispatch => {
     dispatch(initLoad());
 
-    new Services(token).checkAccessSignIn(idSistema, idPerfil, (response => {
+    let servicio = new Services(token);
+
+    servicio.checkAccessSignIn(idSistema, idPerfil, (response => {
       let userData = response.data;
-      userData["token"] = token;
+      userData["tokenSSO"] = token;
       localStorage.setItem('userData', JSON.stringify(userData));
       dispatch(signInSuccess(userData));
       dispatch(finishLoad("Inicio de sesión de forma correcta"));
-      //window.location.href = `${window.location.href.replace(`${window.location.pathname}`, "")}${window.location.pathname}`;
+
+      servicio.createTokenRecertification(userData.userId, token, 
+        (responseRecert => {
+          console.log('Responsio ' + responseRecert.data.token);
+          userData['token'] = responseRecert.data.token;
+          localStorage.setItem('userData', JSON.stringify(userData));
+          dispatch(signInSuccess(userData));
+          dispatch(finishLoad("Inicio de sesión de forma correcta"));
+        }), (responseErrorRecer => {
+          console.log(responseErrorRecer);
+        }));
     }), (responseError => {
       dispatch(finishLoad("Hubo un error en la carga"));
     }));
@@ -69,7 +79,6 @@ const signOutSuccess = userData => {
 }
 
 /************LOADER ACTIONS ***************/
-
 const initLoad = () => {
   return {
     type: ACTIONS.INIT_LOAD
@@ -104,7 +113,7 @@ export const deleteEmployee = (token, employee, requester) => {
       solicitante: requester
     }
 
-    new Services(aux_token, null, data).requestChange((response => {
+    new Services(token, null, data).requestChange((response => {
       dispatch(deleteEmployeeSuccess(employee));
       dispatch(finishLoad("Se borro el empleado de manera correcta"));
     }), (responseError => {
@@ -139,7 +148,7 @@ export const addEmployee = (employee, token, requester) => {
       solicitante: requester
     }
 
-    new Services(aux_token, null, data).requestChange((response => {
+    new Services(token, null, data).requestChange((response => {
       dispatch(addEmployeeSuccess(employee));
       dispatch(finishLoad("Se dio de alta el empleado de manera correcta"));
     }), (responseError => {
@@ -160,7 +169,7 @@ export const getBossDetail = (token, bossId) => {
     dispatch(initLoad());
 
     let boss = {};
-    new Services(aux_token, bossId).getBossDetail((response => {
+    new Services(token, bossId).getBossDetail((response => {
       boss = response.data;
       dispatch(getBossDetailSuccess(boss));
       dispatch(finishLoad("Carga exitosa de la información del jefe"));
@@ -195,7 +204,7 @@ export const getAuditableSystems = token => {
 
     let auditableSystems = [];
 
-    new Services(aux_token).getSystems((response => {
+    new Services(token).getSystems((response => {
       auditableSystems = response.data.systems;
       dispatch(getAuditableSystemsSucccess(auditableSystems));
       dispatch(finishLoad("Carga exitosa de los sistemas auditables"));
@@ -217,7 +226,7 @@ export const getAuditableUserAccounts = token => {
     dispatch(initLoad());
     let auditableAccounts = [];
 
-    new Services(aux_token).getAuditableUserAccounts((response => {
+    new Services(token).getAuditableUserAccounts((response => {
       auditableAccounts = response.data.jefes;
       dispatch(getAuditableUserAccountsSuccess(auditableAccounts));
       dispatch(finishLoad("Carga exitosa de las cuentas auditables"));
@@ -239,7 +248,7 @@ export const getRequestedChanges = token => {
     dispatch(initLoad());
 
     let requestedChanges = [];
-    new Services(aux_token).getRequestedChanges((response => {
+    new Services(token).getRequestedChanges((response => {
       requestedChanges = response.data.movimientos;
       console.log(response.data.movimientos);
       dispatch(getRequestedChangesSuccess(requestedChanges));
@@ -261,7 +270,7 @@ const getRequestedChangesSuccess = requestedChanges => {
 export const sendEmail = (token, bossId) => {
   return dispatch => {
     dispatch(initLoad());
-    new Services(aux_token, bossId).sendEmailToBoss((response => {
+    new Services(token, bossId).sendEmailToBoss((response => {
       dispatch(finishLoad("Se envio de forma correcta el correo"));
     }), (responseError => {
       dispatch(finishLoad(`Hubo un error al enviar el correo a ${bossId}`));
@@ -269,11 +278,10 @@ export const sendEmail = (token, bossId) => {
   }
 } 
 
-
 export const getBossesData = token => {
   return dispatch => {
     dispatch(initLoad());
-    new Services(aux_token).getBossesData((response => {
+    new Services(token).getBossesData((response => {
       dispatch(getBossesDataSuccess(response.data.jefes));
       dispatch(finishLoad("Se obtuvieron de forma correcta los jefes"));
     }), (responseError => {

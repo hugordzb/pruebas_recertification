@@ -51,11 +51,10 @@ const request = {
 }
 
 const API = {
-  request: (tokenBearer, contentType = 'application/json') => {
+  request: (tokenBearer = null, contentType = 'application/json') => {
     var getConfig = (method, body = null, isJson = false) => {
-
+      
       let headers = new Headers();
-
       headers.append('Content-Type', contentType);
       headers.append('Authorization', `Bearer ${tokenBearer}`);
 
@@ -71,12 +70,14 @@ const API = {
           body: (isJson ? JSON.stringify(body) : body )
         }
       }
-
     };
 
     return {
       post: (url, callback, callbackError, callbackCatch) => {
         request._fetch(url, getConfig('POST', null, false), callback, callbackError, callbackCatch);
+      },
+      custom_get: (url, config, callback, callbackError, callbackCatch) => {
+        request._fetch(url, config, callback, callbackError, callbackCatch);
       },
       get: (url, callback, callbackError, callbackCatch) => {
         request._fetch(url, getConfig('GET'), callback, callbackError, callbackCatch);

@@ -13,20 +13,14 @@ class Recertification extends Component {
   }
 
   render() {
-    const { bosses, selectedBoss, isloading } = this.props;
+    const { bosses, selectedBoss} = this.props;
     return (
-      <Grid container
-        direction="column" justify="center" alignItems="center" >
+      <Grid container direction="column" justify="center" alignItems="center" >
         <Grid item>
-          {
-            bosses.length > 0 && !isloading ? <BossesTable bosses={bosses} /> : <LinearProgress color={"secondary"}/>
-          }
+            {bosses.length > 0 ? <BossesTable bosses={bosses} /> : <div>Cargando... <br /><LinearProgress color={"secondary"}/></div>}
         </Grid>
-
         <Grid item>
-          {
-            <EmployeesTableForRecertification selectedBoss={selectedBoss} />
-          }
+          <EmployeesTableForRecertification selectedBoss={selectedBoss} />
         </Grid>
       </Grid>
     );
