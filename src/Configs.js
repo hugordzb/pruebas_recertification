@@ -14,7 +14,7 @@ const PROD_VARS = {
     SSO_CLIENT: "http://172.20.3.43/sso/home"
   },
   SERVERS: {
-    RECERTIFICATION: `http://localhost:8080/recertification/api/v1`,
+    RECERTIFICATION: `http://172.20.3.28:8070/recertification/api/v1`,
     SSO: 'http://172.20.3.28:8070/wsso/api/v1',
   }
   
