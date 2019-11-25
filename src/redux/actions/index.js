@@ -15,7 +15,8 @@ export const ACTIONS = {
   GET_AUDITABLE_USER_ACCOUNTS_SUCCESS: "GET_AUDITABLE_USER_ACCOUNTS_SUCCESS",
   SEND_EMAIL_SUCCESS: "SEND_EMAIL_SUCCESS",
   GET_REQUESTED_CHANGES_SUCCESS: "GET_REQUESTED_CHANGES_SUCCESS",
-  PROCESS_CHANGE_SUCCESS: "PROCESS_CHANGE_SUCCESS"
+  PROCESS_CHANGE_SUCCESS: "PROCESS_CHANGE_SUCCESS",
+  UPLOAD_FILE_SUCCESS: "UPLOAD_FILE_SUCCESS"
 }
 
 export const signIn = (token, idSistema, idPerfil) => {//Este token no se cambia, tiene que ser el que se recibe
@@ -307,11 +308,12 @@ export const setSelectedBoss = selectedBoss => {
 
 export const processChange = (token, change, whoAttended) => {
   let data = {
-    idMovimiento: change.idMovimiento,
-    atendio: whoAttended,
-    estatus: "true",
-    comentarios: "Se va a hacer"
-  }
+    "idMovimiento" : change.idMovimiento,
+    "atendio" : whoAttended,
+    "estatus" : "true",
+    "comentarios" : "Se va a hacer"
+}
+
   return dispatch => {
     new Services(token, null, data).processChange((response => {
       dispatch(processChangeSuccess(change));
@@ -326,5 +328,24 @@ const processChangeSuccess = change => {
   return {
     type: ACTIONS.PROCESS_CHANGE_SUCCESS,
     change
+  }
+}
+
+export const uploadFile = (token, file) => {
+  console.log(file.name)
+  return dispatch => {
+    new Services(token, null, null, file).uploadFile((response => {
+      dispatch(uploadFileSuccess(file));
+      dispatch(finishLoad("Se subio correctamente el archivo"));
+    }), (responseError => {
+      dispatch(finishLoad("Hubo un error en la carga del archivo"));
+    }));
+  }
+}
+
+const uploadFileSuccess = file => {
+  return {
+    type: ACTIONS.UPLOAD_FILE_SUCCESS,
+    file
   }
 }

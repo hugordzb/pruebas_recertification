@@ -51,23 +51,34 @@ const request = {
 }
 
 const API = {
-  request: (tokenBearer = null, contentType = 'application/json') => {
-    var getConfig = (method, body = null, isJson = false) => {
-      
+  request: (tokenBearer = null, contentType = 'application/json', file = null) => {
+    var getConfig = (method, body = null, isJson = false, hasFile = false) => {
+
       let headers = new Headers();
       headers.append('Content-Type', contentType);
       headers.append('Authorization', `Bearer ${tokenBearer}`);
 
       if (body === null) {
-        return {
-          headers,
-          method
+        if (hasFile && file) {
+          let data = new FormData();
+          headers.append('Content-Type', file.types);
+          data.append("file", file, file.name);
+          return {
+            headers,
+            method,
+            body: data
+          }
+        }else{
+          return {
+            headers,
+            method
+          }
         }
       } else {
         return {
           headers,
           method,
-          body: (isJson ? JSON.stringify(body) : body )
+          body: (isJson ? JSON.stringify(body) : body)
         }
       }
     };
@@ -93,7 +104,10 @@ const API = {
       },
       getFile: (url, callback, callbackCatch) => {
         request._fetch_file(url, getConfig('GET'), callback, callbackCatch);
-      }
+      },
+      postFile: (url, callback, callbackError, callbackCatch) => {
+        request._fetch(url, getConfig('POST', null, false, true), callback, callbackError, callbackCatch);
+      },
     };
   }
 }

@@ -1,10 +1,11 @@
 import API from "../network/API";
 
 export class Services {
-  constructor(token, pathParam = null, body = null) {
+  constructor(token = null, pathParam = null, body = null, file = null) {
     this.token = token;
     this.pathParam = pathParam;
     this.body = body;
+    this.file = file
   }
 
   createTokenRecertification = (username, tokenSSO, callback, callbackError = (error => { console.log(error); })) => {
@@ -141,6 +142,18 @@ export class Services {
 
   getBossDetail = (callback, callbackError = (error => { console.log(error); })) => {
     API.request(this.token).get(`${global.config.current.SERVERS.RECERTIFICATION}/bossDetail/${this.pathParam}`, (responseJson => {
+      Promise.resolve({
+        data: responseJson
+      }).then(callback);
+    }), (responseError => {
+      Promise.resolve({
+        error: responseError
+      }).then(callbackError);
+    }));
+  }
+
+  uploadFile = (callback, callbackError = (error => { console.log(error); })) => {
+    API.request(this.token, null, this.file).postFile(`${global.config.current.SERVERS.RECERTIFICATION}/conciliacion`, (responseJson => {
       Promise.resolve({
         data: responseJson
       }).then(callback);

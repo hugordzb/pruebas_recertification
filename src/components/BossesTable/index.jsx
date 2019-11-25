@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Table, TableHead, TableRow, TableCell, 
-  TableBody, Paper, withStyles, Button} from '@material-ui/core';
+import {
+  Table, TableHead, TableRow, TableCell,
+  TableBody, Paper, withStyles, Button
+} from '@material-ui/core';
 import { style } from '../../styles/BossesTable';
 import { connect } from 'react-redux';
 import { sendEmail, setSelectedBoss, getBossDetail } from '../../redux/actions';
