@@ -78,10 +78,17 @@ export const recertification = (state = initialState(), action) => {
         selectedPeriod: action.selectedPeriod
       }
       case ACTIONS.RECERTIFY_BOSS_SUCCESS:
+        let newBosses = state.bosses.map(boss => {
+          let newBoss = boss;
+          if(boss.idJefe === action.bossId){
+            let auxRecertificado = boss.recertificado;
+            newBoss.recertificado = boss.inRecertificacion ? !auxRecertificado : auxRecertificado; 
+          }
+          return newBoss;
+        });
         return {
           ...state,
-          period: action.period,
-          bossid: action.bossid
+          bosses: newBosses
         }
     default:
       return state
