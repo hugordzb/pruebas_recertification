@@ -20,8 +20,8 @@ class BossesTable extends Component {
     this.props.getBossDetail(this.props.userData.token, boss.idJefe);
   }
 
-  handleRecertificate = boss => {
-    alert("Se va a recertificar por termino a " + boss.jefe);
+  saveRecertification = boss => {
+    alert("Se van a guardar cambios ");
   }
 
   handleSendEmail = boss => {
@@ -47,6 +47,7 @@ class BossesTable extends Component {
     const { classes } = this.props;
     return (
       <Paper className={classes.paper}>
+        <Button onClick={this.saveRecertification}>Recertificar</Button>
         <Table size="small" className={classes.table}>
           <TableHead>
             <TableRow>

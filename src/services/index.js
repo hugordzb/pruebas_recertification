@@ -153,7 +153,7 @@ export class Services {
   }
 
   uploadFile = (callback, callbackError = (error => { console.log(error); })) => {
-    API.request(this.token, null, this.file).postFile(`${global.config.current.SERVERS.RECERTIFICATION}/conciliacion`, (responseJson => {
+    API.request(this.token, null, this.file).postFile(`${global.config.current.SERVERS.RECERTIFICATION}/conciliacion/recertificacion`, (responseJson => {
       Promise.resolve({
         data: responseJson
       }).then(callback);

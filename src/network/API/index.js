@@ -55,13 +55,15 @@ const API = {
     var getConfig = (method, body = null, isJson = false, hasFile = false) => {
 
       let headers = new Headers();
-      headers.append('Content-Type', contentType);
+      if(!file){
+        headers.append('Content-Type', contentType);
+      }
+      
       headers.append('Authorization', `Bearer ${tokenBearer}`);
 
       if (body === null) {
         if (hasFile && file) {
           let data = new FormData();
-          headers.append('Content-Type', file.types);
           data.append("file", file, file.name);
           return {
             headers,
