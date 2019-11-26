@@ -5,7 +5,7 @@ import {
 } from '@material-ui/core';
 import { style } from '../../styles/BossesTable';
 import { connect } from 'react-redux';
-import { sendEmail, setSelectedBoss, getBossDetail } from '../../redux/actions';
+import { sendEmail, setSelectedBoss, getBossDetail, recertifyBoss } from '../../redux/actions';
 
 class BossesTable extends Component {
   constructor(props) {
@@ -29,11 +29,13 @@ class BossesTable extends Component {
   }
 
   handleCheck = (event, boss) => {
+    const { userData, selectedPeriod } = this.props;
     let isChecked = event.target.checked;
     let auxSelectedBosses = this.state.selectedBosses;
 
     if(isChecked){
       auxSelectedBosses.set(boss, isChecked);
+      this.props.recertifyBoss(userData.token, selectedPeriod, boss.idJefe);
     }else {
       auxSelectedBosses.delete(boss);
     }
@@ -96,6 +98,7 @@ class BossesTable extends Component {
                       <Checkbox
                         onChange={(event) => this.handleCheck(event, boss)}
                         color="primary"
+                        checked={boss.recertificado}
                       />
                     </TableCell>
                   </TableRow>
@@ -122,13 +125,15 @@ class BossesTable extends Component {
 
 const mapStateToProps = state => ({
   isloading: state.loader.isLoading,
-  userData: state.authentication.userData
+  userData: state.authentication.userData,
+  selectedPeriod: state.recertification.selectedPeriod
 });
 
 const mapDispatchToProps = dispatch => ({
   sendEmail: (token, bossId) => dispatch(sendEmail(token, bossId)),
   setSelectedBoss: selectedBoss => dispatch(setSelectedBoss(selectedBoss)),
-  getBossDetail: (token, bossId) => dispatch(getBossDetail(token, bossId))
+  getBossDetail: (token, bossId) => dispatch(getBossDetail(token, bossId)),
+  recertifyBoss: (token, period, bossId) => dispatch(recertifyBoss(token, period, bossId)),
 });
 
 const connectedBossesTable = connect(mapStateToProps, mapDispatchToProps)(BossesTable);

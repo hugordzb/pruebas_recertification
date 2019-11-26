@@ -13,6 +13,7 @@ class EmployeesTableForRecertification extends React.Component {
         this.props.boss.empleados.forEach(element => {
           element.cuentas.map((accountsInSystems, j) => {
             sistemas.push(accountsInSystems.system);
+            return "";
           });
         });
 

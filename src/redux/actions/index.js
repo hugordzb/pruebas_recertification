@@ -17,7 +17,9 @@ export const ACTIONS = {
   GET_REQUESTED_CHANGES_SUCCESS: "GET_REQUESTED_CHANGES_SUCCESS",
   PROCESS_CHANGE_SUCCESS: "PROCESS_CHANGE_SUCCESS",
   UPLOAD_FILE_SUCCESS: "UPLOAD_FILE_SUCCESS",
-  CLEAR_BOSS: "CLEAR_BOSS"
+  CLEAR_BOSS: "CLEAR_BOSS",
+  SELECT_PERIOD: "SELECT_PERIOD",
+  RECERTIFY_BOSS_SUCCESS: "RECERTIFY_BOSS_SUCCESS"
 }
 
 export const signIn = (token, idSistema, idPerfil) => {//Este token no se cambia, tiene que ser el que se recibe
@@ -253,7 +255,6 @@ export const getRequestedChanges = token => {
     let requestedChanges = [];
     new Services(token).getRequestedChanges((response => {
       requestedChanges = response.data.movimientos;
-      console.log(response.data.movimientos);
       dispatch(getRequestedChangesSuccess(requestedChanges));
       dispatch(finishLoad("Carga exitosa de los cambios solicitados"));
     }), (responseError => {
@@ -281,10 +282,10 @@ export const sendEmail = (token, bossId) => {
   }
 }
 
-export const getBossesData = token => {
+export const getBossesData = (token, selectedPeriod) => {
   return dispatch => {
     dispatch(initLoad());
-    new Services(token).getBossesData((response => {
+    new Services(token, selectedPeriod).getBossesData((response => {
       dispatch(getBossesDataSuccess(response.data.jefes));
       dispatch(finishLoad("Se obtuvieron de forma correcta los jefes"));
     }), (responseError => {
@@ -333,7 +334,6 @@ const processChangeSuccess = change => {
 }
 
 export const uploadFile = (token, file) => {
-  console.log(file.name)
   return dispatch => {
     new Services(token, null, null, file).uploadFile((response => {
       dispatch(uploadFileSuccess(file));
@@ -354,5 +354,46 @@ const uploadFileSuccess = file => {
 const clearBoss = () => {
   return {
     type: ACTIONS.CLEAR_BOSS
+  }
+}
+
+export const updateRecertificationStatus = (token, bossId) => {
+  return dispatch => {
+
+    updateRecertificationStatusSuccess(bossId)
+  }
+}
+
+const updateRecertificationStatusSuccess = bossId => {
+  return {
+    type: ACTIONS.UPDATE_RECERTIFICATION_STATUS_SUCCESS,
+    bossId
+  }
+}
+
+export const selectPeriod = selectedPeriod => {
+  return {
+    type: ACTIONS.SELECT_PERIOD,
+    selectedPeriod
+  }
+}
+
+export const recertifyBoss = (token, period, bossId) => {
+  let pathParams = [period, bossId];
+  return dispatch => {
+    new Services(token, pathParams).recertifyBoss((response => {
+      dispatch(recertifyBossSuccess(period, bossId));
+      dispatch(finishLoad("Se recertifico correctamente el jefe"));
+    }), (responseError => {
+      dispatch(finishLoad("Hubo un error al recertificar"));
+    }));
+  }
+}
+
+const recertifyBossSuccess = (period, bossId) => {
+  return {
+    type: ACTIONS.RECERTIFY_BOSS_SUCCESS,
+    period,
+    bossId
   }
 }

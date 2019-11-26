@@ -129,7 +129,7 @@ export class Services {
   
 
   getBossesData = (callback, callbackError = (error => { console.log(error); })) => {
-    API.request(this.token).get(`${global.config.current.SERVERS.RECERTIFICATION}/bossesData`, (responseJson => {
+    API.request(this.token).get(`${global.config.current.SERVERS.RECERTIFICATION}/bossesData/${this.pathParam}`, (responseJson => {
       Promise.resolve({
         data: responseJson
       }).then(callback);
@@ -154,6 +154,18 @@ export class Services {
 
   uploadFile = (callback, callbackError = (error => { console.log(error); })) => {
     API.request(this.token, null, this.file).postFile(`${global.config.current.SERVERS.RECERTIFICATION}/conciliacion/recertificacion`, (responseJson => {
+      Promise.resolve({
+        data: responseJson
+      }).then(callback);
+    }), (responseError => {
+      Promise.resolve({
+        error: responseError
+      }).then(callbackError);
+    }));
+  }
+
+  recertifyBoss = (callback, callbackError = (error => { console.log(error); })) => {
+    API.request(this.token).get(`${global.config.current.SERVERS.RECERTIFICATION}/recertifyBoss/${this.pathParam[0]}/${this.pathParam[1]}`, (responseJson => {
       Promise.resolve({
         data: responseJson
       }).then(callback);

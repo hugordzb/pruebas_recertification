@@ -2,7 +2,9 @@ import { ACTIONS } from '../../actions';
 
 const initialState = () => {
   let state = {
-    systems: [],
+    //systems: [],
+    periods: ['0219'],
+    selectedPeriod: "0219",
     bosses: [],
     selectedBoss: {},
     employees: [],
@@ -70,6 +72,17 @@ export const recertification = (state = initialState(), action) => {
         ...state,
         boss
       }
+    case ACTIONS.SELECT_PERIOD:
+      return {
+        ...state,
+        selectedPeriod: action.selectedPeriod
+      }
+      case ACTIONS.RECERTIFY_BOSS_SUCCESS:
+        return {
+          ...state,
+          period: action.period,
+          bossid: action.bossid
+        }
     default:
       return state
   }

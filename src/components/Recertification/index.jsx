@@ -5,12 +5,13 @@ import EmployeesTableForRecertification from '../EmployeesTableForRecertificatio
 import { connect } from 'react-redux';
 import { getBossesData } from '../../redux/actions';
 import FileUploader from '../FileUploader';
+import PeriodSelector from '../PeriodSelector';
 
 class Recertification extends Component {
 
   componentDidMount() {
-    const { userData, getBossesData } = this.props;
-    getBossesData(userData.token);
+    const { userData, selectedPeriod, getBossesData } = this.props;
+    getBossesData(userData.token, selectedPeriod);
   }
 
   render() {
@@ -19,6 +20,9 @@ class Recertification extends Component {
       <Grid container direction="column" justify="center" alignItems="center" >
         <Grid item>
           <FileUploader />
+        </Grid>
+        <Grid item>
+          <PeriodSelector />
         </Grid>
         <Grid item>
           {bosses.length > 0 ? <BossesTable bosses={bosses} /> : <div>Cargando... <br /><LinearProgress color={"secondary"} /></div>}
@@ -34,11 +38,12 @@ class Recertification extends Component {
 const mapStateToProps = state => ({
   bosses: state.recertification.bosses,
   selectedBoss: state.recertification.selectedBoss,
-  isloading: state.loader.isloading
+  isloading: state.loader.isloading,
+  selectedPeriod: state.recertification.selectedPeriod
 })
 
 const mapDispatchToProps = dispatch => ({
-  getBossesData: token => dispatch(getBossesData(token))
+  getBossesData: (token, selectedPeriod) => dispatch(getBossesData(token, selectedPeriod))
 })
 
 const connectedRecertification = connect(mapStateToProps, mapDispatchToProps)(Recertification);
