@@ -17,39 +17,119 @@ class EmployeesTableForBoss extends Component {
     const { userData } = this.props;
     this.props.deleteEmployee(userData.token, employee, userData.userId);
   }
+
+
+
+  allSystems = () => {
+    let sistemas = [];
+
+    if (this.props.boss.empleados && this.props.boss.empleados.length > 0) {
+      this.props.boss.empleados.forEach(element => {
+        element.cuentas.forEach((accountsInSystems, j) => {
+          sistemas.push(accountsInSystems.system);
+        });
+      });
+
+      let sistemasTmp = sistemas.filter(this.onlyUnique);
+      let columsSytem = [];
+      sistemasTmp.forEach((el, idx) => {
+        columsSytem.push({
+          column: idx,
+          system: el
+        });
+      });
+
+      return columsSytem;
+    }
+
+    return null;
+  }
+
+
+  onlyUnique = (value, index, self) => {
+    return self.indexOf(value) === index;
+  }
+
+  renderSystemsColumns = (systems) => {
+    let columns = [];
+
+    if (!systems)
+      return columns;
+
+    systems.forEach((element, idx) => {
+      columns.push(<TableCell key={idx + '-' + element.system} colSpan={2}
+        className={this.props.classes.tableTitle}>{element.system}</TableCell>);
+    });
+
+    return columns;
+  }
+
+  renderSystemsOptionsColumns = (systems) => {
+    let columns = [];
+
+    if(!systems)
+      return columns;
+
+    systems.forEach((element, idx) => {
+      columns.push(<TableCell key={'opt-'+idx} className={this.props.classes.tableTitle}>Cuenta</TableCell>);
+      columns.push(<TableCell key={'optp-'+idx} className={this.props.classes.tableTitle}>Perfil</TableCell>);
+    });
+
+    return columns;
+  }
+
+  renderItemsAccount = (systems, accountsInSystems) => {
+    let columns = [];
+
+    systems.forEach((elm, idx) => {
+      let valueRow1 = '---';
+      let valueRow2 = '---';
+
+      if(elm.system === accountsInSystems.system){
+        valueRow1 = accountsInSystems.cuenta;
+        valueRow2 = accountsInSystems.perfil;
+      }
+
+      columns.push(<TableCell key={`${idx} sap account employees cell`}>
+        {valueRow1}
+      </TableCell>);
+      
+      columns.push(<TableCell key={`${idx} sap role employees cell`}>
+        {valueRow2}
+      </TableCell>);
+    });
+
+    return columns;
+  }
+
+
   renderEmployeesTable = boss => {
     const { classes } = this.props;
     let employees = boss.empleados;
+    let systems = this.allSystems();
     return (
       <Paper className={classes.paper}>
         <h1>{boss.idJefe}</h1>
         <h2>{boss.jefe}</h2>
         {
           (employees.length > 0) ?
-            <Table size="small" className={classes.table}>
-              <TableHead>
-                <TableRow>
-                  <TableCell colSpan={10} className={classes.tableTitle}>Empleados</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className={classes.tableTitle}>Id</TableCell>
-                  <TableCell className={classes.tableTitle}>Nombre</TableCell>
-                  <TableCell colSpan={2} className={classes.tableTitle}>SAP</TableCell>
-                  <TableCell colSpan={2} className={classes.tableTitle}>TEL</TableCell>
-                  <TableCell colSpan={2} className={classes.tableTitle}>CIAT</TableCell>
-                  <TableCell colSpan={2} className={classes.tableTitle}>Opciones</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell colSpan={2} className={classes.tableTitle}></TableCell>
-                  <TableCell className={classes.tableTitle}>Cuenta</TableCell>
-                  <TableCell className={classes.tableTitle}>Perfil</TableCell>
-                  <TableCell className={classes.tableTitle}>Cuenta</TableCell>
-                  <TableCell className={classes.tableTitle}>Perfil</TableCell>
-                  <TableCell className={classes.tableTitle}>Cuenta</TableCell>
-                  <TableCell className={classes.tableTitle}>Perfil</TableCell>
-                  <TableCell colSpan={2} className={classes.tableTitle}></TableCell>
-                </TableRow>
-              </TableHead>
+          <Table size="small" className={classes.table}>
+          <TableHead>
+            <TableRow>
+              <TableCell colSpan={10} className={classes.tableTitle}>Empleados</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell className={classes.tableTitle}>Id</TableCell>
+              <TableCell className={classes.tableTitle}>Nombre</TableCell>
+              {this.renderSystemsColumns(systems)}
+              <TableCell colSpan={2} className={classes.tableTitle}>Opciones</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell colSpan={2} className={classes.tableTitle}></TableCell>
+              {this.renderSystemsOptionsColumns(systems)}
+              <TableCell colSpan={2} className={classes.tableTitle}></TableCell>
+            </TableRow>
+          </TableHead>
               <TableBody>
                 {
                   employees.map((employee, i) => {
@@ -69,24 +149,7 @@ class EmployeesTableForBoss extends Component {
                               :
                               <></>
                           }
-                          <TableCell key={`${accountsInSystems.csap} sap account employees cell`}>
-                            {accountsInSystems.csap ? accountsInSystems.csap : "----"}
-                          </TableCell>
-                          <TableCell key={`${accountsInSystems.psap} sap role employees cell`}>
-                            {accountsInSystems.psap ? accountsInSystems.psap : "----"}
-                          </TableCell>
-                          <TableCell key={`${accountsInSystems.ctel} tel account employees cell`}>
-                            {accountsInSystems.ctel ? accountsInSystems.ctel : "----"}
-                          </TableCell>
-                          <TableCell key={`${accountsInSystems.ptel} tel role employees cell`}>
-                            {accountsInSystems.ptel ? accountsInSystems.ptel : "----"}
-                          </TableCell>
-                          <TableCell key={`${accountsInSystems.cciat} ciat account employees cell`}>
-                            {accountsInSystems.cciat ? accountsInSystems.cciat : "----"}
-                          </TableCell>
-                          <TableCell key={`${accountsInSystems.pciat} ciat profile employees cell`}>
-                            {accountsInSystems.pciat ? accountsInSystems.pciat : "----"}
-                          </TableCell>
+                          {this.renderItemsAccount(systems, accountsInSystems)}
                           {
                             j === 0 ?
                               <>

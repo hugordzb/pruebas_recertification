@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Table, Paper, TableHead, TableRow, TableCell, TableBody, withStyles, LinearProgress } from '@material-ui/core';
 import { style } from '../../styles/EmployeesTable';
 import { getBossDetail } from '../../redux/actions';
@@ -11,7 +11,7 @@ class EmployeesTableForRecertification extends React.Component {
 
     if(this.props.boss.empleados && this.props.boss.empleados.length > 0){
         this.props.boss.empleados.forEach(element => {
-          element.cuentas.map((accountsInSystems, j) => {
+          element.cuentas.forEach((accountsInSystems, j) => {
             sistemas.push(accountsInSystems.system);
           });
         });
