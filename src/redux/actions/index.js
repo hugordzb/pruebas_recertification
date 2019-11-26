@@ -16,7 +16,8 @@ export const ACTIONS = {
   SEND_EMAIL_SUCCESS: "SEND_EMAIL_SUCCESS",
   GET_REQUESTED_CHANGES_SUCCESS: "GET_REQUESTED_CHANGES_SUCCESS",
   PROCESS_CHANGE_SUCCESS: "PROCESS_CHANGE_SUCCESS",
-  UPLOAD_FILE_SUCCESS: "UPLOAD_FILE_SUCCESS"
+  UPLOAD_FILE_SUCCESS: "UPLOAD_FILE_SUCCESS",
+  CLEAR_BOSS: "CLEAR_BOSS"
 }
 
 export const signIn = (token, idSistema, idPerfil) => {//Este token no se cambia, tiene que ser el que se recibe
@@ -169,6 +170,7 @@ const addEmployeeSuccess = employee => {
 export const getBossDetail = (token, bossId) => {
   return dispatch => {
     dispatch(initLoad());
+    dispatch(clearBoss());
 
     let boss = {};
     new Services(token, bossId).getBossDetail((response => {
@@ -347,5 +349,11 @@ const uploadFileSuccess = file => {
   return {
     type: ACTIONS.UPLOAD_FILE_SUCCESS,
     file
+  }
+}
+
+const clearBoss = () => {
+  return {
+    type: ACTIONS.CLEAR_BOSS
   }
 }

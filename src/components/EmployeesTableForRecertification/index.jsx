@@ -90,11 +90,11 @@ class EmployeesTableForRecertification extends Component {
   }
 
   render() {
-    const { boss } = this.props;
+    const { boss, isloading } = this.props;
     return (
       <>
         {
-          boss.idJefe ? this.renderEmployeesTable(boss) :
+          (Object.entries(boss).length > 0 && !isloading) ? this.renderEmployeesTable(boss) :
             <LinearProgress color={"secondary"} />
         }
       </>

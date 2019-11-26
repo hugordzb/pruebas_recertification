@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
 import {
   Table, TableHead, TableRow, TableCell,
-  TableBody, Paper, withStyles, Button
+  TableBody, Paper, withStyles, Button, Checkbox
 } from '@material-ui/core';
 import { style } from '../../styles/BossesTable';
 import { connect } from 'react-redux';
 import { sendEmail, setSelectedBoss, getBossDetail } from '../../redux/actions';
 
 class BossesTable extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedBosses: new Map()
+    }
+  }
 
   showBossInfo = boss => {
     this.props.setSelectedBoss(boss);
@@ -22,6 +28,21 @@ class BossesTable extends Component {
     this.props.sendEmail(this.props.userData.token, boss);
   }
 
+  handleCheck = (event, boss) => {
+    let isChecked = event.target.checked;
+    let auxSelectedBosses = this.state.selectedBosses;
+
+    if(isChecked){
+      auxSelectedBosses.set(boss, isChecked);
+    }else {
+      auxSelectedBosses.delete(boss);
+    }
+
+    this.setState({selectedBosses: auxSelectedBosses});
+
+    //alert("Cantidad " + this.state.selectedBosses.size)
+  }
+
   renderBossesTable = bosses => {
     const { classes } = this.props;
     return (
@@ -29,7 +50,7 @@ class BossesTable extends Component {
         <Table size="small" className={classes.table}>
           <TableHead>
             <TableRow>
-              <TableCell colSpan={7} className={classes.tableTitle}>Jefes para la recertificación</TableCell>
+              <TableCell colSpan={8} className={classes.tableTitle}>Jefes para la recertificación</TableCell>
             </TableRow>
             <TableRow>
               <TableCell className={classes.tableTitle}>Id</TableCell>
@@ -37,7 +58,11 @@ class BossesTable extends Component {
               <TableCell className={classes.tableTitle}>Correo</TableCell>
               <TableCell className={classes.tableTitle}>CorreoCC</TableCell>
               <TableCell className={classes.tableTitle}>Departamento</TableCell>
-              <TableCell colSpan={2} className={classes.tableTitle}>Opciones</TableCell>
+              <TableCell colSpan={3} className={classes.tableTitle}>Opciones</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell colSpan={7} className={classes.tableTitle}></TableCell>
+              <TableCell className={classes.tableTitle}>Recertificado</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -64,7 +89,13 @@ class BossesTable extends Component {
                       <Button onClick={() => this.handleSendEmail(boss.idJefe)}>Enviar correo</Button>
                     </TableCell>
                     <TableCell key={`${boss.idJefe} show employees`}>
-                      <Button onClick={() => this.showBossInfo(boss)}>Ver empleados</Button>
+                      <Button className={"show_employees"} onClick={() => this.showBossInfo(boss)}>Ver empleados</Button>
+                    </TableCell>
+                    <TableCell key={`${boss.idJefe} isRecertificated cell`}>
+                      <Checkbox
+                        onChange={(event) => this.handleCheck(event, boss)}
+                        color="primary"
+                      />
                     </TableCell>
                   </TableRow>
                 )
