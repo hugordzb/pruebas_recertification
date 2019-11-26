@@ -4,7 +4,7 @@ const initialState = () => {
   let state = {
     //systems: [],
     periods: ['0219'],
-    selectedPeriod: "0219",
+    selectedPeriod: "",
     bosses: [],
     selectedBoss: {},
     employees: [],

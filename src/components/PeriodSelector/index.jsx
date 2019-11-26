@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Grid, Button } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { selectPeriod } from '../../redux/actions';
+import { selectPeriod, getBossesData } from '../../redux/actions';
 
 class PeriodSelector extends Component {
 
@@ -11,7 +11,9 @@ class PeriodSelector extends Component {
   }
 
   handleSelectPeriod = period => {
+    const { userData } = this.props;
     this.props.selectPeriod(period);
+    this.props.getBossesData(userData.token, period);
   }
 
   render() {
@@ -35,6 +37,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   //getRecertificationPeriods: token => dispatch(getRecertificationPeriods(token)),
+  getBossesData: (token, selectedPeriod) => dispatch(getBossesData(token, selectedPeriod)),
   selectPeriod: period => dispatch(selectPeriod(period))
 })
 
