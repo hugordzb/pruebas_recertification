@@ -35,7 +35,6 @@ export const signIn = (token, idSistema, idPerfil) => {//Este token no se cambia
 
       servicio.createTokenRecertification(userData.userId, token,
         (responseRecert => {
-          console.log('Responsio ' + responseRecert.data.token);
           userData['token'] = responseRecert.data.token;
           localStorage.setItem('userData', JSON.stringify(userData));
           dispatch(signInSuccess(userData));
