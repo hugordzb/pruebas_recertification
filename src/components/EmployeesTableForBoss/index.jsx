@@ -25,7 +25,7 @@ class EmployeesTableForBoss extends Component {
 
     if (this.props.boss.empleados && this.props.boss.empleados.length > 0) {
       this.props.boss.empleados.forEach(element => {
-        element.cuentas.forEach((accountsInSystems, j) => {
+        element.cuentas.map((accountsInSystems, j) => {
           sistemas.push(accountsInSystems.system);
         });
       });
