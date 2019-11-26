@@ -35,13 +35,13 @@ class BossesTable extends Component {
 
     if(isChecked){
       auxSelectedBosses.set(boss, isChecked);
-      this.props.recertifyBoss(userData.token, selectedPeriod, boss.idJefe);
     }else {
       auxSelectedBosses.delete(boss);
     }
-
+    
     this.setState({selectedBosses: auxSelectedBosses});
 
+    this.props.recertifyBoss(userData.token, selectedPeriod, boss.idJefe);
     //alert("Cantidad " + this.state.selectedBosses.size)
   }
 
