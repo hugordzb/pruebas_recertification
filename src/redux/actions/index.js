@@ -326,10 +326,13 @@ const recertifyBossSuccess = (period, bossId) => {
 
 
 export const addPeriod = (token, period) => {
-  return dispatch => {
-    
-    dispatch(addPeriodSuccess(period));
+  return {
+    type:ACTIONS.ADD_PERIOD_SUCCESS,
+    period
   }
+  /*return dispatch => {
+    dispatch(addPeriodSuccess(period));
+  }*/
 }
 
 const addPeriodSuccess = period => {

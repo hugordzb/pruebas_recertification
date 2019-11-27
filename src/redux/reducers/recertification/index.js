@@ -36,17 +36,14 @@ export const recertification = (state = initialState(), action) => {
         requestedChanges: action.requestedChanges
       }
     case ACTIONS.PROCESS_CHANGE_SUCCESS:
-      let newRequestedChanges = state.requestedChanges;
-      newRequestedChanges.splice(newRequestedChanges.indexOf(action.change), 1);
       return {
         ...state,
-        requestedChanges: newRequestedChanges
+        requestedChanges: state.requestedChanges.splice(state.requestedChanges.indexOf(action.change), 1)
       }
     case ACTIONS.CLEAR_BOSS:
-      let boss = {};
       return {
         ...state,
-        boss
+        boss: {}
       }
     case ACTIONS.SELECT_PERIOD:
       return {
@@ -54,17 +51,16 @@ export const recertification = (state = initialState(), action) => {
         selectedPeriod: action.selectedPeriod
       }
     case ACTIONS.RECERTIFY_BOSS_SUCCESS:
-      let newBosses = state.bosses.map(boss => {
-        let newBoss = boss;
-        if (boss.idJefe === action.bossId) {
-          let auxRecertificado = boss.recertificado;
-          newBoss.recertificado = boss.inRecertificacion ? !auxRecertificado : auxRecertificado;
-        }
-        return newBoss;
-      });
       return {
         ...state,
-        bosses: newBosses
+        bosses: state.bosses.map(boss => {
+          let newBoss = boss;
+          if (boss.idJefe === action.bossId) {
+            let auxRecertificado = boss.recertificado;
+            newBoss.recertificado = boss.inRecertificacion ? !auxRecertificado : auxRecertificado;
+          }
+          return newBoss;
+        })
       }
     case ACTIONS.UPDATE_UPLOADED_BOSSES:
       return {
@@ -73,11 +69,9 @@ export const recertification = (state = initialState(), action) => {
       }
 
     case ACTIONS.ADD_PERIOD_SUCCESS:
-      let newPeriods = state.periods;
-      newPeriods.concat(action.period);
       return {
         ...state,
-        periods: newPeriods
+        periods: state.periods.concat(action.period)
       }
     default:
       return state

@@ -7,6 +7,8 @@ import AddIcon from '@material-ui/icons/Add';
 class PeriodSelector extends Component {
 
   componentDidMount() {
+    const { periods } = this.props;
+    alert(periods);
     //const { userData } = this.props;
     //this.props.getRecertificationPeriods(userData.token)
   }
