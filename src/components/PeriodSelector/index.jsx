@@ -17,8 +17,22 @@ class PeriodSelector extends Component {
     this.props.getBossesData(userData.token, period);
   }
 
-  handleAddPeriod = () => {
+  calculateNewPeriod = () => {
+    let lastPeriod = this.props.periods[this.props.periods.length - 1];
+    let todaysDate = new Date();
+
+    if(lastPeriod.legth === 4){
+      
+    }
+
     alert("Se va a agregar un periodo");
+    
+    alert(todaysDate);
+
+  }
+
+  handleAddPeriod = () => {
+    this.calculateNewPeriod();
   }
 
   render() {
@@ -40,13 +54,13 @@ class PeriodSelector extends Component {
 
 const mapStateToProps = state => ({
   periods: state.recertification.periods,
-  userData: state.authentication.userData
+  userData: state.authentication.userData,
 })
 
 const mapDispatchToProps = dispatch => ({
   //getRecertificationPeriods: token => dispatch(getRecertificationPeriods(token)),
   getBossesData: (token, selectedPeriod) => dispatch(getBossesData(token, selectedPeriod)),
-  selectPeriod: period => dispatch(selectPeriod(period))
+  selectPeriod: period => dispatch(selectPeriod(period)),
 })
 
 const connectedPeriodSelector = connect(mapStateToProps, mapDispatchToProps)(PeriodSelector);

@@ -311,11 +311,11 @@ export const setSelectedBoss = selectedBoss => {
 
 export const processChange = (token, change, whoAttended) => {
   let data = {
-    "idMovimiento" : change.idMovimiento,
-    "atendio" : whoAttended,
-    "estatus" : "true",
-    "comentarios" : "Se va a hacer"
-}
+    "idMovimiento": change.idMovimiento,
+    "atendio": whoAttended,
+    "estatus": "true",
+    "comentarios": "Se va a hacer"
+  }
 
   return dispatch => {
     new Services(token, null, data).processChange((response => {
@@ -337,9 +337,15 @@ const processChangeSuccess = change => {
 export const uploadFile = (token, file) => {
   return dispatch => {
     new Services(token, null, null, file).uploadFile((response => {
-      dispatch(updateUploadedBosses(response.data))
-      dispatch(uploadFileSuccess(file));
-      dispatch(finishLoad("Se subio correctamente el archivo"));
+      let newBosses = response.data;
+      if (Array.isArray(newBosses) && newBosses.length > 0) {
+        dispatch(updateUploadedBosses(newBosses));
+        dispatch(uploadFileSuccess(file));
+        dispatch(finishLoad("Se subio correctamente el archivo"));
+      }else {
+        dispatch(uploadFileSuccess(file));
+        dispatch(finishLoad("Se subio correctamente el archivo, no hay nuevos jefes"));
+      }
     }), (responseError => {
       dispatch(finishLoad("Hubo un error en la carga del archivo"));
     }));

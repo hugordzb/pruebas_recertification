@@ -6,7 +6,6 @@ const DEV_VARS = {
     RECERTIFICATION: 'http://localhost:8080/recertification/api/v1',
     SSO: 'http://localhost:8070/wsso/api/v1',
   }
-
 };
 
 const QAS_VARS = {
@@ -28,7 +27,7 @@ const PROD_VARS = {
     RECERTIFICATION: 'http://172.20.3.28:8070/recertification/api/v1',
     SSO: 'http://172.20.3.28:8070/wsso/api/v1',
   }
-  
+
 };
 
 export default class Configs {
