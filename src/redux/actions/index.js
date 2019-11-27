@@ -303,8 +303,8 @@ export const selectPeriod = selectedPeriod => {
 
 export const recertifyBoss = (token, period, bossId) => {
   let data = {
-    period,
-    bossId
+    periodo: period,
+    idJefe: bossId
   };
   return dispatch => {
     new Services(token, null, data).recertifyBoss((response => {
