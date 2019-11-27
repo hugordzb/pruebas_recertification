@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Grid, Button, Fab } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { selectPeriod, getBossesData } from '../../redux/actions';
+import { selectPeriod, getBossesData, addPeriod } from '../../redux/actions';
 import AddIcon from '@material-ui/icons/Add';
 
 class PeriodSelector extends Component {
@@ -18,6 +18,7 @@ class PeriodSelector extends Component {
   }
 
   calculateNewPeriod = () => {
+    const { userData } = this.props;
     let lastPeriod = this.props.periods[this.props.periods.length - 1];
     let todaysDate = new Date();
 
@@ -25,9 +26,10 @@ class PeriodSelector extends Component {
       
     }
 
-    alert("Se va a agregar un periodo");
-    
-    alert(todaysDate);
+    let newPeriod = "0000";
+
+    this.props.addPeriod(userData.token, newPeriod);
+
 
   }
 
@@ -61,6 +63,7 @@ const mapDispatchToProps = dispatch => ({
   //getRecertificationPeriods: token => dispatch(getRecertificationPeriods(token)),
   getBossesData: (token, selectedPeriod) => dispatch(getBossesData(token, selectedPeriod)),
   selectPeriod: period => dispatch(selectPeriod(period)),
+  addPeriod: (token, period) => dispatch(addPeriod(token, period))
 })
 
 const connectedPeriodSelector = connect(mapStateToProps, mapDispatchToProps)(PeriodSelector);

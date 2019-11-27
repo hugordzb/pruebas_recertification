@@ -3,7 +3,7 @@ const DEV_VARS = {
     SSO_CLIENT: 'http://localhost:3000/sso/'
   },
   SERVERS: {
-    RECERTIFICATION: 'http://localhost:8080/recertification/api/v1',
+    RECERTIFICATION: 'http://NAU-L-CGS:8070/recertification/api/v1',
     SSO: 'http://localhost:8070/wsso/api/v1',
   }
 };

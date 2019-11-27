@@ -8,6 +8,7 @@ export class Services {
     this.file = file
   }
 
+  /************************************  POST  ************************************/
   createTokenRecertification = (username, tokenSSO, callback, callbackError = (error => { console.log(error); })) => {
     let customHeader = new Headers();
     customHeader.append('Content-Type', 'application/json');
@@ -15,14 +16,26 @@ export class Services {
     customHeader.append('ssoToken', tokenSSO);
 
     var config = {
-      headers : customHeader,
+      headers: customHeader,
       method: 'POST'
     }
 
-    API.request().custom_get(`${global.config.current.SERVERS.RECERTIFICATION}/login`, config, 
-    (responseJSON => {
+    API.request().custom_get(`${global.config.current.SERVERS.RECERTIFICATION}/login`, config,
+      (responseJSON => {
+        Promise.resolve({
+          data: responseJSON
+        }).then(callback);
+      }), (responseError => {
+        Promise.resolve({
+          error: responseError
+        }).then(callbackError);
+      }));
+  }
+
+  uploadFile = (callback, callbackError = (error => { console.log(error); })) => {
+    API.request(this.token, null, this.file).postFile(`${global.config.current.SERVERS.RECERTIFICATION}/conciliacion/recertificacion`, (responseJson => {
       Promise.resolve({
-        data: responseJSON
+        data: responseJson
       }).then(callback);
     }), (responseError => {
       Promise.resolve({
@@ -31,56 +44,10 @@ export class Services {
     }));
   }
 
+
+  /************************************  GET  ************************************/
   checkAccessSignIn = (idSistema, idPerfil, callback, callbackError = (error => { console.log(error); })) => {
     API.request(this.token).get(`${global.config.current.SERVERS.SSO}/system?sistema=${idSistema}&idPerfil=${idPerfil}`, (responseJson => {
-      Promise.resolve({
-        data: responseJson
-      }).then(callback);
-    }), (responseError => {
-      Promise.resolve({
-        error: responseError
-      }).then(callbackError);
-    }));
-  }
-
-  getSystems = (callback, callbackError = (error => { console.log(error); })) => {
-    API.request(this.token).get(`${global.config.current.SERVERS.RECERTIFICATION}/auditableSystems`, (responseJson => {
-      Promise.resolve({
-        data: responseJson
-      }).then(callback);
-    }), (responseError => {
-      Promise.resolve({
-        error: responseError
-      }).then(callbackError);
-    }));
-  }
-
-  getProfilesInSystems = (callback, callbackError = (error => { console.log(error); })) => {
-    API.request(this.token).get(`${global.config.current.SERVERS.RECERTIFICATION}/profileSystems`, (responseJson => {
-      Promise.resolve({
-        data: responseJson
-      }).then(callback);
-    }), (responseError => {
-      Promise.resolve({
-        error: responseError
-      }).then(callbackError);
-    }));
-  }
-
-  getAuditableUserAccounts = (callback, callbackError = (error => { console.log(error); })) => {
-    API.request(this.token).get(`${global.config.current.SERVERS.RECERTIFICATION}/auditableAcounts`, (responseJson => {
-      Promise.resolve({
-        data: responseJson
-      }).then(callback);
-    }), (responseError => {
-      Promise.resolve({
-        error: responseError
-      }).then(callbackError);
-    }));
-  }
-
-  requestChange = (callback, callbackError = (error => { console.log(error); })) => {
-    API.request(this.token).put(`${global.config.current.SERVERS.RECERTIFICATION}/requestChange`, this.body, (responseJson => {
       Promise.resolve({
         data: responseJson
       }).then(callback);
@@ -115,19 +82,6 @@ export class Services {
     }));
   }
 
-  processChange = (callback, callbackError = (error => { console.log(error); })) => {
-    API.request(this.token).put(`${global.config.current.SERVERS.RECERTIFICATION}/processChange`, this.body, (responseJson => {
-      Promise.resolve({
-        data: responseJson
-      }).then(callback);
-    }), (responseError => {
-      Promise.resolve({
-        error: responseError
-      }).then(callbackError);
-    }));
-  }
-  
-
   getBossesData = (callback, callbackError = (error => { console.log(error); })) => {
     API.request(this.token).get(`${global.config.current.SERVERS.RECERTIFICATION}/bossesData/${this.pathParam}`, (responseJson => {
       Promise.resolve({
@@ -152,8 +106,22 @@ export class Services {
     }));
   }
 
-  uploadFile = (callback, callbackError = (error => { console.log(error); })) => {
-    API.request(this.token, null, this.file).postFile(`${global.config.current.SERVERS.RECERTIFICATION}/conciliacion/recertificacion`, (responseJson => {
+  /************************************  PUT  ************************************/
+
+  requestChange = (callback, callbackError = (error => { console.log(error); })) => {
+    API.request(this.token).put(`${global.config.current.SERVERS.RECERTIFICATION}/requestChange`, this.body, (responseJson => {
+      Promise.resolve({
+        data: responseJson
+      }).then(callback);
+    }), (responseError => {
+      Promise.resolve({
+        error: responseError
+      }).then(callbackError);
+    }));
+  }
+
+  processChange = (callback, callbackError = (error => { console.log(error); })) => {
+    API.request(this.token).put(`${global.config.current.SERVERS.RECERTIFICATION}/processChange`, this.body, (responseJson => {
       Promise.resolve({
         data: responseJson
       }).then(callback);
@@ -175,5 +143,7 @@ export class Services {
       }).then(callbackError);
     }));
   }
+
+
   
 }

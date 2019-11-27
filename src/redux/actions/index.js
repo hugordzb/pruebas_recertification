@@ -1,26 +1,26 @@
 import { Services } from "../../services";
 
 export const ACTIONS = {
+  //Authtentication
   SIGNIN_SUCCESS: "SIGNIN_SUCCESS",
   SIGNOUT_SUCCESS: "SIGNOUT_SUCCESS",
+  //Loader
   INIT_LOAD: "INIT_LOAD",
   FINISH_LOAD: "FINISH_LOAD",
+  //Recertification
   SET_SELECTED_BOSS: "SET_SELECTED_BOSS",
   GET_BOSSES_DATA_SUCCESS: "GET_BOSSES_DATA_SUCCESS",
   DELETE_EMPLOYEE_SUCCESS: "DELETE_EMPLOYEE_SUCCESS",
-  ADD_EMPLOYEE_SUCCESS: "ADD_EMPLOYEE_SUCCESS",
   GET_BOSS_DETAIL_SUCCESS: "GET_BOSS_DETAIL_SUCCESS",
-  GET_EMPLOYEE_DETAIL_SUCCESS: "GET_EMPLOYEE_DETAIL_SUCCESS",
-  GET_AUDITABLE_SYSTEMS_SUCCESS: "GET_AUDITABLE_SYSTEMS_SUCCESS",
-  GET_AUDITABLE_USER_ACCOUNTS_SUCCESS: "GET_AUDITABLE_USER_ACCOUNTS_SUCCESS",
-  SEND_EMAIL_SUCCESS: "SEND_EMAIL_SUCCESS",
+  SEND_EMAIL_SUCCESS: "SEND_EMAIL_SUCCESS", //Falta usar
   GET_REQUESTED_CHANGES_SUCCESS: "GET_REQUESTED_CHANGES_SUCCESS",
   PROCESS_CHANGE_SUCCESS: "PROCESS_CHANGE_SUCCESS",
   UPLOAD_FILE_SUCCESS: "UPLOAD_FILE_SUCCESS",
   UPDATE_UPLOADED_BOSSES: "UPDATE_UPLOADED_BOSSES",
   CLEAR_BOSS: "CLEAR_BOSS",
   SELECT_PERIOD: "SELECT_PERIOD",
-  RECERTIFY_BOSS_SUCCESS: "RECERTIFY_BOSS_SUCCESS"
+  RECERTIFY_BOSS_SUCCESS: "RECERTIFY_BOSS_SUCCESS",
+  ADD_PERIOD_SUCCESS: "ADD_PERIOD_SUCCESS"
 }
 
 export const signIn = (token, idSistema, idPerfil) => {//Este token no se cambia, tiene que ser el que se recibe
@@ -134,41 +134,6 @@ const deleteEmployeeSuccess = employee => {
   }
 }
 
-export const addEmployee = (employee, token, requester) => {
-  return dispatch => {
-    dispatch(initLoad());
-
-    let data = {
-      tipoMov: "A",
-      idUsuario: "bcavazos",
-      nIdUsuario: "3",
-      perfil: "admin",
-      sistema: "TEL",
-      nPerfil: "1",
-      nSistema: "CIAT",
-      cuentaSistema: "1",
-      nCuentaSistema: "9",
-      idJefe: "jefecito",
-      nIdJefe: "jefecito",
-      solicitante: requester
-    }
-
-    new Services(token, null, data).requestChange((response => {
-      dispatch(addEmployeeSuccess(employee));
-      dispatch(finishLoad("Se dio de alta el empleado de manera correcta"));
-    }), (responseError => {
-      dispatch(finishLoad("Hubo un error en la carga"));
-    }));
-  }
-}
-
-const addEmployeeSuccess = employee => {
-  return {
-    type: ACTIONS.ADD_EMPLOYEE_SUCCESS,
-    employee
-  }
-}
-
 export const getBossDetail = (token, bossId) => {
   return dispatch => {
     dispatch(initLoad());
@@ -191,63 +156,6 @@ const getBossDetailSuccess = boss => {
     boss
   }
 };
-
-export const getEmployeeDetail = idEmployee => {// Falta actualizar
-  let employee = {};
-  getEmployeeDetailSuccess(employee);
-}
-
-const getEmployeeDetailSuccess = employee => {
-  return {
-    type: ACTIONS.GET_EMPLOYEE_DETAIL_SUCCESS,
-    employee
-  }
-}
-
-export const getAuditableSystems = token => {
-  return dispatch => {
-    dispatch(initLoad());
-
-    let auditableSystems = [];
-
-    new Services(token).getSystems((response => {
-      auditableSystems = response.data.systems;
-      dispatch(getAuditableSystemsSucccess(auditableSystems));
-      dispatch(finishLoad("Carga exitosa de los sistemas auditables"));
-    }), (responseError => {
-      dispatch(finishLoad("Hubo un error en la carga"));
-    }));
-  }
-}
-
-const getAuditableSystemsSucccess = auditableSystems => {
-  return {
-    type: ACTIONS.GET_AUDITABLE_SYSTEMS_SUCCESS,
-    auditableSystems
-  }
-}
-
-export const getAuditableUserAccounts = token => {
-  return dispatch => {
-    dispatch(initLoad());
-    let auditableAccounts = [];
-
-    new Services(token).getAuditableUserAccounts((response => {
-      auditableAccounts = response.data.jefes;
-      dispatch(getAuditableUserAccountsSuccess(auditableAccounts));
-      dispatch(finishLoad("Carga exitosa de las cuentas auditables"));
-    }), (responseError => {
-      dispatch(finishLoad("Hubo un error en la carga"));
-    }));
-  }
-}
-
-const getAuditableUserAccountsSuccess = auditableAccounts => {
-  return {
-    type: ACTIONS.GET_AUDITABLE_USER_ACCOUNTS_SUCCESS,
-    auditableAccounts
-  }
-}
 
 export const getRequestedChanges = token => {
   return dispatch => {
@@ -415,3 +323,18 @@ const recertifyBossSuccess = (period, bossId) => {
     bossId
   }
 }
+
+
+export const addPeriod = (token, period) => {
+  return dispatch => {
+    
+    dispatch(addPeriodSuccess(period));
+  }
+}
+
+const addPeriodSuccess = period => {
+  return {
+    type:ACTIONS.ADD_PERIOD_SUCCESS,
+    period
+  }
+} 
