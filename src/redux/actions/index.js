@@ -342,7 +342,7 @@ export const uploadFile = (token, file) => {
         dispatch(updateUploadedBosses(newBosses));
         dispatch(uploadFileSuccess(file));
         dispatch(finishLoad("Se subio correctamente el archivo"));
-      }else {
+      } else {
         dispatch(uploadFileSuccess(file));
         dispatch(finishLoad("Se subio correctamente el archivo, no hay nuevos jefes"));
       }
@@ -394,9 +394,12 @@ export const selectPeriod = selectedPeriod => {
 }
 
 export const recertifyBoss = (token, period, bossId) => {
-  let pathParams = [period, bossId];
+  let data = {
+    period,
+    bossId
+  };
   return dispatch => {
-    new Services(token, pathParams).recertifyBoss((response => {
+    new Services(token, null, data).recertifyBoss((response => {
       dispatch(recertifyBossSuccess(period, bossId));
       dispatch(finishLoad("Se recertifico correctamente el jefe"));
     }), (responseError => {

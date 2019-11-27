@@ -165,7 +165,7 @@ export class Services {
   }
 
   recertifyBoss = (callback, callbackError = (error => { console.log(error); })) => {
-    API.request(this.token).get(`${global.config.current.SERVERS.RECERTIFICATION}/recertifyBoss/${this.pathParam[0]}/${this.pathParam[1]}`, (responseJson => {
+    API.request(this.token).put(`${global.config.current.SERVERS.RECERTIFICATION}/recertifyBoss`, this.body, (responseJson => {
       Promise.resolve({
         data: responseJson
       }).then(callback);
