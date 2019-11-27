@@ -17,6 +17,7 @@ export const ACTIONS = {
   GET_REQUESTED_CHANGES_SUCCESS: "GET_REQUESTED_CHANGES_SUCCESS",
   PROCESS_CHANGE_SUCCESS: "PROCESS_CHANGE_SUCCESS",
   UPLOAD_FILE_SUCCESS: "UPLOAD_FILE_SUCCESS",
+  UPDATE_UPLOADED_BOSSES: "UPDATE_UPLOADED_BOSSES",
   CLEAR_BOSS: "CLEAR_BOSS",
   SELECT_PERIOD: "SELECT_PERIOD",
   RECERTIFY_BOSS_SUCCESS: "RECERTIFY_BOSS_SUCCESS"
@@ -336,11 +337,19 @@ const processChangeSuccess = change => {
 export const uploadFile = (token, file) => {
   return dispatch => {
     new Services(token, null, null, file).uploadFile((response => {
+      dispatch(updateUploadedBosses(response.data))
       dispatch(uploadFileSuccess(file));
       dispatch(finishLoad("Se subio correctamente el archivo"));
     }), (responseError => {
       dispatch(finishLoad("Hubo un error en la carga del archivo"));
     }));
+  }
+}
+
+const updateUploadedBosses = updatedBoses => {
+  return {
+    type: ACTIONS.UPDATE_UPLOADED_BOSSES,
+    updatedBoses
   }
 }
 

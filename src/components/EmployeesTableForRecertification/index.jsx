@@ -9,40 +9,41 @@ class EmployeesTableForRecertification extends React.Component {
   allSystems = () => {
     let sistemas = [];
 
-    if(this.props.boss.empleados && this.props.boss.empleados.length > 0){
-        this.props.boss.empleados.forEach(element => {
-          element.cuentas.map((accountsInSystems, j) => {
-            sistemas.push(accountsInSystems.system);
-            return "";
-          });
+    if (this.props.boss.empleados && this.props.boss.empleados.length > 0) {
+      this.props.boss.empleados.forEach(element => {
+        element.cuentas.map((accountsInSystems, j) => {
+          sistemas.push(accountsInSystems.system);
+          return "";
         });
+      });
 
-        let sistemasTmp = sistemas.filter(this.onlyUnique);
-        let columsSytem = [];
-        sistemasTmp.forEach((el, idx) => {
-          columsSytem.push({
-            column: idx, 
-            system: el});
+      let sistemasTmp = sistemas.filter(this.onlyUnique);
+      let columsSytem = [];
+      sistemasTmp.forEach((el, idx) => {
+        columsSytem.push({
+          column: idx,
+          system: el
         });
+      });
 
-        return columsSytem;
+      return columsSytem;
     }
 
     return null;
   }
 
-  onlyUnique = (value, index, self) => { 
+  onlyUnique = (value, index, self) => {
     return self.indexOf(value) === index;
   }
 
   renderSystemsColumns = (systems) => {
     let columns = [];
 
-    if(!systems)
+    if (!systems)
       return columns;
 
     systems.forEach((element, idx) => {
-      columns.push(<TableCell key={idx+'-'+element.system} colSpan={2} 
+      columns.push(<TableCell key={idx + '-' + element.system} colSpan={2}
         className={this.props.classes.tableTitle}>{element.system}</TableCell>);
     });
 
@@ -52,12 +53,12 @@ class EmployeesTableForRecertification extends React.Component {
   renderSystemsOptionsColumns = (systems) => {
     let columns = [];
 
-    if(!systems)
+    if (!systems)
       return columns;
 
     systems.forEach((element, idx) => {
-      columns.push(<TableCell key={'opt-'+idx} className={this.props.classes.tableTitle}>Cuenta</TableCell>);
-      columns.push(<TableCell key={'optp-'+idx} className={this.props.classes.tableTitle}>Perfil</TableCell>);
+      columns.push(<TableCell key={'opt-' + idx} className={this.props.classes.tableTitle}>Cuenta</TableCell>);
+      columns.push(<TableCell key={'optp-' + idx} className={this.props.classes.tableTitle}>Perfil</TableCell>);
     });
 
     return columns;
@@ -70,7 +71,7 @@ class EmployeesTableForRecertification extends React.Component {
       let valueRow1 = '---';
       let valueRow2 = '---';
 
-      if(elm.system === accountsInSystems.system){
+      if (elm.system === accountsInSystems.system) {
         valueRow1 = accountsInSystems.cuenta;
         valueRow2 = accountsInSystems.perfil;
       }
@@ -78,7 +79,7 @@ class EmployeesTableForRecertification extends React.Component {
       columns.push(<TableCell key={`${idx} sap account employees cell`}>
         {valueRow1}
       </TableCell>);
-      
+
       columns.push(<TableCell key={`${idx} sap role employees cell`}>
         {valueRow2}
       </TableCell>);
@@ -151,8 +152,8 @@ class EmployeesTableForRecertification extends React.Component {
     return (
       <div>
         {
-          (Object.entries(this.props.boss).length > 0 && !this.props.isloading) 
-            ? this.renderEmployeesTable(this.props.boss) 
+          (Object.entries(this.props.boss).length > 0 && !this.props.isloading)
+            ? this.renderEmployeesTable(this.props.boss)
             : <LinearProgress color={"secondary"} />
         }
       </div>

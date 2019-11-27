@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Grid, Button } from '@material-ui/core';
+import { Grid, Button, Fab } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { selectPeriod, getBossesData } from '../../redux/actions';
+import AddIcon from '@material-ui/icons/Add';
 
 class PeriodSelector extends Component {
 
@@ -16,15 +17,22 @@ class PeriodSelector extends Component {
     this.props.getBossesData(userData.token, period);
   }
 
+  handleAddPeriod = () => {
+    alert("Se va a agregar un periodo");
+  }
+
   render() {
     const { periods } = this.props;
     return (
       <Grid container direction="row" justify="center" alignItems="center">
         {
           periods.map(period => {
-          return (<Button key={`${period}`} onClick={event => this.handleSelectPeriod(period)}>{period}</Button>)
+            return (<Button key={`${period}`} onClick={event => this.handleSelectPeriod(period)}>{period}</Button>)
           })
         }
+        <Fab color="primary" aria-label="add" onClick={event => this.handleAddPeriod()}>
+          <AddIcon />
+        </Fab>
       </Grid>
     );
   }
